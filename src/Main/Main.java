@@ -4,12 +4,17 @@
  */
 package Main;
 
+import Engine.EngineFrame;
+import Utilities.FileReader;
+
 /**
  *
  * @author GA_IA
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.println("2D Side Scroller");
+        EngineFrame window = new EngineFrame("2D Side Scrollbruh");
+        window.setIconImage(FileReader.readImage("res/icon/aronadaingai.jpg"));
+        window.start();
     }
 }
