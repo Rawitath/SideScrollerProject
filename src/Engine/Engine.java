@@ -8,21 +8,10 @@ package Engine;
  *
  * @author GA_IA
  */
-public class Engine implements Runnable{
+public abstract class Engine implements Runnable{
 
     private Thread thread;
     private boolean running;
-    private double updateSpeed;
-    private double maxFPS;
-    
-    public Engine(double updateSpeed, double maxFPS){
-        this.updateSpeed = updateSpeed;
-        this.maxFPS = maxFPS;
-    }
-    
-    public Engine(){
-        this(1.0, 60.0);
-    }
     
     public void start(){
         if(running){
@@ -47,37 +36,7 @@ public class Engine implements Runnable{
         }
     }
     
-    //Update ASAP
-    private void update(){
-        System.out.println("update");
+    public boolean isRunning(){
+        return running;
     }
-    //Update according to updateSpeed
-    private void fixedUpdate(){
-        System.out.println("fixedUpdate");
-    }
-    //Update according to maxFPS
-    private void render(){
-        System.out.println("render");
-    }
-    
-    @Override
-    public void run() {
-        double nUpdate = updateSpeed * 1000000;
-        double current = System.nanoTime();
-        double nFPS = 1 / maxFPS * 1000000000;
-        double fpsCurrent = System.nanoTime();
-        
-        while(running){
-            update();
-            while(nUpdate <= System.nanoTime() - current){
-                fixedUpdate();
-                current = System.nanoTime();
-            }
-            while(nFPS <= System.nanoTime() - fpsCurrent){
-                render();
-                fpsCurrent = System.nanoTime();
-            }
-        }
-    }
-    
 }

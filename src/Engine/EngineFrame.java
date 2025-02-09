@@ -13,14 +13,20 @@ import javax.swing.JFrame;
  */
 public class EngineFrame extends JFrame{
     
-    private Engine engine;
+    private MainEngine engine;
+    private RenderingPanel canvas;
     
     public EngineFrame(String title, int width, int height, Color bg){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(width, height);
-        setBackground(bg);
         setTitle(title);
-        setResizable(false);        
+        setResizable(false);   
+        
+        engine = new MainEngine();
+        
+        canvas = new RenderingPanel(this, bg);
+        add(canvas);
+        
         setVisible(true);   
     }
     public EngineFrame(String title, int width, int height){
@@ -37,9 +43,10 @@ public class EngineFrame extends JFrame{
     }
     
     public void start(){
-        engine = new Engine();
         engine.start();
 
+        engine.addLoopable(canvas);
     }
+    
     
 }
