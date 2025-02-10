@@ -4,6 +4,7 @@
  */
 package Engine;
 
+import Scenes.SceneManager;
 import java.awt.Color;
 import javax.swing.JFrame;
 
@@ -42,10 +43,14 @@ public class EngineFrame extends JFrame{
         this(640, 480);
     }
     
+    public RenderingPanel getRenderingPanel(){
+        return canvas;
+    }
+    
     public void start(){
         engine.start();
-
         engine.addLoopable(canvas);
+        SceneManager.loadScene(0);
     }
     
     
