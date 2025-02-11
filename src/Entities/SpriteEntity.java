@@ -4,10 +4,11 @@
  */
 package Entities;
 
-import Datas.Vector2;
+import Datas.*;
 import Scenes.Scene;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.math.*;
 
 /**
  *
@@ -16,11 +17,15 @@ import java.awt.image.BufferedImage;
 public abstract class SpriteEntity extends Entity implements GraphicLoopable{
 
     private BufferedImage sprite;
-    private Vector2 spriteSize;
+    private Vector2Int spriteSize;
+    private float pixelRatio;
+    private Vector2 anchor;
 
     public SpriteEntity(Scene s) {
         super(s);
-        spriteSize = new Vector2(100,100);
+        spriteSize = new Vector2Int(100,100);
+        anchor = new Vector2(0.5f, 0.5f);
+        pixelRatio = 100.0f;
     }
 
     public BufferedImage getSprite() {
@@ -30,7 +35,7 @@ public abstract class SpriteEntity extends Entity implements GraphicLoopable{
     public void setSprite(BufferedImage sprite, boolean keepSpriteSize) {
         this.sprite = sprite;
         if(!keepSpriteSize){
-            setSpriteSize(new Vector2(sprite.getWidth(), sprite.getHeight()));
+            setSpriteSize(new Vector2Int(sprite.getWidth(), sprite.getHeight()));
         }
     }
     
@@ -38,23 +43,20 @@ public abstract class SpriteEntity extends Entity implements GraphicLoopable{
         setSprite(sprite, false);
     }
 
-    public Vector2 getSpriteSize() {
+    public Vector2Int getSpriteSize() {
         return spriteSize;
     }
 
-    public void setSpriteSize(Vector2 spriteSize) {
+    public void setSpriteSize(Vector2Int spriteSize) {
         this.spriteSize = spriteSize;
     }
     
 
     @Override
     public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset) {
-        Vector2 pos = Vector2.copy(getPosition());
-        pos.add(posOffset);
-        Vector2 scale = Vector2.copy(getScale());
-        scale.add(scaleOffset);
-        
-//        g.drawImage(sprite, pos.getX(), pos.getY(), scale.getX() * spriteSize.getX(), scale.getY() * spriteSize.getY(), null);
-        g.drawImage(sprite, pos.getX(),0, scale.getX() * spriteSize.getX(), scale.getY() * spriteSize.getY(), null);
+        Vector2 pos = getPosition().add(posOffset);
+        pos = pos.multiply(new Vector2(1,1));
+        Vector2 scale = Vector2.copy(getScale()).multiply(scaleOffset).multiply(pixelRatio);
+        g.drawImage(sprite, Math.round(pos.getX()),Math.round(pos.getY()), Math.round(scale.getX()), Math.round(scale.getY()), null);
     }
 }

@@ -6,38 +6,48 @@ package Entities;
 
 import Datas.Vector2;
 import Scenes.Scene;
+import java.awt.Dimension;
 
 /**
  *
  * @author GA_IA
  */
 public class Camera extends Entity{
-    private Vector2 bound;
+    private Dimension screenSize;
+    private float zoom;
 
     public Camera(Scene s) {
         super(s);
-        bound = new Vector2(1280, 720);
+        screenSize = new Dimension();
+        zoom = 1f;
     }
 
-    public Vector2 getBound() {
-        return bound;
+    public Dimension getScreenSize() {
+        return screenSize;
     }
 
-    public void setBound(Vector2 bound) {
-        this.bound = bound;
+    public void setScreenSize(Dimension screenSize) {
+        this.screenSize = screenSize;
+    }
+    
+    public double getZoom() {
+        return zoom;
+    }
+
+    public void setZoom(float zoom) {
+        this.zoom = zoom;
     }
     
     public Vector2 getPositionOffset(){
         Vector2 output = new Vector2();
-        output.add(new Vector2(
-                (bound.getX() / 2) - getPosition().getX(),
-                (bound.getY() / 2) - getPosition().getY()
+        return output.add(new Vector2(
+               screenSize.width * zoom / 2 - getPosition().getX(),
+               screenSize.height * zoom / 2 - getPosition().getY()
         ));
-        return output;
     }
     public Vector2 getScaleOffset(){
         Vector2 output = new Vector2();
-        return output;
+        return output.add(zoom);
     }
     
     

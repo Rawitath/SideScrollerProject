@@ -25,8 +25,8 @@ public abstract class Entity{
         parentScene = s;
         id = entityCount;
         setPosition(new Vector2());
-        setRotation(0.0);
-        setScale(new Vector2(1,1));
+        setRotation(0.0f);
+        setScale(new Vector2(1.0f, 1.0f));
         entityCount++;
     }
 

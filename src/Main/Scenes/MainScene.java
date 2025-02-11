@@ -4,7 +4,7 @@
  */
 package Main.Scenes;
 
-import Main.Entities.Lucy;
+import Main.Entities.*;
 import Scenes.Scene;
 
 /**
@@ -15,7 +15,7 @@ public class MainScene extends Scene{
 
     @Override
     public void load() {
-        addEntity(new Lucy(this));
+        addEntity(new Mutsuki(this));
     }
     
 }

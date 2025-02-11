@@ -14,26 +14,27 @@ import Utilities.FileReader;
  *
  * @author GA_IA
  */
-public class Lucy extends SpriteEntity{
+public class Mutsuki extends SpriteEntity{
 
-    public Lucy(Scene s) {
+    public Mutsuki(Scene s) {
         super(s);
-        setSprite(FileReader.readImage("res/game/lucy.png"));
-        setSpriteSize(getSpriteSize().multiply(0.3f));       
+        setSprite(FileReader.readImage("res/game/mutsuki.png"));
+        setSpriteSize(getSpriteSize().multiply(0.3f));
+        setPosition(getPosition().add(Vector2.up().multiply(100)));
     }
 
     @Override
     public void start() {
-        
+
     }
 
     @Override
     public void update() {
-    }
 
+    }
     @Override
     public void fixedUpdate() {
-        
+       
     }
     
 }

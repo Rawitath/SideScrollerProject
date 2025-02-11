@@ -71,9 +71,7 @@ public class SceneManager {
             System.err.println(currentScene.getName() + " has no Camera");
             return;
         }
-        currentScene.getCamera().setBound(new Vector2(
-                renderingPanel.getPreferredSize().width,
-                renderingPanel.getPreferredSize().height));
+        currentScene.getCamera().setScreenSize(renderingPanel.getPreferredSize());
         renderingPanel.setCurrentCamera(currentScene.getCamera());
         for(var e : currentScene.getEntities()){
             renderingPanel.addEntities(e);
