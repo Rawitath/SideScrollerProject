@@ -4,6 +4,7 @@
  */
 package Engine;
 
+import Inputs.InputManager;
 import Scenes.SceneManager;
 import java.awt.Color;
 import javax.swing.JFrame;
@@ -16,6 +17,7 @@ public class EngineFrame extends JFrame{
     
     private MainEngine engine;
     private RenderingPanel canvas;
+    private InputManager inputManager;
     
     public EngineFrame(String title, int width, int height, Color bg){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,6 +29,10 @@ public class EngineFrame extends JFrame{
         
         canvas = new RenderingPanel(this, bg);
         add(canvas);
+        
+        inputManager = new InputManager();
+        canvas.addKeyListener(inputManager);
+        canvas.setFocusable(true);
         
         setVisible(true);   
     }
@@ -45,6 +51,10 @@ public class EngineFrame extends JFrame{
     
     public RenderingPanel getRenderingPanel(){
         return canvas;
+    }
+
+    public InputManager getInputManager() {
+        return inputManager;
     }
     
     public void start(){

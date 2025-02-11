@@ -52,7 +52,10 @@ public class Vector2Int {
         return new Vector2Int(x * vec2.getX(), y * vec2.getY());
     }
     public Vector2Int translate(Vector2Int direction, int speed){
-        return this.multiply(direction.multiply(speed));
+        return this.add(direction.multiply(speed));
+    }
+    public String getPrint(){
+        return "("+this.x + ", "+this.getY()+")";
     }
     
     public static Vector2Int zero(){

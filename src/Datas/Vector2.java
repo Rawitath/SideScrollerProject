@@ -49,7 +49,10 @@ public class Vector2 {
         return new Vector2(x * vec2.getX(), y * vec2.getY());
     }
     public Vector2 translate(Vector2 direction, float speed){
-        return this.multiply(direction.multiply(speed));
+        return this.add(direction.multiply(speed));
+    }
+    public String getPrint(){
+        return "("+this.x + ", "+this.getY()+")";
     }
     
     public static Vector2 zero(){

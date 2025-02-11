@@ -7,6 +7,8 @@ package Scenes;
 import Datas.Vector2;
 import Engine.MainEngine;
 import Engine.RenderingPanel;
+import Inputs.InputManager;
+import Inputs.KeyControlable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class SceneManager {
     private static List<Scene> scenes = new ArrayList<>();
     private static Scene currentScene = null;
     private static RenderingPanel renderingPanel;
+    private static InputManager inputManager;
 
     public static RenderingPanel getRenderingPanel() {
         return renderingPanel;
@@ -28,6 +31,15 @@ public class SceneManager {
         SceneManager.renderingPanel = renderingPanel;
     }
 
+    public static InputManager getInputManager() {
+        return inputManager;
+    }
+
+    public static void setInputManager(InputManager inputManager) {
+        SceneManager.inputManager = inputManager;
+    }
+
+    
     public static Scene getCurrentScene() {
         return currentScene;
     }
@@ -75,6 +87,9 @@ public class SceneManager {
         renderingPanel.setCurrentCamera(currentScene.getCamera());
         for(var e : currentScene.getEntities()){
             renderingPanel.addEntities(e);
+            if(e instanceof KeyControlable){
+                inputManager.addKeyControlable((KeyControlable) e);
+            }
         }
     }
 }

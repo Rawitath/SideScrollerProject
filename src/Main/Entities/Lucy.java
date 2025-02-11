@@ -19,7 +19,7 @@ public class Lucy extends SpriteEntity{
     public Lucy(Scene s) {
         super(s);
         setSprite(FileReader.readImage("res/game/lucy.png"));
-        setSpriteSize(getSpriteSize().multiply(0.3f));       
+        setSpriteSize(getSpriteSize().multiply(0.3f));
     }
 
     @Override

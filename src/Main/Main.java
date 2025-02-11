@@ -16,8 +16,9 @@ import Utilities.FileReader;
 public class Main {
     public static void main(String[] args) {
         SceneManager.addScene(new MainScene());
-        EngineFrame window = new EngineFrame("2D Side Scrollbruh");
+        EngineFrame window = new EngineFrame("2D Side Scrollbruh", 1280, 720);
         SceneManager.setRenderingPanel(window.getRenderingPanel());
+        SceneManager.setInputManager(window.getInputManager());
         window.setIconImage(FileReader.readImage("res/icon/aronadaingai.jpg"));
         window.start();
     }
