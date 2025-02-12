@@ -6,6 +6,7 @@ package Entities;
 
 import Datas.Vector2;
 import Scenes.Scene;
+import java.awt.Graphics;
 
 /**
  *
@@ -69,4 +70,10 @@ public abstract class Entity{
     public abstract void start();
     public abstract void update();
     public abstract void fixedUpdate();
+    
+    public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset) {
+        Vector2 pos = getPosition().add(posOffset);
+        Vector2 scale = getScale().multiply(scaleOffset);
+        g.drawRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));
+    }
 }

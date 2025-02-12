@@ -7,7 +7,6 @@ package Engine;
 import Datas.Vector2;
 import Entities.Camera;
 import Entities.Entity;
-import Entities.GraphicLoopable;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -76,9 +75,7 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         for(var e : updateEntities){
-            if(e instanceof GraphicLoopable){
-                ((GraphicLoopable) e).draw(g, currentCamera.getPositionOffset(), currentCamera.getScaleOffset());
-            }
+            e.draw(g, currentCamera.getPositionOffset(), currentCamera.getScaleOffset());
         }
     }
 

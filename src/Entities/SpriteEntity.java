@@ -14,7 +14,7 @@ import java.math.*;
  *
  * @author GA_IA
  */
-public abstract class SpriteEntity extends Entity implements GraphicLoopable{
+public abstract class SpriteEntity extends Entity{
 
     private BufferedImage sprite;
     private Vector2Int spriteSize;
@@ -25,7 +25,7 @@ public abstract class SpriteEntity extends Entity implements GraphicLoopable{
         super(s);
         spriteSize = new Vector2Int(100,100);
         anchor = new Vector2(30f, 0f);
-        pixelRatio = 100.0f;
+        pixelRatio = 10.0f;
     }
 
     public BufferedImage getSprite() {
@@ -53,6 +53,7 @@ public abstract class SpriteEntity extends Entity implements GraphicLoopable{
 
     @Override
     public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset) {
+        super.draw(g, posOffset, scaleOffset);
         Vector2 pos = getPosition().add(posOffset);
         Vector2 scale = getScale().multiply(scaleOffset).multiply(pixelRatio);
         g.drawImage(sprite, 
