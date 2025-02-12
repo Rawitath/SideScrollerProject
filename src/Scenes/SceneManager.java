@@ -82,31 +82,50 @@ public class SceneManager {
             currentScene.unload();
         }
         currentScene = getScene(sceneID);
-        currentScene.load();
         if(currentScene.getCamera() == null){
             System.err.println(currentScene.getName() + " has no Camera");
             return;
         }
         currentScene.getCamera().setScreenSize(renderingPanel.getSize());
         renderingPanel.setCurrentCamera(currentScene.getCamera());
-        for(var e : currentScene.getEntities()){
-            renderingPanel.addEntities(e);
+        currentScene.load();
+    }
+    public static void addToRender(Entity e){
+        renderingPanel.addEntities(e);
             assignInputManager(e);
             assignCollidable(e);
             for(var child : e.getChilds()){
                 assignInputManager(child);
                 assignCollidable(child);
             }
-        }
+    }
+    public static void removeFromRender(Entity e){
+            renderingPanel.removeEntities(e);
+            removeInputManager(e);
+            removeCollidable(e);
+            for(var child : e.getChilds()){
+                removeInputManager(child);
+                removeCollidable(child);
+            }
     }
     private static void assignInputManager(Entity e){
         if(e instanceof KeyControlable){
                 inputManager.addKeyControlable((KeyControlable) e);
             }
     }
+    private static void removeInputManager(Entity e){
+        if(e instanceof KeyControlable){
+                inputManager.removeKeyControlable((KeyControlable) e);
+            }
+    }
     private static void assignCollidable(Entity e){
         if(e instanceof Collidable){
                 renderingPanel.addCollidable((Collidable) e);
+            }
+    }
+    private static void removeCollidable(Entity e){
+        if(e instanceof Collidable){
+                renderingPanel.removeCollidable((Collidable) e);
             }
     }
 }

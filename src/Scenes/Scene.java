@@ -53,9 +53,11 @@ public abstract class Scene {
     
     public void addEntity(Entity e){
         entities.add(e);
+        SceneManager.addToRender(e);
     }
     
     public void removeEntity(Entity e){
+        SceneManager.removeFromRender(e);
         entities.remove(e);
     }
 
