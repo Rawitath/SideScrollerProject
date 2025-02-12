@@ -36,6 +36,9 @@ public class Vector2Int {
     public Vector2Int add(Vector2Int vec2){
         return new Vector2Int(x + vec2.getX(), y + vec2.getY());
     }
+    public Vector2Int add(Vector2 vec2){
+        return new Vector2Int(x + Math.round(vec2.getX()), y + Math.round(vec2.getY()));
+    }
     public Vector2Int add(int a){
         return new Vector2Int(x + a, y + a);
     }
@@ -50,6 +53,9 @@ public class Vector2Int {
     }
     public Vector2Int multiply(Vector2Int vec2){
         return new Vector2Int(x * vec2.getX(), y * vec2.getY());
+    }
+    public Vector2Int multiply(Vector2 vec2){
+        return new Vector2Int(x * Math.round(vec2.getX()), y * Math.round(vec2.getY()));
     }
     public Vector2Int translate(Vector2Int direction, int speed){
         return this.add(direction.multiply(speed));
@@ -76,5 +82,11 @@ public class Vector2Int {
     public static Vector2Int one(){
         return new Vector2Int(1, 1);
     }    
+    public static Vector2Int negativeX(){
+        return new Vector2Int(-1, 1);
+    } 
+    public static Vector2Int negativeY(){
+        return new Vector2Int(1, -1);
+    }
 }
 

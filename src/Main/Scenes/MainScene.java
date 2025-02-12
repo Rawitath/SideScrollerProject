@@ -15,8 +15,9 @@ public class MainScene extends Scene{
 
     @Override
     public void load() {
-        getCamera().setZoom(10f);
+        getCamera().setZoom(20f);
         addEntity(new Mutsuki(this));
+        addEntity(new Lucy(this));
     }
     
 }

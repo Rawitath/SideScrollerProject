@@ -7,8 +7,10 @@ package Scenes;
 import Datas.Vector2;
 import Engine.MainEngine;
 import Engine.RenderingPanel;
+import Entities.Entity;
 import Inputs.InputManager;
 import Inputs.KeyControlable;
+import Physics.Collidable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,6 +77,8 @@ public class SceneManager {
     
     public static void loadScene(int sceneID){
         if(currentScene != null){
+            renderingPanel.clearCollidable();
+            renderingPanel.clearEntities();
             currentScene.unload();
         }
         currentScene = getScene(sceneID);
@@ -83,13 +87,26 @@ public class SceneManager {
             System.err.println(currentScene.getName() + " has no Camera");
             return;
         }
-        currentScene.getCamera().setScreenSize(renderingPanel.getPreferredSize());
+        currentScene.getCamera().setScreenSize(renderingPanel.getSize());
         renderingPanel.setCurrentCamera(currentScene.getCamera());
         for(var e : currentScene.getEntities()){
             renderingPanel.addEntities(e);
-            if(e instanceof KeyControlable){
-                inputManager.addKeyControlable((KeyControlable) e);
+            assignInputManager(e);
+            assignCollidable(e);
+            for(var child : e.getChilds()){
+                assignInputManager(child);
+                assignCollidable(child);
             }
         }
+    }
+    private static void assignInputManager(Entity e){
+        if(e instanceof KeyControlable){
+                inputManager.addKeyControlable((KeyControlable) e);
+            }
+    }
+    private static void assignCollidable(Entity e){
+        if(e instanceof Collidable){
+                renderingPanel.addCollidable((Collidable) e);
+            }
     }
 }

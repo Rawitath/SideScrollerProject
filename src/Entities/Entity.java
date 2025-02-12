@@ -7,6 +7,8 @@ package Entities;
 import Datas.Vector2;
 import Scenes.Scene;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -16,39 +18,108 @@ public abstract class Entity{
     private static int entityCount = 0; 
     
     private int id;
-    private Scene parentScene;
+    private Scene scene;
+    private String name;
+    private Entity parent = null;
+    private List<Entity> childs;
             
     private Vector2 position;
     private double rotation;
     private Vector2 scale;
+    private boolean active;
+    private boolean boundaryVisibled;
 
     public Entity(Scene s){
-        parentScene = s;
+        scene = s;
         id = entityCount;
+        childs = new ArrayList<>();
+        name = this.getClass().getTypeName();
         setPosition(new Vector2());
         setRotation(0.0f);
         setScale(new Vector2(1.0f, 1.0f));
+        setActive(true);
+        setBoundaryVisibled(false);
+        
         entityCount++;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public boolean isBoundaryVisibled() {
+        return boundaryVisibled;
+    }
+
+    public void setBoundaryVisibled(boolean boundaryVisibled) {
+        this.boundaryVisibled = boundaryVisibled;
+    }
+    
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    
     public int getId() {
         return id;
     }
 
-    public Scene getParentScene() {
-        return parentScene;
+    public Scene getScene() {
+        return scene;
     }
     
     public static int getEntityCount() {
         return entityCount;
     }
-
-    public Vector2 getPosition() {
-        return position;
+    
+    public Entity getParent(){
+        return parent;
     }
 
+    public void setParent(Entity parent) {
+        if(this.parent != null){
+            this.parent.removeChild(this);
+            parent.addChild(this);
+        }
+        else{
+            this.parent = parent;
+        }
+    }
+
+    public List<Entity> getChilds() {
+        return childs;
+    }
+    
+    public void addChild(Entity e){
+        if(e.getParent() == null){
+            e.setParent(this);
+        }
+        childs.add(e);
+    }
+    public void removeChild(Entity e){
+        childs.remove(e);
+        e.setParent(null);
+    }
+
+    public Vector2 getPosition() {
+        if(parent != null){
+            return position.add(parent.getPosition());
+        }
+        return position;
+    }
+    
     public void setPosition(Vector2 position) {
         this.position = position;
+    }
+    public Vector2 getLocalPosition() {
+        return position;
     }
 
     public double getRotation() {
@@ -60,6 +131,12 @@ public abstract class Entity{
     }
 
     public Vector2 getScale() {
+        if(parent != null){
+            return scale.multiply(parent.getScale());
+        }
+        return scale;
+    }
+    public Vector2 getLocalScale() {
         return scale;
     }
 
@@ -71,9 +148,11 @@ public abstract class Entity{
     public abstract void update();
     public abstract void fixedUpdate();
     
-    public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset) {
-        Vector2 pos = getPosition().add(posOffset);
+    public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
+        if(isBoundaryVisibled()){
+             Vector2 pos = getPosition().multiply(zoom).add(posOffset);
         Vector2 scale = getScale().multiply(scaleOffset);
         g.drawRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));
+        }
     }
 }

@@ -36,6 +36,9 @@ public class Vector2 {
     public Vector2 add(Vector2 vec2){
         return new Vector2(x + vec2.getX(), y + vec2.getY());
     }
+    public Vector2 add(Vector2Int vec2){
+        return new Vector2(x + vec2.getX(), y + vec2.getY());
+    }
     public Vector2 add(float a){
         return new Vector2(x + a, y + a);
     }
@@ -46,6 +49,9 @@ public class Vector2 {
         return new Vector2(x * m, y * m);
     }
     public Vector2 multiply(Vector2 vec2){
+        return new Vector2(x * vec2.getX(), y * vec2.getY());
+    }
+    public Vector2 multiply(Vector2Int vec2){
         return new Vector2(x * vec2.getX(), y * vec2.getY());
     }
     public Vector2 translate(Vector2 direction, float speed){
@@ -72,5 +78,11 @@ public class Vector2 {
     }
     public static Vector2 one(){
         return new Vector2(1f, 1f);
-    }    
+    }
+    public static Vector2 negativeX(){
+        return new Vector2(-1f, 1f);
+    } 
+    public static Vector2 negativeY(){
+        return new Vector2(1f, -1f);
+    }
 }

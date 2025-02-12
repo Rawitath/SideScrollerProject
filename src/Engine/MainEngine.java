@@ -65,11 +65,12 @@ public class MainEngine extends Engine{
             update();
             while(nUpdate <= System.nanoTime() - current){
                 fixedUpdate();
-                current = System.nanoTime();
+                current += nUpdate;
             }
             while(nFPS <= System.nanoTime() - fpsCurrent){
                 render();
                 fpsCurrent = System.nanoTime();
+//                fpsCurrent += nFPS;
             }
         }
     }
