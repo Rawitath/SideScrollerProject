@@ -9,6 +9,7 @@ import Scenes.Scene;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -32,7 +33,7 @@ public abstract class Entity{
     public Entity(Scene s){
         scene = s;
         id = entityCount;
-        childs = new ArrayList<>();
+        childs = new CopyOnWriteArrayList<>();
         name = this.getClass().getTypeName();
         setPosition(new Vector2());
         setRotation(0.0f);

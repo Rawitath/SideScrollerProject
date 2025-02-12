@@ -16,6 +16,7 @@ import Utilities.FileReader;
 public class Main {
     public static void main(String[] args) {
         SceneManager.addScene(new MainScene());
+        SceneManager.addScene(new SecondScene());
         EngineFrame window = new EngineFrame("2D Side Scrollbruh", 1280, 720);
         SceneManager.setRenderingPanel(window.getRenderingPanel());
         SceneManager.setInputManager(window.getInputManager());

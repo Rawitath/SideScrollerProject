@@ -10,6 +10,7 @@ import Entities.SpriteEntity;
 import Inputs.KeyControlable;
 import Physics.Collider;
 import Scenes.Scene;
+import Scenes.SceneManager;
 import Utilities.FileReader;
 import java.awt.event.KeyEvent;
 
@@ -79,7 +80,8 @@ public class Lucy extends CollidableEntity implements KeyControlable{
 
     @Override
     public void onColliderStay(Collider other) {
-        getScene().removeEntity(other.getEntity());
+//        getScene().removeEntity(other.getEntity());
+        SceneManager.loadScene(1);
     }
 
     @Override

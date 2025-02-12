@@ -8,6 +8,7 @@ import Entities.Camera;
 import Entities.Entity;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -20,7 +21,7 @@ public abstract class Scene {
     private Camera mainCamera = null;
     
     public Scene(){
-        entities = new ArrayList<>();
+        entities = new CopyOnWriteArrayList<>();
         name = this.getClass().getTypeName();
         mainCamera = new Camera(this);
     }

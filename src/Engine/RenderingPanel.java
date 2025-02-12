@@ -16,6 +16,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -27,8 +29,6 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     
     private Queue<Entity> startEntities;
     private List<Entity> updateEntities;
-    private List<Entity> entityRemove;
-    private List<Collidable> collidableRemove;
     private List<Collidable> collidables;
     private Camera currentCamera;
     
@@ -37,25 +37,29 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
         setBackground(bg);
         setDoubleBuffered(true);
         
-        startEntities = new LinkedList<>();
-        updateEntities = new ArrayList<>();
-        collidables = new ArrayList<>();
-        
-        entityRemove = new ArrayList<>();
-        collidableRemove = new ArrayList<>();
+        startEntities = new ConcurrentLinkedQueue<>();
+        updateEntities = new CopyOnWriteArrayList<>();
+        collidables = new CopyOnWriteArrayList<>();
+    }
+    
+    public int getEntitiesSize(){
+        return updateEntities.size();
+    }
+    public int getCollidableSize(){
+        return collidables.size();
     }
     
     public void addEntities(Entity e){
         startEntities.add(e);
     }
     public void removeEntities(Entity e){
-        entityRemove.add(e);
+        updateEntities.remove(e);
     }
     public void addCollidable(Collidable e){
         collidables.add(e);
     }
     public void removeCollidable(Collidable e){
-        collidableRemove.add(e);
+        collidables.remove(e);
     }
     public void clearEntities(){
         startEntities.clear();
@@ -76,7 +80,7 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     public void update() {
         if(!startEntities.isEmpty()){
             Entity e = startEntities.poll();
-            if(e.isActive() && !entityRemove.contains(e)){
+            if(e.isActive()){
                 e.start();
                 for(var child : e.getChilds()){
                     if(child.isActive()){
@@ -87,11 +91,6 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
             updateEntities.add(e);
         }
         for(var e : updateEntities){
-            if(entityRemove.contains(e)){
-                updateEntities.remove(e);
-                entityRemove.remove(e);
-                continue;
-            }
             if(e.isActive()){
                 e.update();
                 for(var child : e.getChilds()){
@@ -107,11 +106,6 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     public void fixedUpdate() {
         //O(n^2)
         for(var c : collidables){
-            if(collidableRemove.contains(c)){
-                collidables.remove(c);
-                collidableRemove.remove(c);
-                continue;
-            }
             if(c.sendCollider().getEntity().isActive()){
                 for(int i = 0; i < collidables.size(); i++){
                 if(collidables.get(i) == c){
@@ -126,11 +120,6 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
             }
         }
         for(var e : updateEntities){
-            if(entityRemove.contains(e)){
-                updateEntities.remove(e);
-                entityRemove.remove(e);
-                continue;
-            }
             if(e.isActive()){
                 e.fixedUpdate();
                 for(var child : e.getChilds()){
@@ -146,11 +135,6 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         for(var e : updateEntities){
-            if(entityRemove.contains(e)){
-                updateEntities.remove(e);
-                entityRemove.remove(e);
-                continue;
-            }
             if(e.isActive()){
                 e.draw(g, currentCamera.getPositionOffset(), currentCamera.getScaleOffset(), currentCamera.getZoom());
                 for(var child : e.getChilds()){
@@ -165,9 +149,5 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     @Override
     public void render() {
         repaint();
-    }
-
-    public void add(Entity e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
