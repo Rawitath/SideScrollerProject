@@ -97,13 +97,17 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     public void fixedUpdate() {
         //O(n^2)
         for(var c : collidables){
-            for(int i = 0; i < collidables.size(); i++){
+            if(c.sendCollider().getEntity().isActive()){
+                for(int i = 0; i < collidables.size(); i++){
                 if(collidables.get(i) == c){
                     continue;
                 }
-                if(c.sendCollider().intersect(collidables.get(i).sendCollider())){
+                if(collidables.get(i).sendCollider().getEntity().isActive()){
+                    if(c.sendCollider().intersect(collidables.get(i).sendCollider())){
                     c.onColliderStay(collidables.get(i).sendCollider());
                 }
+                }
+            }
             }
         }
         for(var e : updateEntities){

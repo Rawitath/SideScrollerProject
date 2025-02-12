@@ -79,7 +79,6 @@ public class Lucy extends CollidableEntity implements KeyControlable{
 
     @Override
     public void onColliderStay(Collider other) {
-//        System.out.println("E");
         other.getEntity().setActive(false);
     }
 
