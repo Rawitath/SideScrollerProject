@@ -2,22 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.UI;
+package Main.Entities;
 
 import Datas.Vector2;
-import Entities.UIText;
+import Datas.Vector2Int;
+import Entities.UIImage;
 import Scenes.Scene;
-import java.awt.Color;
+import Utilities.FileReader;
 
 /**
  *
  * @author GA_IA
  */
-public class HelloWorld extends UIText{
+public class HeartUI extends UIImage{
 
-    public HelloWorld(Scene s) {
+    public HeartUI(Scene s) {
         super(s);
-        setColor(Color.white);
+        setImage(FileReader.readImage("res/game/kotori.jpg"), true);
     }
 
     @Override

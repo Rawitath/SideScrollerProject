@@ -6,6 +6,8 @@ package Inputs;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -13,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * @author GA_IA
  */
-public class InputManager implements KeyListener{
+public class InputManager implements KeyListener, MouseListener{
     private List<KeyControlable> keyCons;
     
     public InputManager(){
@@ -47,6 +49,31 @@ public class InputManager implements KeyListener{
         for(var k : keyCons){
             k.onKeyReleased(e.getKeyCode());
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
     
 }

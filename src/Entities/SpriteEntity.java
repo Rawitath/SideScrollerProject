@@ -28,7 +28,7 @@ public abstract class SpriteEntity extends Entity{
         spriteSize = new Vector2Int(100,100);
         anchor = new Vector2(0f, 0f);
         pixelRatio = 0.01f;
-        setSpriteVisibled(true);
+        spriteVisibled = true;
         
         flip = Vector2.one();
     }

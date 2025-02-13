@@ -4,6 +4,7 @@
  */
 package Main.Scenes;
 
+import Datas.Vector2Int;
 import Main.Entities.*;
 import Main.UI.HelloWorld;
 import Scenes.Scene;
@@ -23,6 +24,7 @@ public class MainScene extends Scene{
         addEntity(new Lucy(this));
         
         addEntity(new HelloWorld(this));
+        addEntity(new HeartUI(this));
     }
     
 }

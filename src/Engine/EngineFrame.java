@@ -14,7 +14,6 @@ import javax.swing.JFrame;
  * @author GA_IA
  */
 public class EngineFrame extends JFrame{
-    
     private MainEngine engine;
     private RenderingPanel canvas;
     private InputManager inputManager;
@@ -32,6 +31,7 @@ public class EngineFrame extends JFrame{
         
         inputManager = new InputManager();
         canvas.addKeyListener(inputManager);
+        canvas.addMouseListener(inputManager);
         canvas.setFocusable(true);
         
         setVisible(true);   
