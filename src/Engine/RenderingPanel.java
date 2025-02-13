@@ -6,6 +6,8 @@ package Engine;
 
 import Entities.Camera;
 import Entities.Entity;
+import Entities.UIEntity;
+import Entities.UIView;
 import Physics.Collidable;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -25,7 +27,9 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     private Queue<Entity> startEntities;
     private List<Entity> updateEntities;
     private List<Collidable> collidables;
+    private Queue<UIEntity> uis;
     private Camera currentCamera;
+    private UIView currentUIView;
     
     public RenderingPanel(JFrame frame, Color bg) {
         setPreferredSize(frame.getSize());
@@ -35,6 +39,8 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
         startEntities = new ConcurrentLinkedQueue<>();
         updateEntities = new CopyOnWriteArrayList<>();
         collidables = new CopyOnWriteArrayList<>();
+        
+        uis = new ConcurrentLinkedQueue<>();
     }
     
     public int getEntitiesSize(){
@@ -59,6 +65,7 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     public void clearEntities(){
         startEntities.clear();
         updateEntities.clear();
+        uis.clear();
     }
     public void clearCollidable(){
         collidables.clear();
@@ -69,6 +76,14 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
 
     public void setCurrentCamera(Camera currentCamera) {
         this.currentCamera = currentCamera;
+    }
+
+    public UIView getCurrentUIView() {
+        return currentUIView;
+    }
+
+    public void setCurrentUIView(UIView currentUIView) {
+        this.currentUIView = currentUIView;
     }
     
     @Override
@@ -143,6 +158,10 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
         super.paintComponent(g);
         for(var e : updateEntities){
             if(e.isActive()){
+                if(e instanceof UIEntity){
+                    uis.add((UIEntity) e);
+                    continue;
+                }
                 e.draw(g, currentCamera.getPositionOffset(), currentCamera.getScaleOffset(), currentCamera.getZoom());
                 for(var child : e.getChilds()){
                     if(child.isActive()){
@@ -150,6 +169,9 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
                     }
                 }
             }
+        }
+        while(!uis.isEmpty()){
+            uis.poll().draw(g, currentUIView.getPositionOffset(), currentUIView.getScaleOffset(), currentUIView.getZoom());
         }
     }
 

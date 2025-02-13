@@ -11,6 +11,7 @@ import Inputs.KeyControlable;
 import Physics.Collider;
 import Physics.Time;
 import Scenes.Scene;
+import Scenes.SceneManager;
 import Utilities.FileReader;
 import java.awt.event.KeyEvent;
 
@@ -68,6 +69,9 @@ public class Lucy extends CollidableEntity implements KeyControlable{
             if(grounded){
                 fallSpeed = -80f;
             }
+        }
+        if(keyCode == KeyEvent.VK_P){
+            SceneManager.loadScene(0);
         }
     }
 

@@ -11,8 +11,8 @@ import Entities.Entity;
 import Inputs.InputManager;
 import Inputs.KeyControlable;
 import Physics.Collidable;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class SceneManager {
     private static int sceneCount = 0;
-    private static List<Scene> scenes = new ArrayList<>();
+    private static List<Scene> scenes = new CopyOnWriteArrayList<>();
     private static Scene currentScene = null;
     private static RenderingPanel renderingPanel;
     private static InputManager inputManager;
@@ -77,9 +77,10 @@ public class SceneManager {
     
     public static void loadScene(int sceneID){
         if(currentScene != null){
+            currentScene.unload();
             renderingPanel.clearCollidable();
             renderingPanel.clearEntities();
-            currentScene.unload();
+            inputManager.clearKeyControlable();
         }
         currentScene = getScene(sceneID);
         if(currentScene.getCamera() == null){
@@ -88,6 +89,8 @@ public class SceneManager {
         }
         currentScene.getCamera().setScreenSize(renderingPanel.getSize());
         renderingPanel.setCurrentCamera(currentScene.getCamera());
+        currentScene.getUIView().setScreenSize(renderingPanel.getSize());
+        renderingPanel.setCurrentUIView(currentScene.getUIView());
         currentScene.load();
     }
     public static void addToRender(Entity e){

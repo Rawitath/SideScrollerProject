@@ -6,8 +6,8 @@ package Inputs;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -17,13 +17,16 @@ public class InputManager implements KeyListener{
     private List<KeyControlable> keyCons;
     
     public InputManager(){
-        keyCons = new ArrayList<>();
+        keyCons = new CopyOnWriteArrayList<>();
     }
     public void addKeyControlable(KeyControlable k){
         keyCons.add(k);
     }
     public void removeKeyControlable(KeyControlable k){
         keyCons.remove(k);
+    }
+    public void clearKeyControlable(){
+        keyCons.clear();
     }
     @Override
     public void keyTyped(KeyEvent e) {

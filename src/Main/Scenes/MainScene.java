@@ -5,6 +5,7 @@
 package Main.Scenes;
 
 import Main.Entities.*;
+import Main.UI.HelloWorld;
 import Scenes.Scene;
 
 /**
@@ -20,6 +21,8 @@ public class MainScene extends Scene{
         addEntity(new Ground(this));
         addEntity(new Mutsuki(this));
         addEntity(new Lucy(this));
+        
+        addEntity(new HelloWorld(this));
     }
     
 }

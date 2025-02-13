@@ -6,7 +6,7 @@ package Scenes;
 
 import Entities.Camera;
 import Entities.Entity;
-import java.util.ArrayList;
+import Entities.UIView;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -19,11 +19,13 @@ public abstract class Scene {
     private String name;
     private List<Entity> entities;
     private Camera mainCamera = null;
+    private UIView mainUIView = null;
     
     public Scene(){
         entities = new CopyOnWriteArrayList<>();
         name = this.getClass().getTypeName();
         mainCamera = new Camera(this);
+        mainUIView = new UIView(this);
     }
     
     public final void assignID(int id){
@@ -37,7 +39,9 @@ public abstract class Scene {
     public abstract void load();
     
     public void unload(){
-        entities.clear();
+        for(var e : entities){
+            removeEntity(e);
+        }
     }
     
     public int getId() {
@@ -69,4 +73,9 @@ public abstract class Scene {
     public Camera getCamera(){
         return mainCamera;
     }
+
+    public UIView getUIView() {
+        return mainUIView;
+    }
+    
 }
