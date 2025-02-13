@@ -5,7 +5,7 @@
 package Main.UI;
 
 import Datas.Vector2;
-import Entities.UIText;
+import Entities.UI.UIText;
 import Scenes.Scene;
 import java.awt.Color;
 

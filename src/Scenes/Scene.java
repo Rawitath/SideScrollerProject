@@ -6,7 +6,7 @@ package Scenes;
 
 import Entities.Camera;
 import Entities.Entity;
-import Entities.UIView;
+import Entities.UI.UIView;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 

@@ -6,9 +6,10 @@ package Main.Entities;
 
 import Datas.Vector2;
 import Datas.Vector2Int;
-import Entities.UIImage;
+import Entities.UI.UIImage;
 import Scenes.Scene;
 import Utilities.FileReader;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -16,14 +17,17 @@ import Utilities.FileReader;
  */
 public class HeartUI extends UIImage{
 
+    BufferedImage heartFull = FileReader.readImage("res/game/kotori.jpg"); 
+    BufferedImage heartEmpty = FileReader.readImage("res/game/mutsuki.png"); 
     public HeartUI(Scene s) {
         super(s);
-        setImage(FileReader.readImage("res/game/kotori.jpg"), true);
+        setImage(heartFull, true);
     }
 
     @Override
     public void start() {
-        
+        setPosition(new Vector2(0, 0));
+        setScreenAnchor(SA_TOP_LEFT());
     }
 
     @Override

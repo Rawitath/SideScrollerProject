@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Entities;
+package Entities.UI;
 
 import Datas.Vector2;
 import Datas.Vector2Int;
@@ -84,9 +84,12 @@ public abstract class UIText extends UIEntity{
         Dimension screen = getScene().getUIView().getScreenSize();
         Vector2Int reference = getScene().getUIView().getReferenceResolution();
         super.draw(g, posOffset, scaleOffset, zoom);
-        Vector2 pos = getPosition().multiply(Vector2.negativeY()).add(getScreenAnchor())
+        
+        
+        
+        Vector2 pos = getPosition().multiply(Vector2.negativeY())
                 .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()))
-                .add(posOffset);
+                .add(posOffset).add(getScreenAnchor());
         g.setFont(font.deriveFont(0, size));
         g.setColor(color);
         g.drawString(text, Math.round(pos.getX()),Math.round(pos.getY()) );

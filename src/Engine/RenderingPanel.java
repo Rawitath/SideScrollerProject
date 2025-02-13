@@ -6,8 +6,8 @@ package Engine;
 
 import Entities.Camera;
 import Entities.Entity;
-import Entities.UIEntity;
-import Entities.UIView;
+import Entities.UI.UIEntity;
+import Entities.UI.UIView;
 import Physics.Collidable;
 import java.awt.Color;
 import java.awt.Graphics;

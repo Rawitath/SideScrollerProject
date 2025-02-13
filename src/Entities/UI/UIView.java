@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Entities;
+package Entities.UI;
 
 import Datas.Vector2;
 import Datas.Vector2Int;
+import Entities.Camera;
 import Scenes.Scene;
 
 /**
