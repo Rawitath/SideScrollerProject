@@ -16,6 +16,8 @@ public class MainScene extends Scene{
     @Override
     public void load() {
         getCamera().setZoom(20f);
+        addEntity(new HellBackground(this));
+        addEntity(new Ground(this));
         addEntity(new Mutsuki(this));
         addEntity(new Lucy(this));
     }

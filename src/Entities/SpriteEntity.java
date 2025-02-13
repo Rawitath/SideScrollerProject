@@ -33,6 +33,23 @@ public abstract class SpriteEntity extends Entity{
         flip = Vector2.one();
     }
 
+    public float getPixelRatio() {
+        return pixelRatio;
+    }
+
+    public void setPixelRatio(float pixelRatio) {
+        this.pixelRatio = pixelRatio;
+    }
+
+    public Vector2 getAnchor() {
+        return anchor;
+    }
+
+    public void setAnchor(Vector2 anchor) {
+        this.anchor = anchor;
+    }
+    
+
     public Vector2 getFlip() {
         return flip;
     }
@@ -82,11 +99,11 @@ public abstract class SpriteEntity extends Entity{
     @Override
     public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
         if(spriteVisibled){
-            Vector2 pos = getPosition().multiply(zoom).add(posOffset);
+            Vector2 pos = getPosition().multiply(Vector2.negativeY()).add(anchor).multiply(zoom).add(posOffset);
             Vector2 scale = getScale().multiply(flip).multiply(scaleOffset).multiply(spriteSize).multiply(pixelRatio);
             g.drawImage(sprite, 
-                Math.round(pos.getX() - (scale.getX() / 2) + anchor.getX())
-                ,Math.round(pos.getY() - (scale.getY() / 2) + anchor.getY()),
+                Math.round(pos.getX() - (scale.getX() / 2))
+                ,Math.round(pos.getY() - (scale.getY() / 2)),
                 Math.round(scale.getX())
                 , Math.round(scale.getY())
                 , null);

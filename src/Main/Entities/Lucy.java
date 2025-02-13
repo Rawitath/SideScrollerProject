@@ -4,6 +4,7 @@
  */
 package Main.Entities;
 
+import Datas.Constants;
 import Datas.Vector2;
 import Entities.CollidableEntity;
 import Entities.SpriteEntity;
@@ -13,6 +14,7 @@ import Scenes.Scene;
 import Scenes.SceneManager;
 import Utilities.FileReader;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 /**
  *
@@ -21,7 +23,10 @@ import java.awt.event.KeyEvent;
 public class Lucy extends CollidableEntity implements KeyControlable{
 
     private Vector2 direction;
-    private float speed = 0.01f;
+    private float speed = 0.02f;
+    private float fallAcceration = 0f;
+    
+    private boolean grounded = false;
     
     public Lucy(Scene s) {
         super(s);
@@ -33,7 +38,7 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     public void start() {
         setPosition(new Vector2(9f, 0f));
         getCollider().setBound(new Vector2(4.2f, 7f));
-        setColliderVisibled(true);
+//        setColliderVisibled(true);
     }
 
     @Override
@@ -43,6 +48,10 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     @Override
     public void fixedUpdate() {
         setPosition(getPosition().translate(direction, speed));
+        setPosition(getPosition().translate(Vector2.down(), fallAcceration));
+        if(!grounded){
+            fallAcceration += Constants.gravityValue;
+        }
     }
 
     @Override
@@ -56,8 +65,10 @@ public class Lucy extends CollidableEntity implements KeyControlable{
             direction = Vector2.left();
             setFlip(Vector2.one());
         }
-        if(keyCode == KeyEvent.VK_F){
-            
+        if(keyCode == KeyEvent.VK_SPACE){
+            if(grounded){
+                fallAcceration = -0.09f;
+            }
         }
     }
 
@@ -75,18 +86,26 @@ public class Lucy extends CollidableEntity implements KeyControlable{
 
     @Override
     public void onColliderEnter(Collider other) {
-
+        if(other.getEntity().getTag().equals("Ground")){
+            fallAcceration = 0f;
+            grounded = true;
+        }
+        else{
+            getScene().removeEntity(other.getEntity());
+        }
     }
 
     @Override
     public void onColliderStay(Collider other) {
-//        getScene().removeEntity(other.getEntity());
-        SceneManager.loadScene(1);
+        
+        
     }
 
     @Override
     public void onColliderExit(Collider other) {
-
+        if(other.getEntity().getTag().equals("Ground")){
+            grounded = false;
+        }
     }
     
 }

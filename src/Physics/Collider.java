@@ -7,6 +7,8 @@ package Physics;
 import Datas.Vector2;
 import Entities.Entity;
 import java.awt.Rectangle;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -16,13 +18,28 @@ public class Collider{
     private Entity entity;
     private Vector2 center;
     private Vector2 bound;
+    private List<Collider> collidedObject;
     
     public Collider(Entity entity, Vector2 center, Vector2 bound){
         this.entity = entity;
         this.center = center;
         this.bound = bound;
         
+        collidedObject = new CopyOnWriteArrayList<>();
+        
     }
+
+    public List<Collider> getCollidedObject() {
+        return collidedObject;
+    }
+
+    public void addCollidedObject(Collider c) {
+        collidedObject.add(c);
+    }
+    public void removeCollidedObject(Collider c) {
+        collidedObject.remove(c);
+    }
+    
     public Collider(Entity entity){
         this(entity, Vector2.zero(), Vector2.one());
     }
@@ -62,8 +79,6 @@ public class Collider{
     public void setCenter(Vector2 center) {
         this.center = center;
     }
-
-    
     
     public Vector2 getBound() {
         return bound;

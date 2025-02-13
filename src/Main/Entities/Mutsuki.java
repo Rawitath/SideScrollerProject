@@ -4,6 +4,7 @@
  */
 package Main.Entities;
 
+import Datas.Constants;
 import Datas.Vector2;
 import Entities.CollidableEntity;
 import Entities.SpriteEntity;
@@ -16,6 +17,11 @@ import Utilities.FileReader;
  * @author GA_IA
  */
 public class Mutsuki extends CollidableEntity{
+    
+    private Vector2 direction;
+    private float speed = 0.01f;
+    private float fallAcceration = 0f;
+    private boolean grounded = false;
 
     public Mutsuki(Scene s) {
         super(s);
@@ -24,9 +30,9 @@ public class Mutsuki extends CollidableEntity{
 
     @Override
     public void start() {
-        setPosition(new Vector2(-9f, 0f));
+        setPosition(new Vector2(-170f, 0f));
         getCollider().setBound(new Vector2(4.2f, 4.2f));
-        setColliderVisibled(true);
+//        setColliderVisibled(true);
     }
 
     @Override
@@ -36,19 +42,32 @@ public class Mutsuki extends CollidableEntity{
 
     @Override
     public void fixedUpdate() {
-        
+        setPosition(getPosition().translate(Vector2.right(), speed));
+        setPosition(getPosition().translate(Vector2.down(), fallAcceration));
+        if(!grounded){
+            fallAcceration += Constants.gravityValue;
+        }
     }
 
     @Override
     public void onColliderEnter(Collider other) {
+        if(other.getEntity().getTag().equals("Ground")){
+            fallAcceration = 0f;
+            grounded = true;
+        }
     }
 
     @Override
     public void onColliderStay(Collider other) {
+        
+        
     }
 
     @Override
     public void onColliderExit(Collider other) {
+        if(other.getEntity().getTag().equals("Ground")){
+            grounded = false;
+        }
     }
     
 }

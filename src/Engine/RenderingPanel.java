@@ -4,18 +4,13 @@
  */
 package Engine;
 
-import Datas.Vector2;
 import Entities.Camera;
 import Entities.Entity;
 import Physics.Collidable;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.JFrame;
@@ -113,12 +108,24 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
                 }
                 if(collidables.get(i).sendCollider().getEntity().isActive()){
                     if(c.sendCollider().intersect(collidables.get(i).sendCollider())){
-                    c.onColliderStay(collidables.get(i).sendCollider());
+                        if(!c.sendCollider().getCollidedObject().contains(collidables.get(i).sendCollider())){
+                            c.sendCollider().addCollidedObject(collidables.get(i).sendCollider());
+                            c.onColliderEnter(collidables.get(i).sendCollider());
+                        }
+                        else{
+                            c.onColliderStay(collidables.get(i).sendCollider());
+                        }
+                    }
+                    else{
+                        if(c.sendCollider().getCollidedObject().contains(collidables.get(i).sendCollider())){
+                            c.onColliderExit(collidables.get(i).sendCollider());
+                            c.sendCollider().removeCollidedObject(collidables.get(i).sendCollider());
+                        }
+                    }
                 }
-                }
-            }
             }
         }
+    }
         for(var e : updateEntities){
             if(e.isActive()){
                 e.fixedUpdate();

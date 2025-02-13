@@ -21,6 +21,7 @@ public abstract class Entity{
     private int id;
     private Scene scene;
     private String name;
+    private String tag;
     private Entity parent = null;
     private List<Entity> childs;
             
@@ -35,6 +36,8 @@ public abstract class Entity{
         id = entityCount;
         childs = new CopyOnWriteArrayList<>();
         name = this.getClass().getTypeName();
+        tag = "Default";
+        
         setPosition(new Vector2());
         setRotation(0.0f);
         setScale(new Vector2(1.0f, 1.0f));
@@ -42,6 +45,14 @@ public abstract class Entity{
         setBoundaryVisibled(false);
         
         entityCount++;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public String getName() {
@@ -151,7 +162,7 @@ public abstract class Entity{
     
     public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
         if(isBoundaryVisibled()){
-             Vector2 pos = getPosition().multiply(zoom).add(posOffset);
+             Vector2 pos = getPosition().multiply(Vector2.negativeY()).multiply(zoom).add(posOffset);
         Vector2 scale = getScale().multiply(scaleOffset);
         g.drawRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));
         }
