@@ -9,5 +9,5 @@ package Datas;
  * @author GA_IA
  */
 public class Constants {
-    public static final float gravityValue = 0.0003f;
+    public static final float gravityValue = 0.28f;
 }

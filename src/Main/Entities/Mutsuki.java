@@ -7,8 +7,8 @@ package Main.Entities;
 import Datas.Constants;
 import Datas.Vector2;
 import Entities.CollidableEntity;
-import Entities.SpriteEntity;
 import Physics.Collider;
+import Physics.Time;
 import Scenes.Scene;
 import Utilities.FileReader;
 
@@ -19,7 +19,7 @@ import Utilities.FileReader;
 public class Mutsuki extends CollidableEntity{
     
     private Vector2 direction;
-    private float speed = 0.01f;
+    private float speed = 18f;
     private float fallAcceration = 0f;
     private boolean grounded = false;
 
@@ -42,8 +42,8 @@ public class Mutsuki extends CollidableEntity{
 
     @Override
     public void fixedUpdate() {
-        setPosition(getPosition().translate(Vector2.right(), speed));
-        setPosition(getPosition().translate(Vector2.down(), fallAcceration));
+        setPosition(getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
+        setPosition(getPosition().translate(Vector2.down(), fallAcceration * Time.fixedDeltaTime()));
         if(!grounded){
             fallAcceration += Constants.gravityValue;
         }

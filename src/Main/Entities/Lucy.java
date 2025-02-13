@@ -7,14 +7,12 @@ package Main.Entities;
 import Datas.Constants;
 import Datas.Vector2;
 import Entities.CollidableEntity;
-import Entities.SpriteEntity;
 import Inputs.KeyControlable;
 import Physics.Collider;
+import Physics.Time;
 import Scenes.Scene;
-import Scenes.SceneManager;
 import Utilities.FileReader;
 import java.awt.event.KeyEvent;
-import java.util.Random;
 
 /**
  *
@@ -23,8 +21,8 @@ import java.util.Random;
 public class Lucy extends CollidableEntity implements KeyControlable{
 
     private Vector2 direction;
-    private float speed = 0.02f;
-    private float fallAcceration = 0f;
+    private float speed = 18f;
+    private float fallSpeed = 0f;
     
     private boolean grounded = false;
     
@@ -45,12 +43,13 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     public void update() {
         
     }
+    float x = Time.time();
     @Override
     public void fixedUpdate() {
-        setPosition(getPosition().translate(direction, speed));
-        setPosition(getPosition().translate(Vector2.down(), fallAcceration));
+        setPosition(getPosition().translate(direction, speed * Time.fixedDeltaTime()));
+        setPosition(getPosition().translate(Vector2.down(), fallSpeed * Time.fixedDeltaTime()));
         if(!grounded){
-            fallAcceration += Constants.gravityValue;
+            fallSpeed += Constants.gravityValue;
         }
     }
 
@@ -67,7 +66,7 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         }
         if(keyCode == KeyEvent.VK_SPACE){
             if(grounded){
-                fallAcceration = -0.09f;
+                fallSpeed = -80f;
             }
         }
     }
@@ -87,7 +86,7 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     @Override
     public void onColliderEnter(Collider other) {
         if(other.getEntity().getTag().equals("Ground")){
-            fallAcceration = 0f;
+            fallSpeed = 0f;
             grounded = true;
         }
         else{

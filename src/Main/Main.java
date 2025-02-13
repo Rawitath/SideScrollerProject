@@ -6,6 +6,7 @@ package Main;
 
 import Engine.EngineFrame;
 import Main.Scenes.*;
+import Physics.Time;
 import Scenes.SceneManager;
 import Utilities.FileReader;
 
@@ -18,6 +19,7 @@ public class Main {
         SceneManager.addScene(new MainScene());
         SceneManager.addScene(new SecondScene());
         EngineFrame window = new EngineFrame("2D Side Scrollbruh", 1280, 720);
+        Time.setEngine(window.getEngine());
         SceneManager.setRenderingPanel(window.getRenderingPanel());
         SceneManager.setInputManager(window.getInputManager());
         window.setIconImage(FileReader.readImage("res/icon/aronadaingai.jpg"));

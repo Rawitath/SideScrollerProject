@@ -48,6 +48,10 @@ public class EngineFrame extends JFrame{
     public EngineFrame(){
         this(640, 480);
     }
+
+    public MainEngine getEngine() {
+        return engine;
+    }
     
     public RenderingPanel getRenderingPanel(){
         return canvas;
