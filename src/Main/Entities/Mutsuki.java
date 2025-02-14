@@ -26,11 +26,12 @@ public class Mutsuki extends CollidableEntity{
     public Mutsuki(Scene s) {
         super(s);
         setSprite(FileReader.readImage("res/game/mutsuki.png"));
+        setTag("Enemy");
     }
 
     @Override
     public void start() {
-        setPosition(new Vector2(-170f, 0f));
+        setPosition(new Vector2(-10f, 0f));
         getCollider().setBound(new Vector2(4.2f, 4.2f));
 //        setColliderVisibled(true);
     }
@@ -42,7 +43,7 @@ public class Mutsuki extends CollidableEntity{
 
     @Override
     public void fixedUpdate() {
-        setPosition(getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
+        //setPosition(getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
         setPosition(getPosition().translate(Vector2.down(), fallAcceration * Time.fixedDeltaTime()));
         if(!grounded){
             fallAcceration += Constants.gravityValue;

@@ -30,6 +30,15 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     private Queue<UIEntity> uis;
     private Camera currentCamera;
     private UIView currentUIView;
+    private boolean running;
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
     
     public RenderingPanel(JFrame frame, Color bg) {
         setPreferredSize(frame.getSize());
@@ -88,6 +97,7 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     
     @Override
     public void update() {
+        if(running){
         if(!startEntities.isEmpty()){
             Entity e = startEntities.poll();
             if(e.isActive()){
@@ -110,11 +120,13 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
                 }
             }
         }
+        }
     }
 
     @Override
     public void fixedUpdate() {
         //O(n^2)
+        if(running && startEntities.isEmpty()){
         for(var c : collidables){
             if(c.sendCollider().getEntity().isActive()){
                 for(int i = 0; i < collidables.size(); i++){
@@ -140,6 +152,7 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
                 }
             }
         }
+            
     }
         for(var e : updateEntities){
             if(e.isActive()){
@@ -150,6 +163,7 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
                    }
                 }
             }
+        }
         }
     }
     
@@ -171,12 +185,20 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
             }
         }
         while(!uis.isEmpty()){
-            uis.poll().draw(g, currentUIView.getPositionOffset(), currentUIView.getScaleOffset(), currentUIView.getZoom());
+            Entity e = uis.poll();
+            e.draw(g, currentUIView.getPositionOffset(), currentUIView.getScaleOffset(), currentUIView.getZoom());
+            for(var child : e.getChilds()){
+                    if(child.isActive()){
+                        child.draw(g, currentUIView.getPositionOffset(), currentUIView.getScaleOffset(), currentUIView.getZoom());
+                    }
+                }
         }
     }
 
     @Override
     public void render() {
-        repaint();
+        if(running){
+            repaint();
+        }
     }
 }

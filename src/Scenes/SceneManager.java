@@ -75,6 +75,7 @@ public class SceneManager {
     }
     
     public static void loadScene(int sceneID){
+        renderingPanel.setRunning(false);
         if(currentScene != null){
             currentScene.unload();
             renderingPanel.clearCollidable();
@@ -91,6 +92,7 @@ public class SceneManager {
         currentScene.getUIView().setScreenSize(renderingPanel.getSize());
         renderingPanel.setCurrentUIView(currentScene.getUIView());
         currentScene.load();
+        renderingPanel.setRunning(true);
     }
     public static void addToRender(Entity e){
         renderingPanel.addEntities(e);

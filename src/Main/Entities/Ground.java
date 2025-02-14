@@ -8,6 +8,7 @@ import Datas.Vector2;
 import Datas.Vector2Int;
 import Entities.CollidableEntity;
 import Physics.Collider;
+import Physics.Time;
 import Scenes.Scene;
 import Utilities.FileReader;
 
@@ -39,7 +40,7 @@ public class Ground extends CollidableEntity{
 
     @Override
     public void fixedUpdate() {
-
+        
     }
 
     @Override

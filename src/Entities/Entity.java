@@ -7,7 +7,6 @@ package Entities;
 import Datas.Vector2;
 import Scenes.Scene;
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -28,6 +27,7 @@ public abstract class Entity{
     private Vector2 position;
     private double rotation;
     private Vector2 scale;
+    
     private boolean active;
     private boolean boundaryVisibled;
 
@@ -128,12 +128,20 @@ public abstract class Entity{
     }
     
     public void setPosition(Vector2 position) {
-        this.position = position;
+        if(parent != null){
+            this.position = position.add(parent.getPosition().negative());
+        }
+        else{
+            this.position = position;
+        }
     }
     public Vector2 getLocalPosition() {
         return position;
     }
-
+    public void setLocalPosition(Vector2 position){
+        this.position =  position;
+    }
+    
     public double getRotation() {
         return rotation;
     }

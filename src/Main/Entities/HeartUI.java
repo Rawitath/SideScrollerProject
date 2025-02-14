@@ -23,16 +23,22 @@ public class HeartUI extends UIImage{
         super(s);
         setImage(heartFull, true);
     }
-
+    public void setHeart(boolean isFull){
+        if(isFull){
+            setImage(heartFull, true);
+        }
+        else{
+            setImage(heartEmpty, true);
+        }
+    }
     @Override
     public void start() {
-        setPosition(new Vector2(0, 0));
-        setScreenAnchor(SA_TOP_LEFT());
+        
     }
 
     @Override
     public void update() {
-
+        
     }
 
     @Override

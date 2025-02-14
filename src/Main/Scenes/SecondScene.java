@@ -5,6 +5,7 @@
 package Main.Scenes;
 
 import Main.Entities.Lucy;
+import Main.Entities.Mutsuki;
 import Scenes.Scene;
 
 /**
@@ -15,7 +16,8 @@ public class SecondScene extends Scene{
 
     @Override
     public void load() {
-        addEntity(new Lucy(this));
+        getCamera().setZoom(20f);
+        addEntity(new Mutsuki(this));
     }
     
 }

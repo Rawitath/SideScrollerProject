@@ -102,9 +102,9 @@ public abstract class UIImage extends UIEntity{
                     
             Dimension screen = getScene().getUIView().getScreenSize();
             Vector2Int reference = getScene().getUIView().getReferenceResolution();
-            Vector2 pos = getPosition().multiply(Vector2.negativeY()).add(anchor)
+            Vector2 pos = getPosition().add(getScreenAnchor()).multiply(Vector2.negativeY()).add(anchor)
                     .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()))
-                    .add(posOffset).add(getScreenAnchor());
+                    .add(posOffset);
             Vector2 scale = getScale().multiply(flip).multiply(scaleOffset).multiply(imageSize)
                     .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()));
             g.drawImage(image, 

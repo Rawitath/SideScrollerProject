@@ -24,7 +24,7 @@ public class MainScene extends Scene{
         addEntity(new Lucy(this));
         
         addEntity(new HelloWorld(this));
-        addEntity(new HeartUI(this));
+        addEntity(new HeartContainer(this));
     }
     
 }

@@ -87,9 +87,9 @@ public abstract class UIText extends UIEntity{
         
         
         
-        Vector2 pos = getPosition().multiply(Vector2.negativeY())
+        Vector2 pos = getPosition().add(getScreenAnchor()).multiply(Vector2.negativeY())
                 .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()))
-                .add(posOffset).add(getScreenAnchor());
+                .add(posOffset);
         g.setFont(font.deriveFont(0, size));
         g.setColor(color);
         g.drawString(text, Math.round(pos.getX()),Math.round(pos.getY()) );

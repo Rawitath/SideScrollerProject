@@ -17,12 +17,14 @@ public class HelloWorld extends UIText{
 
     public HelloWorld(Scene s) {
         super(s);
+        setName("Life");
         setColor(Color.white);
+        setText("Life");
     }
 
     @Override
     public void start() {
-        
+        setPosition(new Vector2(-900, 370));
     }
 
     @Override

@@ -7,6 +7,9 @@ package Main.Entities;
 import Datas.Constants;
 import Datas.Vector2;
 import Entities.CollidableEntity;
+import Entities.Entity;
+import Entities.UI.UIEntity;
+import Entities.UI.UIText;
 import Inputs.KeyControlable;
 import Physics.Collider;
 import Physics.Time;
@@ -24,6 +27,10 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     private Vector2 direction;
     private float speed = 18f;
     private float fallSpeed = 0f;
+    private UIText lifeNum;
+    private HeartContainer heartContainer;
+    
+    private int life = 3;
     
     private boolean grounded = false;
     
@@ -37,12 +44,15 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     public void start() {
         setPosition(new Vector2(9f, 0f));
         getCollider().setBound(new Vector2(4.2f, 7f));
+        lifeNum = getScene().getEntity("Life");
+        heartContainer = getScene().getEntity("HeartContainer");
+        heartContainer.setHeart(life);
 //        setColliderVisibled(true);
     }
 
     @Override
     public void update() {
-        
+        lifeNum.setText(String.valueOf(life));
     }
     float x = Time.time();
     @Override
@@ -93,8 +103,9 @@ public class Lucy extends CollidableEntity implements KeyControlable{
             fallSpeed = 0f;
             grounded = true;
         }
-        else{
-            getScene().removeEntity(other.getEntity());
+        else if(other.getEntity().getTag().equals("Enemy")){
+            life--;
+            heartContainer.setHeart(life);
         }
     }
 

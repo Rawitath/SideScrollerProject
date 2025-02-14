@@ -69,6 +69,16 @@ public abstract class Scene {
     public List<Entity> getEntities() {
         return entities;
     }
+    public <T extends Entity> T getEntity(String name){
+        for(var e : entities){
+            if(e.getName().equals(name)){
+                return (T) e;
+            }
+        }
+        System.err.println("Entity with name: \""+ name +"\" does not exist.");
+        return null;
+    }
+
     
     public Camera getCamera(){
         return mainCamera;
