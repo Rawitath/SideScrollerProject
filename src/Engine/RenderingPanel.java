@@ -63,6 +63,7 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
         startEntities.add(e);
     }
     public void removeEntities(Entity e){
+        e.remove();
         updateEntities.remove(e);
     }
     public void addCollidable(Collidable e){

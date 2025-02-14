@@ -167,6 +167,7 @@ public abstract class Entity{
     public abstract void start();
     public abstract void update();
     public abstract void fixedUpdate();
+    public void remove(){}
     
     public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
         if(isBoundaryVisibled()){

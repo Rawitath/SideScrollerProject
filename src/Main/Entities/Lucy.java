@@ -6,6 +6,7 @@ package Main.Entities;
 
 import Datas.Constants;
 import Datas.Vector2;
+import Entities.Audios.AudioSource;
 import Entities.CollidableEntity;
 import Entities.Entity;
 import Entities.UI.UIEntity;
@@ -33,7 +34,6 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     private int life = 3;
     
     private boolean grounded = false;
-    
     public Lucy(Scene s) {
         super(s);
         setSprite(FileReader.readImage("res/game/lucypixel.png"));
@@ -47,6 +47,11 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         lifeNum = getScene().getEntity("Life");
         heartContainer = getScene().getEntity("HeartContainer");
         heartContainer.setHeart(life);
+        
+        AudioSource a = getScene().getEntity("Music");
+        //a.loop(true);
+        //a.play();
+        
 //        setColliderVisibled(true);
     }
 
@@ -121,5 +126,4 @@ public class Lucy extends CollidableEntity implements KeyControlable{
             grounded = false;
         }
     }
-    
 }
