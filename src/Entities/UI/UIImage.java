@@ -19,7 +19,6 @@ public abstract class UIImage extends UIEntity{
 
     private BufferedImage image;
     private Vector2Int imageSize;
-//    private float pixelRatio;
     private Vector2 anchor;
     private boolean imageVisibled;
     private Vector2 flip;
@@ -33,14 +32,6 @@ public abstract class UIImage extends UIEntity{
         
         flip = Vector2.one();
     }
-    
-//    public float getPixelRatio() {
-//        return pixelRatio;
-//    }
-//
-//    public void setPixelRatio(float pixelRatio) {
-//        this.pixelRatio = pixelRatio;
-//    }
     
     public Vector2 getFlip() {
         return flip;

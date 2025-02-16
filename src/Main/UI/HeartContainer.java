@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.Entities;
+package Main.UI;
 
 import Datas.Vector2;
 import Entities.UI.UIEntity;
@@ -21,7 +21,7 @@ public class HeartContainer extends UIEntity{
         heart1 = new HeartUI(s);
         heart2 = new HeartUI(s);
         heart3 = new HeartUI(s);
-        setScreenAnchor(SA_TOP_LEFT());
+        setScreenAnchor(TOP_LEFT);
         setPosition(new Vector2(100,-100));
         addChild(heart1);
         addChild(heart2);
@@ -36,7 +36,7 @@ public class HeartContainer extends UIEntity{
     }
     @Override
     public void start() {
-        
+        setBoundaryVisibled(true);
     }
 
     @Override

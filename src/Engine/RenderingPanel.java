@@ -27,7 +27,6 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     private Queue<Entity> startEntities;
     private List<Entity> updateEntities;
     private List<Collidable> collidables;
-    private Queue<UIEntity> uis;
     private Camera currentCamera;
     private UIView currentUIView;
     private boolean running;
@@ -48,8 +47,6 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
         startEntities = new ConcurrentLinkedQueue<>();
         updateEntities = new CopyOnWriteArrayList<>();
         collidables = new CopyOnWriteArrayList<>();
-        
-        uis = new ConcurrentLinkedQueue<>();
     }
     
     public int getEntitiesSize(){
@@ -75,7 +72,6 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     public void clearEntities(){
         startEntities.clear();
         updateEntities.clear();
-        uis.clear();
     }
     public void clearCollidable(){
         collidables.clear();
@@ -96,30 +92,42 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
         this.currentUIView = currentUIView;
     }
     
+    private void doStart(Entity e){
+        if(e.isActive()){
+                e.start();
+                for(var child : e.getChilds()){
+                    doStart(child);
+                }
+            }
+    }
+    private void doUpdate(Entity e){
+        if(e.isActive()){
+                e.update();
+                for(var child : e.getChilds()){
+                    doUpdate(child);
+                }
+            }
+    }
+    private void doFixedUpdate(Entity e){
+        if(e.isActive()){
+                e.fixedUpdate();
+                for(var child : e.getChilds()){
+                    doFixedUpdate(child);
+                }
+            }
+    }
+    
+    
     @Override
     public void update() {
         if(running){
         if(!startEntities.isEmpty()){
             Entity e = startEntities.poll();
-            if(e.isActive()){
-                e.start();
-                for(var child : e.getChilds()){
-                    if(child.isActive()){
-                        child.start();
-                    }
-                }
-            }
+            doStart(e);
             updateEntities.add(e);
         }
         for(var e : updateEntities){
-            if(e.isActive()){
-                e.update();
-                for(var child : e.getChilds()){
-                    if(child.isActive()){
-                        child.update();
-                    }
-                }
-            }
+            doUpdate(e);
         }
         }
     }
@@ -156,43 +164,38 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
             
     }
         for(var e : updateEntities){
-            if(e.isActive()){
-                e.fixedUpdate();
-                for(var child : e.getChilds()){
-                   if(child.isActive()){
-                       child.fixedUpdate();
-                   }
-                }
-            }
+            doFixedUpdate(e);
         }
         }
     }
-    
+    private void doRender(Graphics g, Entity e){
+        if(e.isActive()){
+                e.draw(g, currentCamera.getPositionOffset(), currentCamera.getScaleOffset(), currentCamera.getZoom());
+                for(var child : e.getChilds()){
+                    doRender(g, child);
+                }
+            }
+    }
+    private void doUIRender(Graphics g, UIEntity e){
+        if(e.isActive()){
+                e.draw(g, currentUIView.getPositionOffset(), currentUIView.getScaleOffset(), currentUIView.getZoom());
+                for(var child : e.getChilds()){
+                    doUIRender(g, (UIEntity) child);
+                }
+            }
+    }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for(var e : updateEntities){
+        for (var e : updateEntities){
             if(e.isActive()){
                 if(e instanceof UIEntity){
-                    uis.add((UIEntity) e);
-                    continue;
+                    doUIRender(g, (UIEntity) e);
                 }
-                e.draw(g, currentCamera.getPositionOffset(), currentCamera.getScaleOffset(), currentCamera.getZoom());
-                for(var child : e.getChilds()){
-                    if(child.isActive()){
-                        child.draw(g, currentCamera.getPositionOffset(), currentCamera.getScaleOffset(), currentCamera.getZoom());
-                    }
+                else{
+                    doRender(g, e);
                 }
             }
-        }
-        while(!uis.isEmpty()){
-            Entity e = uis.poll();
-            e.draw(g, currentUIView.getPositionOffset(), currentUIView.getScaleOffset(), currentUIView.getZoom());
-            for(var child : e.getChilds()){
-                    if(child.isActive()){
-                        child.draw(g, currentUIView.getPositionOffset(), currentUIView.getScaleOffset(), currentUIView.getZoom());
-                    }
-                }
         }
     }
 

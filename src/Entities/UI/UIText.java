@@ -51,8 +51,14 @@ public abstract class UIText extends UIEntity{
     public void setFont(Font font) {
         this.font = font;
     }
-    public void setFont(String path, int fontType) throws FontFormatException, IOException {
-        font = Font.createFont(fontType, FileReader.readFile(path));
+    public void setFont(String path, int fontType) {
+        try{
+            font = Font.createFont(fontType, FileReader.readFile(path));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        
     }
 
     public int getStyle() {

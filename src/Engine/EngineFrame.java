@@ -24,7 +24,7 @@ public class EngineFrame extends JFrame{
         setTitle(title);
         setResizable(false);   
         
-        engine = new MainEngine();
+        engine = new MainEngine(1, 60);
         
         canvas = new RenderingPanel(this, bg);
         add(canvas);

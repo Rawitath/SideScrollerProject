@@ -4,12 +4,11 @@
  */
 package Main.Entities;
 
+import Main.UI.HeartContainer;
 import Datas.Constants;
 import Datas.Vector2;
 import Entities.Audios.AudioSource;
 import Entities.CollidableEntity;
-import Entities.Entity;
-import Entities.UI.UIEntity;
 import Entities.UI.UIText;
 import Inputs.KeyControlable;
 import Physics.Collider;
@@ -17,6 +16,7 @@ import Physics.Time;
 import Scenes.Scene;
 import Scenes.SceneManager;
 import Utilities.FileReader;
+import java.awt.Font;
 import java.awt.event.KeyEvent;
 
 /**
@@ -45,21 +45,22 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         setPosition(new Vector2(9f, 0f));
         getCollider().setBound(new Vector2(4.2f, 7f));
         lifeNum = getScene().getEntity("Life");
+        lifeNum.setFont("res/font/Itim-Regular.ttf", Font.TRUETYPE_FONT);
         heartContainer = getScene().getEntity("HeartContainer");
         heartContainer.setHeart(life);
         
         AudioSource a = getScene().getEntity("Music");
-        //a.loop(true);
-        //a.play();
+//        a.loop(true);
+//        a.play();
         
 //        setColliderVisibled(true);
     }
 
     @Override
     public void update() {
-        lifeNum.setText(String.valueOf(life));
+        lifeNum.setText("Life : "+ String.valueOf(life));
     }
-    float x = Time.time();
+    
     @Override
     public void fixedUpdate() {
         setPosition(getPosition().translate(direction, speed * Time.fixedDeltaTime()));

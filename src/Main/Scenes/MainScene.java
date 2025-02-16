@@ -4,6 +4,7 @@
  */
 package Main.Scenes;
 
+import Main.UI.HeartContainer;
 import Datas.Vector2Int;
 import Entities.Audios.AudioSource;
 import Main.Entities.*;

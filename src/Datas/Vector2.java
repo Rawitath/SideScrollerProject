@@ -61,28 +61,28 @@ public class Vector2 {
         return "("+this.x + ", "+this.getY()+")";
     }
     
-    public static Vector2 zero(){
+    public static final Vector2 zero(){
         return new Vector2(0f, 0f);
     }
-    public static Vector2 up(){
+    public static final Vector2 up(){
         return new Vector2(0f, 1f);
     }
-    public static Vector2 down(){
+    public static final Vector2 down(){
         return new Vector2(0f, -1f);
     }
-    public static Vector2 left(){
+    public static final Vector2 left(){
         return new Vector2(-1f, 0f);
     }
-    public static Vector2 right(){
+    public static final Vector2 right(){
         return new Vector2(1f, 0f);
     }
-    public static Vector2 one(){
+    public static final Vector2 one(){
         return new Vector2(1f, 1f);
     }
-    public static Vector2 negativeX(){
+    public static final Vector2 negativeX(){
         return new Vector2(-1f, 1f);
     } 
-    public static Vector2 negativeY(){
+    public static final Vector2 negativeY(){
         return new Vector2(1f, -1f);
     }
 }

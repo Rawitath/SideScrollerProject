@@ -161,6 +161,26 @@ public abstract class Entity{
     }
 
     public void setScale(Vector2 scale) {
+        if(parent != null){
+            if(parent.getScale().getX() == 0 && parent.getScale().getY() == 0){
+                this.scale = Vector2.zero();
+                return;
+            }
+            else if(parent.getScale().getX() == 0){
+                this.scale = scale.multiply(new Vector2(0f,parent.getScale().getY()));
+                return;
+            }
+            else if(parent.getScale().getY() == 0){
+                this.scale = scale.multiply(new Vector2(parent.getScale().getY(), 0f));
+                return;
+            }
+            this.scale = scale.multiply(new Vector2(1 / parent.getScale().getX(), 1 / parent.getScale().getY()));
+        }
+        else{
+            this.scale = scale;
+        }
+    }
+    public void setLocalScale(Vector2 scale){
         this.scale = scale;
     }
     

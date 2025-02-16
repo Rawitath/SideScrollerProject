@@ -107,29 +107,37 @@ public class SceneManager {
             renderingPanel.removeEntities(e);
             removeInputManager(e);
             removeCollidable(e);
-            for(var child : e.getChilds()){
-                removeInputManager(child);
-                removeCollidable(child);
-            }
     }
     private static void assignInputManager(Entity e){
         if(e instanceof KeyControlable){
                 inputManager.addKeyControlable((KeyControlable) e);
+                for(var child : e.getChilds()){
+                    assignInputManager(e);
+                }
             }
     }
     private static void removeInputManager(Entity e){
         if(e instanceof KeyControlable){
                 inputManager.removeKeyControlable((KeyControlable) e);
+                for(var child : e.getChilds()){
+                    removeInputManager(e);
+                }
             }
     }
     private static void assignCollidable(Entity e){
         if(e instanceof Collidable){
                 renderingPanel.addCollidable((Collidable) e);
+                for(var child : e.getChilds()){
+                    assignCollidable(e);
+                }
             }
     }
     private static void removeCollidable(Entity e){
         if(e instanceof Collidable){
                 renderingPanel.removeCollidable((Collidable) e);
+                for(var child : e.getChilds()){
+                    removeCollidable(e);
+                }
             }
     }
 }
