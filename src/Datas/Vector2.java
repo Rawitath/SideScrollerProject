@@ -57,7 +57,8 @@ public class Vector2 {
     public Vector2 translate(Vector2 direction, float speed){
         return this.add(direction.multiply(speed));
     }
-    public String getPrint(){
+    @Override
+    public String toString(){
         return "("+this.x + ", "+this.getY()+")";
     }
     

@@ -9,6 +9,7 @@ import Engine.RenderingPanel;
 import Entities.Entity;
 import Inputs.InputManager;
 import Inputs.KeyControlable;
+import Inputs.MouseControlable;
 import Physics.Collidable;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -98,10 +99,6 @@ public class SceneManager {
         renderingPanel.addEntities(e);
             assignInputManager(e);
             assignCollidable(e);
-            for(var child : e.getChilds()){
-                assignInputManager(child);
-                assignCollidable(child);
-            }
     }
     public static void removeFromRender(Entity e){
             renderingPanel.removeEntities(e);
@@ -110,34 +107,42 @@ public class SceneManager {
     }
     private static void assignInputManager(Entity e){
         if(e instanceof KeyControlable){
-                inputManager.addKeyControlable((KeyControlable) e);
-                for(var child : e.getChilds()){
-                    assignInputManager(e);
-                }
-            }
+            inputManager.addKeyControlable((KeyControlable) e);
+        }
+        if(e instanceof MouseControlable){
+            inputManager.addMouseControlable((MouseControlable) e);
+        }
+        for(var child : e.getChilds()){
+            assignInputManager(child);
+        }
     }
     private static void removeInputManager(Entity e){
         if(e instanceof KeyControlable){
-                inputManager.removeKeyControlable((KeyControlable) e);
-                for(var child : e.getChilds()){
-                    removeInputManager(e);
-                }
-            }
+            inputManager.removeKeyControlable((KeyControlable) e);
+        }
+        if(e instanceof MouseControlable){
+            inputManager.removeMouseControlable((MouseControlable) e);
+        }
+        for(var child : e.getChilds()){
+            removeInputManager(child);
+        }
     }
     private static void assignCollidable(Entity e){
         if(e instanceof Collidable){
                 renderingPanel.addCollidable((Collidable) e);
-                for(var child : e.getChilds()){
-                    assignCollidable(e);
-                }
+                
             }
+        for(var child : e.getChilds()){
+                    assignCollidable(child);
+                }
     }
     private static void removeCollidable(Entity e){
         if(e instanceof Collidable){
                 renderingPanel.removeCollidable((Collidable) e);
-                for(var child : e.getChilds()){
-                    removeCollidable(e);
-                }
+                
             }
+        for(var child : e.getChilds()){
+                    removeCollidable(child);
+                }
     }
 }

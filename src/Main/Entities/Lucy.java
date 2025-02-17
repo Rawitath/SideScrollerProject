@@ -71,7 +71,7 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     }
 
     @Override
-    public void onKeyPressed(int keyCode) {
+    public void onKeyPressed(KeyEvent e, int keyCode) {
         if(keyCode == KeyEvent.VK_D){
             direction = Vector2.right();
             setFlip(Vector2.negativeX());
@@ -92,14 +92,14 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     }
 
     @Override
-    public void onKeyReleased(int keyCode) {
+    public void onKeyReleased(KeyEvent e, int keyCode) {
         if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_A){
             direction = Vector2.zero();
         }
     }
 
     @Override
-    public void onKeyTyped(int keyCode) {
+    public void onKeyTyped(KeyEvent e, int keyCode) {
         
     }
 

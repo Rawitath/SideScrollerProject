@@ -7,8 +7,11 @@ package Entities.UI;
 import Datas.Vector2;
 import Datas.Vector2Int;
 import Scenes.Scene;
+import Utilities.FileReader;
+import java.awt.AlphaComposite;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -18,17 +21,45 @@ import java.awt.image.BufferedImage;
 public abstract class UIImage extends UIEntity{
 
     private BufferedImage image;
-    private Vector2Int imageSize;
     private Vector2 anchor;
     private boolean imageVisibled;
     private Vector2 flip;
+    private Vector2Int screenPoint;
+    private Vector2Int screenSize;
+    private float alpha;
+
+    public float getAlpha() {
+        return alpha;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
+    }
+    
+    
+    
+    protected Vector2Int getScreenPoint(){
+        return screenPoint;
+    }
+    protected void setScreentPoint(Vector2Int screenPoint){
+        this.screenPoint = screenPoint;
+    }
+
+    protected Vector2Int getScreenSize() {
+        return screenSize;
+    }
+
+    protected void setScreenSize(Vector2Int screenSize) {
+        this.screenSize = screenSize;
+    }
     
     public UIImage(Scene s) {
         super(s);
-        imageSize = new Vector2Int(100,100);
         anchor = new Vector2(0f, 0f);
-//        pixelRatio = 0.01f;
+        alpha = 1f;
         imageVisibled = true;
+        setLocalScale(new Vector2(100, 100));
+        image = FileReader.readImage("res/default/whitesquare.png");
         
         flip = Vector2.one();
     }
@@ -52,25 +83,10 @@ public abstract class UIImage extends UIEntity{
         return image;
     }
 
-    public void setImage(BufferedImage image, boolean keepSpriteSize) {
+    public void setImage(BufferedImage image) {
         this.image = image;
-        if(!keepSpriteSize){
-            setImageSize(new Vector2Int(image.getWidth(), image.getHeight()));
-        }
     }
     
-    public void setImage(BufferedImage image) {
-        setImage(image, false);
-    }
-
-    public Vector2Int getImageSize() {
-        return imageSize;
-    }
-
-    public void setImageSize(Vector2Int imageSize) {
-        this.imageSize = imageSize;
-    }
-
     public Vector2 getAnchor() {
         return anchor;
     }
@@ -88,6 +104,7 @@ public abstract class UIImage extends UIEntity{
     }
     @Override
     public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
+        Graphics2D g2d = (Graphics2D)g;
         super.draw(g, posOffset, scaleOffset, zoom);
         if(imageVisibled){
                     
@@ -96,14 +113,18 @@ public abstract class UIImage extends UIEntity{
             Vector2 pos = getPosition().add(getScreenAnchor()).multiply(Vector2.negativeY()).add(anchor)
                     .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()))
                     .add(posOffset);
-            Vector2 scale = getScale().multiply(flip).multiply(scaleOffset).multiply(imageSize)
+            Vector2 scale = getScale().multiply(flip).multiply(scaleOffset)
                     .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()));
-            g.drawImage(image, 
-                Math.round(pos.getX() - (scale.getX() / 2))
-                ,Math.round(pos.getY() - (scale.getY() / 2)),
-                Math.round(scale.getX())
-                , Math.round(scale.getY())
-                , null);
+            screenPoint = new Vector2Int(Math.round(pos.getX() - (scale.getX() / 2)), Math.round(pos.getY() - (scale.getY() / 2)));
+            screenSize = new Vector2Int(Math.round(scale.getX()), Math.round(scale.getY()));
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+            g2d.setComposite(ac);
+            g2d.drawImage(image, screenPoint.getX()
+                
+                ,screenPoint.getY(),
+                screenSize.getX()
+                , 
+                screenSize.getY(), null);
         }
     }
 }

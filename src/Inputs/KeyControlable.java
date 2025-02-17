@@ -11,7 +11,7 @@ import java.awt.event.KeyEvent;
  * @author GA_IA
  */
 public interface KeyControlable {
-    public abstract void onKeyPressed(int keyCode);
-    public abstract void onKeyReleased(int keyCode);
-    public abstract void onKeyTyped(int keyCode);
+    public abstract void onKeyPressed(KeyEvent e, int keyCode);
+    public abstract void onKeyReleased(KeyEvent e, int keyCode);
+    public abstract void onKeyTyped(KeyEvent e, int keyCode);
 }

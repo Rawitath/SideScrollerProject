@@ -34,6 +34,16 @@ public class MainEngine extends Engine{
     public MainEngine(){
         this(1.0, 60.0);
     }
+
+    public double getUpdateSpeed() {
+        return updateSpeed;
+    }
+
+    public void setUpdateSpeed(double updateSpeed) {
+        this.updateSpeed = updateSpeed;
+    }
+    
+    
     
     //Update ASAP
     private void update(){

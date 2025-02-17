@@ -17,9 +17,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class InputManager implements KeyListener, MouseListener{
     private List<KeyControlable> keyCons;
+    private List<MouseControlable> mouseCons;
     
     public InputManager(){
         keyCons = new CopyOnWriteArrayList<>();
+        mouseCons = new CopyOnWriteArrayList<>();
     }
     public void addKeyControlable(KeyControlable k){
         keyCons.add(k);
@@ -30,50 +32,71 @@ public class InputManager implements KeyListener, MouseListener{
     public void clearKeyControlable(){
         keyCons.clear();
     }
+    
+    public void addMouseControlable(MouseControlable m){
+        mouseCons.add(m);
+    }
+    public void removeMouseControlable(MouseControlable m){
+        mouseCons.remove(m);
+    }
+    public void clearMouseControlable(){
+        mouseCons.clear();
+    }
+    
     @Override
     public void keyTyped(KeyEvent e) {
         for(var k : keyCons){
-            k.onKeyTyped(e.getKeyCode());
+            k.onKeyTyped(e, e.getKeyCode());
         }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         for(var k : keyCons){
-            k.onKeyPressed(e.getKeyCode());
+            k.onKeyPressed(e, e.getKeyCode());
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         for(var k : keyCons){
-            k.onKeyReleased(e.getKeyCode());
+            k.onKeyReleased(e, e.getKeyCode());
         }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        for(var m : mouseCons){
+           m.onMouseClicked(e);
+        }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        
+        for(var m : mouseCons){
+            m.onMousePressed(e);
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        for(var m : mouseCons){
+           m.onMouseReleased(e);
+        }
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        for(var m : mouseCons){
+           m.onMouseEntered(e);
+        }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        for(var m : mouseCons){
+           m.onMouseExited(e);
+        }
     }
     
 }

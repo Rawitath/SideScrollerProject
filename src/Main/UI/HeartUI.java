@@ -21,19 +21,20 @@ public class HeartUI extends UIImage{
     BufferedImage heartEmpty = FileReader.readImage("res/game/mutsuki.png"); 
     public HeartUI(Scene s) {
         super(s);
-        setImage(heartFull, true);
+        setImage(heartFull);
+        setScale(new Vector2(100, 100));
     }
     public void setHeart(boolean isFull){
         if(isFull){
-            setImage(heartFull, true);
+            setImage(heartFull);
         }
         else{
-            setImage(heartEmpty, true);
+            setImage(heartEmpty);
         }
     }
     @Override
     public void start() {
-        
+        setScreenAnchor(LEFT);
     }
 
     @Override

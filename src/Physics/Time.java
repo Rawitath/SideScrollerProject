@@ -26,4 +26,10 @@ public class Time {
     public static float fixedDeltaTime(){
         return (float)engine.getFixedDeltaTime();
     }
+    public static float getTimeScale(){
+        return (float)engine.getUpdateSpeed();
+    }
+    public static void setTimeScale(float timeScale){
+        engine.setUpdateSpeed(timeScale);
+    }
 }
