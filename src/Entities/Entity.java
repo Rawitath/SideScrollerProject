@@ -46,7 +46,12 @@ public abstract class Entity{
         
         entityCount++;
     }
-
+    public void onAddedToParent(){
+        
+    }
+    public void onRemoveFromParent(){
+        
+    }
     public String getTag() {
         return tag;
     }
@@ -114,8 +119,10 @@ public abstract class Entity{
             e.setParent(this);
         }
         childs.add(e);
+        e.onAddedToParent();
     }
     public void removeChild(Entity e){
+        e.onRemoveFromParent();
         childs.remove(e);
         e.setParent(null);
     }

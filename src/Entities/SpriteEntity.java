@@ -7,6 +7,7 @@ package Entities;
 import Datas.*;
 import Scenes.Scene;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.math.*;
 
@@ -95,13 +96,13 @@ public abstract class SpriteEntity extends Entity{
     public void setSpriteSize(Vector2Int spriteSize) {
         this.spriteSize = spriteSize;
     }
-
     @Override
     public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
+        Graphics2D g2d = (Graphics2D)g;
         if(spriteVisibled){
             Vector2 pos = getPosition().multiply(Vector2.negativeY()).add(anchor).multiply(zoom).add(posOffset);
             Vector2 scale = getScale().multiply(flip).multiply(scaleOffset).multiply(spriteSize).multiply(pixelRatio);
-            g.drawImage(sprite, 
+            g2d.drawImage(sprite, 
                 Math.round(pos.getX() - (scale.getX() / 2))
                 ,Math.round(pos.getY() - (scale.getY() / 2)),
                 Math.round(scale.getX())

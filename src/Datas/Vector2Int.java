@@ -60,7 +60,8 @@ public class Vector2Int {
     public Vector2Int translate(Vector2Int direction, int speed){
         return this.add(direction.multiply(speed));
     }
-    public String getPrint(){
+    @Override
+    public String toString(){
         return "("+this.x + ", "+this.getY()+")";
     }
     

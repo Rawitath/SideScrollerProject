@@ -112,6 +112,7 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         else if(other.getEntity().getTag().equals("Enemy")){
             life--;
             heartContainer.setHeart(life);
+            
         }
     }
 

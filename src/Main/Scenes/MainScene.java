@@ -4,12 +4,9 @@
  */
 package Main.Scenes;
 
-import Main.UI.HeartContainer;
-import Datas.Vector2Int;
+import Main.UI.*;
 import Entities.Audios.AudioSource;
 import Main.Entities.*;
-import Main.UI.HelloWorld;
-import Main.UI.MyButton;
 import Scenes.Scene;
 
 /**
@@ -38,6 +35,7 @@ public class MainScene extends Scene{
         
         addEntity(new HelloWorld(this));
         addEntity(new HeartContainer(this));
+        addEntity(new MyProgressBar(this));
     }
     
 }

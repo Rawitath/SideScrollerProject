@@ -27,7 +27,49 @@ public abstract class UIImage extends UIEntity{
     private Vector2Int screenPoint;
     private Vector2Int screenSize;
     private float alpha;
+    private boolean clipping;
+    private Vector2Int clippingPosition;
+    private Vector2Int clippingSize;
 
+    public boolean isClipping() {
+        return clipping;
+    }
+
+    public void setClipping(boolean clipping) {
+        this.clipping = clipping;
+    }
+    
+    public Vector2Int getClippingPosition() {
+        return clippingPosition;
+    }
+
+    public void setClippingPosition(Vector2Int clippingPosition) {
+        this.clippingPosition = clippingPosition;
+        setClippingSize(clippingSize);
+    }
+
+    public Vector2Int getClippingSize() {
+        return clippingSize;
+    }
+
+    public void setClippingSize(Vector2Int clippingSize) {
+        if(clippingPosition.getX() + clippingSize.getX() > image.getWidth()){
+            clippingSize = new Vector2Int(image.getWidth() - clippingPosition.getX(), clippingSize.getY());
+        }
+        if(clippingSize.getX() <= 0){
+            System.err.println("The minimum of clippingSize is 1");
+            clippingSize = new Vector2Int(1, clippingSize.getY());
+        }
+        if(clippingSize.getY() <= 0){
+            System.err.println("The minimum of clippingSize is 1");
+            clippingSize = new Vector2Int(clippingSize.getX(), 1);
+        }
+        if(clippingPosition.getY() + clippingSize.getY() > image.getHeight()){
+            clippingSize = new Vector2Int(clippingSize.getX(), image.getHeight() - clippingPosition.getY());
+        }
+        this.clippingSize = clippingSize;
+    }
+    
     public float getAlpha() {
         return alpha;
     }
@@ -35,8 +77,6 @@ public abstract class UIImage extends UIEntity{
     public void setAlpha(float alpha) {
         this.alpha = alpha;
     }
-    
-    
     
     protected Vector2Int getScreenPoint(){
         return screenPoint;
@@ -60,6 +100,9 @@ public abstract class UIImage extends UIEntity{
         imageVisibled = true;
         setLocalScale(new Vector2(100, 100));
         image = FileReader.readImage("res/default/whitesquare.png");
+        clipping = false;
+        clippingPosition = new Vector2Int();
+        clippingSize = new Vector2Int(image.getWidth(), image.getHeight());
         
         flip = Vector2.one();
     }
@@ -98,10 +141,10 @@ public abstract class UIImage extends UIEntity{
     public boolean isImageVisibled() {
         return imageVisibled;
     }
-
     public void setImageVisibled(boolean imageVisibled) {
         this.imageVisibled = imageVisibled;
     }
+    
     @Override
     public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
         Graphics2D g2d = (Graphics2D)g;
@@ -119,7 +162,11 @@ public abstract class UIImage extends UIEntity{
             screenSize = new Vector2Int(Math.round(scale.getX()), Math.round(scale.getY()));
             AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
             g2d.setComposite(ac);
-            g2d.drawImage(image, screenPoint.getX()
+            BufferedImage img = image;
+            if(clipping){
+                img = image.getSubimage(clippingPosition.getX(), clippingPosition.getY(), clippingSize.getX(), clippingSize.getY());
+            }
+            g2d.drawImage(img, screenPoint.getX()
                 
                 ,screenPoint.getY(),
                 screenSize.getX()

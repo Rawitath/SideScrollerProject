@@ -6,7 +6,9 @@ package Entities.UI;
 
 import Inputs.MouseControlable;
 import Scenes.Scene;
+import Utilities.FileReader;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -16,15 +18,48 @@ public abstract class UIButton extends UIImage implements MouseControlable{
     
     private int buttonState;
     public static final int RELEASED = 0;
-    public static final int PRESSED = 1;
-    public static final int CLICKED = 2;
+    public static final int HOVER = 1;
+    public static final int PRESSED = 2;
+    public static final int CLICKED = 3;
+
+    private BufferedImage releasedImage;
+    private BufferedImage hoverImage;
+    private BufferedImage pressedImage;
 
     public int getButtonState() {
         return buttonState;
     }
     public UIButton(Scene s) {
         super(s);
+        releasedImage = FileReader.readImage("res/default/whitesquare.png");
+        pressedImage = FileReader.readImage("res/default/blacksquare.png");
+        setImage(releasedImage);
     }
+
+    public BufferedImage getReleasedImage() {
+        return releasedImage;
+    }
+
+    public void setReleasedImage(BufferedImage releasedImage) {
+        this.releasedImage = releasedImage;
+    }
+
+    public BufferedImage getHoverImage() {
+        return hoverImage;
+    }
+
+    public void setHoverImage(BufferedImage hoverImage) {
+        this.hoverImage = hoverImage;
+    }
+
+    public BufferedImage getPressedImage() {
+        return pressedImage;
+    }
+
+    public void setPressedImage(BufferedImage pressedImage) {
+        this.pressedImage = pressedImage;
+    }
+    
     private boolean isMouseOnButton(MouseEvent e){
         return e.getPoint().x >= getScreenPoint().getX() &&
            e.getPoint().x <= getScreenPoint().getX() + getScreenSize().getX() &&
@@ -43,6 +78,7 @@ public abstract class UIButton extends UIImage implements MouseControlable{
         if(isMouseOnButton(e)){
             buttonState = PRESSED;
             onButtonPressed();
+            setImage(pressedImage);
         }
     }
 
@@ -51,9 +87,9 @@ public abstract class UIButton extends UIImage implements MouseControlable{
         if(isMouseOnButton(e)){
             buttonState = CLICKED;
             onButtonClicked();
-            return;
         }
         buttonState = RELEASED;
+        setImage(releasedImage);
     }
 
     @Override
