@@ -45,10 +45,16 @@ public class UIProgressBarFill extends UIImage{
         if(value > 1f){
             value = 1f;
         }
-        else if(value < 0){
+        else if(value < 0.00001f){
             value = 0.00001f;
         }
         this.value = value;
+    }
+
+    @Override
+    public void setImage(BufferedImage image) {
+        super.setImage(image);
+        setClippingSize(new Vector2Int((int) (getImage().getWidth() * value), getImage().getHeight()));
     }
     
     @Override

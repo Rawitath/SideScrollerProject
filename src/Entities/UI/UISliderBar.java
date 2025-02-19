@@ -2,38 +2,41 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.UI;
+package Entities.UI;
 
 import Datas.Vector2;
-import Entities.UI.UIProgressBar;
-import Physics.Time;
+import Datas.Vector2Int;
 import Scenes.Scene;
+import java.awt.image.BufferedImage;
 
 /**
  *
  * @author GA_IA
  */
-public class MyProgressBar extends UIProgressBar{
+public class UISliderBar extends UIProgressBar{
 
-    public MyProgressBar(Scene s) {
+    private Vector2 barEnd;
+    public UISliderBar(Scene s) {
         super(s);
     }
 
+    public Vector2 getBarEnd() {
+        return new Vector2((getPosition().getX() - getScale().getX() / 2) + getLocalScale().getX() * getFill().getValue(), getPosition().getY());
+    }
+    
     @Override
     public void start() {
-        setMin(-50);
-        setMax(50);
-        setValue(50);
+
     }
 
     @Override
     public void update() {
-        
+
     }
 
     @Override
     public void fixedUpdate() {
-        
+
     }
     
 }

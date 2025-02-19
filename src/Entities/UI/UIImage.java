@@ -166,6 +166,7 @@ public abstract class UIImage extends UIEntity{
             if(clipping){
                 img = image.getSubimage(clippingPosition.getX(), clippingPosition.getY(), clippingSize.getX(), clippingSize.getY());
             }
+            
             g2d.drawImage(img, screenPoint.getX()
                 
                 ,screenPoint.getY(),

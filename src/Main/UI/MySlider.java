@@ -5,25 +5,29 @@
 package Main.UI;
 
 import Datas.Vector2;
-import Entities.UI.UIButton;
+import Entities.UI.UISlider;
 import Scenes.Scene;
 import Utilities.FileReader;
-import java.awt.event.MouseEvent;
 
 /**
  *
  * @author GA_IA
  */
-public class MyButton extends UIButton{
+public class MySlider extends UISlider{
 
-    public MyButton(Scene s) {
+    public MySlider(Scene s) {
         super(s);
     }
-    
+
     @Override
     public void start() {
-        setScale(new Vector2(300,100));
-        setPosition(new Vector2(-200,0));
+        // Slider cannot handle negative Min, needed to be fixed;
+        setMin(0);
+        setMax(100);
+        setValue(0);
+//        getBar().setImage(FileReader.readImage("res/game/kotori.jpg"));
+//        getBar().getFill().setImage(FileReader.readImage("res/game/mutsuki.png"));
+//        getHandle().setReleasedImage(FileReader.readImage("res/icon/aronadaingai.jpg"));
     }
 
     @Override
@@ -33,21 +37,7 @@ public class MyButton extends UIButton{
 
     @Override
     public void fixedUpdate() {
-        
-    }
-
-    @Override
-    public void onButtonClicked() {
-        
-    }
-
-    @Override
-    public void onButtonPressed() {
-        
-    }
-
-    @Override
-    public void onButtonReleased() {
 
     }
+    
 }

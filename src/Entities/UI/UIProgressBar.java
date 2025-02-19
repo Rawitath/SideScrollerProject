@@ -33,8 +33,12 @@ public abstract class UIProgressBar extends UIImage{
         this.max = max;
     }
 
-    public void setFillBarImage(BufferedImage image) {
-        this.fill.setImage(image);
+    public float getValue() {
+        return value;
+    }
+    
+    public UIProgressBarFill getFill() {
+        return fill;
     }
     
     public UIProgressBar(Scene s) {
@@ -48,6 +52,8 @@ public abstract class UIProgressBar extends UIImage{
         addChild(fill);
         fill.setPosition(getPosition());
         fill.setScale(getScale());
+        
+        setScale(new Vector2(500,50));
     }
     public void setValue(float value) {
         if(value > max){
@@ -59,7 +65,7 @@ public abstract class UIProgressBar extends UIImage{
             value = min;
         }
         this.value = value;
-        //need to be fix
-        fill.setValue((this.value - min) / max);
+        //Fixed! by Libero Fluke (Cheese)
+        fill.setValue((this.value - min) / (max - min));
     }
 }
