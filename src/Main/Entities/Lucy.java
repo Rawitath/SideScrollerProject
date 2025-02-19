@@ -4,13 +4,16 @@
  */
 package Main.Entities;
 
+import Animations.Animator;
 import Main.UI.HeartContainer;
 import Datas.Constants;
 import Datas.Vector2;
+import Datas.Vector2Int;
 import Entities.Audios.AudioSource;
 import Entities.CollidableEntity;
 import Entities.UI.UIText;
 import Inputs.KeyControlable;
+import Main.Animations.LucyBreathAnim;
 import Physics.Collider;
 import Physics.Time;
 import Scenes.Scene;
@@ -31,6 +34,8 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     private UIText lifeNum;
     private HeartContainer heartContainer;
     
+    private Animator animator;
+    
     private int life = 3;
     
     private boolean grounded = false;
@@ -38,12 +43,16 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         super(s);
         setSprite(FileReader.readImage("res/game/lucypixel.png"));
         direction = Vector2.zero();
+        
+        animator = new Animator();
+        animator.setAnimation(new LucyBreathAnim());
     }
 
     @Override
     public void start() {
         setPosition(new Vector2(9f, 0f));
-        getCollider().setBound(new Vector2(4.2f, 7f));
+        getCollider().setBound(new Vector2(4.2f, 7.6f));
+        getCollider().setCenter(new Vector2(0f, -0.8f));
         lifeNum = getScene().getEntity("Life");
         lifeNum.setFont("res/font/Itim-Regular.ttf", Font.TRUETYPE_FONT);
         heartContainer = getScene().getEntity("HeartContainer");
@@ -54,11 +63,14 @@ public class Lucy extends CollidableEntity implements KeyControlable{
 //        a.play();
         
 //        setColliderVisibled(true);
+        setSpriteSize(new Vector2Int(128, 128));
+        setPixelRatio(0.1f);
     }
 
     @Override
     public void update() {
         lifeNum.setText("Life : "+ String.valueOf(life));
+        setSprite(animator.getFrame(Time.deltaTime()));
     }
     
     @Override

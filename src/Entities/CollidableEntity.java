@@ -47,7 +47,7 @@ public abstract class CollidableEntity extends SpriteEntity implements Collidabl
     public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
         super.draw(g, posOffset, scaleOffset, zoom);
         if(isColliderVisibled()){
-             Vector2 pos = getPosition().multiply(Vector2.negativeY()).add(collider.getCenter()).multiply(zoom).add(posOffset);
+             Vector2 pos = getPosition().multiply(Vector2.negativeY()).add(collider.getCenter().multiply(Vector2.negativeY())).multiply(zoom).add(posOffset);
         Vector2 scale = getScale().multiply(collider.getBound()).multiply(scaleOffset);
         g.setColor(new Color(0.0f, 1.0f, 0.0f, 0.4f));
         g.fillRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));

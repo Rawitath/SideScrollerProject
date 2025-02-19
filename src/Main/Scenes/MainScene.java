@@ -35,7 +35,7 @@ public class MainScene extends Scene{
         
         addEntity(new HelloWorld(this));
         addEntity(new HeartContainer(this));
-        addEntity(new MySlider(this));
+//        addEntity(new MySlider(this));
 //        addEntity(new MyProgressBar(this));
     }
     
