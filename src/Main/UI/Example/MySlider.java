@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.UI;
+package Main.UI.Example;
 
 import Datas.Vector2;
 import Entities.UI.UISlider;
@@ -21,6 +21,8 @@ public class MySlider extends UISlider{
 
     @Override
     public void start() {
+        setScreenAnchor(TOP_RIGHT);
+        setPosition(new Vector2(-400, -150));
         // Slider cannot handle negative Min, needed to be fixed;
         setMin(0);
         setMax(100);

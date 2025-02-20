@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.Entities;
+package Main.Entities.Example;
 
 import Animations.Animator;
-import Main.UI.HeartContainer;
+import Main.UI.Example.HeartContainer;
 import Datas.Constants;
 import Datas.Vector2;
 import Datas.Vector2Int;
@@ -13,7 +13,7 @@ import Entities.Audios.AudioSource;
 import Entities.CollidableEntity;
 import Entities.UI.UIText;
 import Inputs.KeyControlable;
-import Main.Animations.LucyBreathAnim;
+import Main.Animations.Example.LucyBreathAnim;
 import Physics.Collider;
 import Physics.Time;
 import Scenes.Scene;
