@@ -34,6 +34,16 @@ public class MainEngine extends Engine{
     public MainEngine(){
         this(1.0, 60.0);
     }
+
+    public double getUpdateSpeed() {
+        return updateSpeed;
+    }
+
+    public void setUpdateSpeed(double updateSpeed) {
+        this.updateSpeed = updateSpeed;
+    }
+    
+    
     
     //Update ASAP
     private void update(){
@@ -54,6 +64,16 @@ public class MainEngine extends Engine{
         }
     }
     
+    private double dT = 0;
+    private double deltaTime = 0;
+    
+    public double getDeltaTime(){
+        return Math.abs(deltaTime) / 1000000000;
+    }
+    public double getFixedDeltaTime(){
+        return updateSpeed / 1000;//Math.abs(fixedDeltaTime) / 1000000000;
+    }
+    
     @Override
     public void run() {
         double nUpdate = updateSpeed * 1000000;
@@ -62,15 +82,18 @@ public class MainEngine extends Engine{
         double fpsCurrent = System.nanoTime();
         
         while(isRunning()){
-            update();
+            dT = System.nanoTime();
             while(nUpdate <= System.nanoTime() - current){
                 fixedUpdate();
-                current = System.nanoTime();
+                current += nUpdate;
             }
+            update();
             while(nFPS <= System.nanoTime() - fpsCurrent){
                 render();
                 fpsCurrent = System.nanoTime();
             }
+            dT -= System.nanoTime();
+            deltaTime = dT;
         }
     }
 }

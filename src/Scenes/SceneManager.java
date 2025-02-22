@@ -1,14 +1,18 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Scenes;
 
-import Datas.Vector2;
-import Engine.MainEngine;
 import Engine.RenderingPanel;
-import java.util.ArrayList;
+import Entities.Entity;
+import Inputs.InputManager;
+import Inputs.KeyControlable;
+import Inputs.MouseControlable;
+import Physics.Collidable;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -16,9 +20,10 @@ import java.util.List;
  */
 public class SceneManager {
     private static int sceneCount = 0;
-    private static List<Scene> scenes = new ArrayList<>();
+    private static List<Scene> scenes = new CopyOnWriteArrayList<>();
     private static Scene currentScene = null;
     private static RenderingPanel renderingPanel;
+    private static InputManager inputManager;
 
     public static RenderingPanel getRenderingPanel() {
         return renderingPanel;
@@ -28,6 +33,15 @@ public class SceneManager {
         SceneManager.renderingPanel = renderingPanel;
     }
 
+    public static InputManager getInputManager() {
+        return inputManager;
+    }
+
+    public static void setInputManager(InputManager inputManager) {
+        SceneManager.inputManager = inputManager;
+    }
+
+    
     public static Scene getCurrentScene() {
         return currentScene;
     }
@@ -62,19 +76,73 @@ public class SceneManager {
     }
     
     public static void loadScene(int sceneID){
+        renderingPanel.setRunning(false);
         if(currentScene != null){
             currentScene.unload();
+            renderingPanel.clearCollidable();
+            renderingPanel.clearEntities();
+            inputManager.clearKeyControlable();
         }
         currentScene = getScene(sceneID);
-        currentScene.load();
         if(currentScene.getCamera() == null){
             System.err.println(currentScene.getName() + " has no Camera");
             return;
         }
-        currentScene.getCamera().setScreenSize(renderingPanel.getPreferredSize());
+        currentScene.getCamera().setScreenSize(renderingPanel.getSize());
         renderingPanel.setCurrentCamera(currentScene.getCamera());
-        for(var e : currentScene.getEntities()){
-            renderingPanel.addEntities(e);
+        currentScene.getUIView().setScreenSize(renderingPanel.getSize());
+        renderingPanel.setCurrentUIView(currentScene.getUIView());
+        currentScene.load();
+        renderingPanel.setRunning(true);
+    }
+    public static void addToRender(Entity e){
+        renderingPanel.addEntities(e);
+            assignInputManager(e);
+            assignCollidable(e);
+    }
+    public static void removeFromRender(Entity e){
+            renderingPanel.removeEntities(e);
+            removeInputManager(e);
+            removeCollidable(e);
+    }
+    private static void assignInputManager(Entity e){
+        if(e instanceof KeyControlable){
+            inputManager.addKeyControlable((KeyControlable) e);
         }
+        if(e instanceof MouseControlable){
+            inputManager.addMouseControlable((MouseControlable) e);
+        }
+        for(var child : e.getChilds()){
+            assignInputManager(child);
+        }
+    }
+    private static void removeInputManager(Entity e){
+        if(e instanceof KeyControlable){
+            inputManager.removeKeyControlable((KeyControlable) e);
+        }
+        if(e instanceof MouseControlable){
+            inputManager.removeMouseControlable((MouseControlable) e);
+        }
+        for(var child : e.getChilds()){
+            removeInputManager(child);
+        }
+    }
+    private static void assignCollidable(Entity e){
+        if(e instanceof Collidable){
+                renderingPanel.addCollidable((Collidable) e);
+                
+            }
+        for(var child : e.getChilds()){
+                    assignCollidable(child);
+                }
+    }
+    private static void removeCollidable(Entity e){
+        if(e instanceof Collidable){
+                renderingPanel.removeCollidable((Collidable) e);
+                
+            }
+        for(var child : e.getChilds()){
+                    removeCollidable(child);
+                }
     }
 }

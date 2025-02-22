@@ -2,25 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.Entities;
+package Entities.UI;
 
-import Datas.Vector2;
-import Datas.Vector2Int;
-import Entities.SpriteEntity;
 import Scenes.Scene;
-import Utilities.FileReader;
 
 /**
  *
  * @author GA_IA
  */
-public class Mutsuki extends SpriteEntity{
+public class UIButtonText extends UIText{
 
-    public Mutsuki(Scene s) {
+    public UIButtonText(Scene s) {
         super(s);
-        setSprite(FileReader.readImage("res/game/mutsuki.png"));
-        setSpriteSize(getSpriteSize().multiply(0.3f));
-        setPosition(getPosition().add(Vector2.up().multiply(100)));
     }
 
     @Override
@@ -32,9 +25,10 @@ public class Mutsuki extends SpriteEntity{
     public void update() {
 
     }
+
     @Override
     public void fixedUpdate() {
-       
+
     }
     
 }

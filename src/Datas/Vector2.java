@@ -36,6 +36,9 @@ public class Vector2 {
     public Vector2 add(Vector2 vec2){
         return new Vector2(x + vec2.getX(), y + vec2.getY());
     }
+    public Vector2 add(Vector2Int vec2){
+        return new Vector2(x + vec2.getX(), y + vec2.getY());
+    }
     public Vector2 add(float a){
         return new Vector2(x + a, y + a);
     }
@@ -48,26 +51,39 @@ public class Vector2 {
     public Vector2 multiply(Vector2 vec2){
         return new Vector2(x * vec2.getX(), y * vec2.getY());
     }
+    public Vector2 multiply(Vector2Int vec2){
+        return new Vector2(x * vec2.getX(), y * vec2.getY());
+    }
     public Vector2 translate(Vector2 direction, float speed){
-        return this.multiply(direction.multiply(speed));
+        return this.add(direction.multiply(speed));
+    }
+    @Override
+    public String toString(){
+        return "("+this.x + ", "+this.getY()+")";
     }
     
-    public static Vector2 zero(){
+    public static final Vector2 zero(){
         return new Vector2(0f, 0f);
     }
-    public static Vector2 up(){
+    public static final Vector2 up(){
         return new Vector2(0f, 1f);
     }
-    public static Vector2 down(){
+    public static final Vector2 down(){
         return new Vector2(0f, -1f);
     }
-    public static Vector2 left(){
+    public static final Vector2 left(){
         return new Vector2(-1f, 0f);
     }
-    public static Vector2 right(){
+    public static final Vector2 right(){
         return new Vector2(1f, 0f);
     }
-    public static Vector2 one(){
+    public static final Vector2 one(){
         return new Vector2(1f, 1f);
-    }    
+    }
+    public static final Vector2 negativeX(){
+        return new Vector2(-1f, 1f);
+    } 
+    public static final Vector2 negativeY(){
+        return new Vector2(1f, -1f);
+    }
 }

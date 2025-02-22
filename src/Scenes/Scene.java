@@ -6,8 +6,9 @@ package Scenes;
 
 import Entities.Camera;
 import Entities.Entity;
-import java.util.ArrayList;
+import Entities.UI.UIView;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -18,11 +19,13 @@ public abstract class Scene {
     private String name;
     private List<Entity> entities;
     private Camera mainCamera = null;
+    private UIView mainUIView = null;
     
     public Scene(){
-        entities = new ArrayList<>();
+        entities = new CopyOnWriteArrayList<>();
         name = this.getClass().getTypeName();
         mainCamera = new Camera(this);
+        mainUIView = new UIView(this);
     }
     
     public final void assignID(int id){
@@ -36,7 +39,9 @@ public abstract class Scene {
     public abstract void load();
     
     public void unload(){
-        entities.clear();
+        for(var e : entities){
+            removeEntity(e);
+        }
     }
     
     public int getId() {
@@ -53,17 +58,34 @@ public abstract class Scene {
     
     public void addEntity(Entity e){
         entities.add(e);
+        SceneManager.addToRender(e);
     }
     
     public void removeEntity(Entity e){
+        SceneManager.removeFromRender(e);
         entities.remove(e);
     }
 
     public List<Entity> getEntities() {
         return entities;
     }
+    public <T extends Entity> T getEntity(String name){
+        for(var e : entities){
+            if(e.getName().equals(name)){
+                return (T) e;
+            }
+        }
+        System.err.println("Entity with name: \""+ name +"\" does not exist.");
+        return null;
+    }
+
     
     public Camera getCamera(){
         return mainCamera;
     }
+
+    public UIView getUIView() {
+        return mainUIView;
+    }
+    
 }

@@ -2,33 +2,33 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.Entities;
+package Main.UI.Example;
 
 import Datas.Vector2;
-import Datas.Vector2Int;
-import Entities.SpriteEntity;
+import Entities.UI.UIProgressBar;
+import Physics.Time;
 import Scenes.Scene;
-import Utilities.FileReader;
 
 /**
  *
  * @author GA_IA
  */
-public class Lucy extends SpriteEntity{
+public class MyProgressBar extends UIProgressBar{
 
-    public Lucy(Scene s) {
+    public MyProgressBar(Scene s) {
         super(s);
-        setSprite(FileReader.readImage("res/game/lucy.png"));
-        setSpriteSize(getSpriteSize().multiply(0.3f));       
     }
 
     @Override
     public void start() {
-        
+        setMin(-50);
+        setMax(50);
+        setValue(50);
     }
 
     @Override
     public void update() {
+        
     }
 
     @Override

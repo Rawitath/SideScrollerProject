@@ -30,7 +30,7 @@ public class Camera extends Entity{
         this.screenSize = screenSize;
     }
     
-    public double getZoom() {
+    public float getZoom() {
         return zoom;
     }
 
@@ -41,8 +41,8 @@ public class Camera extends Entity{
     public Vector2 getPositionOffset(){
         Vector2 output = new Vector2();
         return output.add(new Vector2(
-               screenSize.width * zoom / 2 - getPosition().getX(),
-               screenSize.height * zoom / 2 - getPosition().getY()
+               screenSize.width / 2 - getPosition().getX(),
+               screenSize.height / 2 - getPosition().getY()
         ));
     }
     public Vector2 getScaleOffset(){
