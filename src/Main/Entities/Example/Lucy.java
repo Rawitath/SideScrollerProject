@@ -46,6 +46,8 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         
         animator = new Animator();
         animator.setAnimation(new LucyBreathAnim());
+        
+        setTag("Lucy");
     }
 
     @Override
@@ -85,12 +87,10 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     @Override
     public void onKeyPressed(KeyEvent e, int keyCode) {
         if(keyCode == KeyEvent.VK_D){
-            direction = Vector2.right();
             setFlip(Vector2.negativeX());
             
         }
         if(keyCode == KeyEvent.VK_A){
-            direction = Vector2.left();
             setFlip(Vector2.one());
         }
         if(keyCode == KeyEvent.VK_SPACE){

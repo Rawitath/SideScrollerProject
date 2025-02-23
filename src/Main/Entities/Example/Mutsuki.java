@@ -10,13 +10,18 @@ import Entities.CollidableEntity;
 import Physics.Collider;
 import Physics.Time;
 import Scenes.Scene;
+import Scenes.SceneManager;
 import Utilities.FileReader;
+import java.awt.event.KeyEvent;
+import Inputs.KeyControlable;
 
 /**
  *
  * @author GA_IA
  */
-public class Mutsuki extends CollidableEntity{
+public class Mutsuki extends CollidableEntity implements KeyControlable{
+    
+    
     
     private Vector2 direction;
     private float speed = 18f;
@@ -27,6 +32,7 @@ public class Mutsuki extends CollidableEntity{
         super(s);
         setSprite(FileReader.readImage("res/game/mutsuki.png"));
         setTag("Enemy");
+        direction = Vector2.zero();
     }
 
     @Override
@@ -43,11 +49,16 @@ public class Mutsuki extends CollidableEntity{
 
     @Override
     public void fixedUpdate() {
-        //setPosition(getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
+        setPosition(getPosition().translate(direction, speed * Time.fixedDeltaTime()));
         setPosition(getPosition().translate(Vector2.down(), fallAcceration * Time.fixedDeltaTime()));
         if(!grounded){
             fallAcceration += Constants.gravityValue;
         }
+        //setPosition(getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
+//        setPosition(getPosition().translate(Vector2.down(), fallAcceration * Time.fixedDeltaTime()));
+//        if(!grounded){
+//            fallAcceration += Constants.gravityValue;
+//        }
     }
 
     @Override
@@ -69,6 +80,33 @@ public class Mutsuki extends CollidableEntity{
         if(other.getEntity().getTag().equals("Ground")){
             grounded = false;
         }
+    }
+        @Override
+    public void onKeyPressed(KeyEvent e, int keyCode) {
+        if(keyCode == KeyEvent.VK_D){
+            direction = Vector2.left();
+            
+        }
+        if(keyCode == KeyEvent.VK_A){
+            direction = Vector2.right();
+        }
+        if(keyCode == KeyEvent.VK_SPACE){
+            if(grounded){
+                fallAcceration = -80f;
+            }
+        }
+    }
+
+    @Override
+    public void onKeyReleased(KeyEvent e, int keyCode) {
+        if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_A){
+            direction = Vector2.zero();
+        }
+    }
+
+    @Override
+    public void onKeyTyped(KeyEvent e, int keyCode) {
+        
     }
     
 }
