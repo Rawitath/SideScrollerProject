@@ -19,11 +19,9 @@ import java.util.logging.Logger;
  */
 public class SaveSerializer {
     public static void save(GameSave save){
-        try (FileOutputStream file = new FileOutputStream("saves/"+"save"+save.saveNumber+".lucy");){
-            ObjectOutputStream os = new ObjectOutputStream(file);
+        try (FileOutputStream file = new FileOutputStream("saves/"+"save"+save.saveNumber+".lucy");
+                ObjectOutputStream os = new ObjectOutputStream(file);){    
             os.writeObject(save);
-            os.close();
-            file.close();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(SaveSerializer.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex){
@@ -31,11 +29,9 @@ public class SaveSerializer {
         }
     }
     public static GameSave load(int saveNumber){
-        try (FileInputStream file = new FileInputStream("saves/"+"save"+saveNumber+".lucy");){
-            ObjectInputStream os = new ObjectInputStream(file);
+        try (FileInputStream file = new FileInputStream("saves/"+"save"+saveNumber+".lucy");
+                ObjectInputStream os = new ObjectInputStream(file);){
             GameSave save = (GameSave) os.readObject();
-            os.close();
-            file.close();
             return save;
         } catch (FileNotFoundException ex) {
             Logger.getLogger(SaveSerializer.class.getName()).log(Level.SEVERE, null, ex);
