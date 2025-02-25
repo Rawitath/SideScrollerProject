@@ -51,19 +51,11 @@ public class Ground extends CollidableEntity implements KeyControlable{
     @Override
     public void fixedUpdate() {
         setPosition(getPosition().translate(direction, speed * Time.fixedDeltaTime()));
-        setPosition(getPosition().translate(Vector2.up(), upSpeed * Time.fixedDeltaTime()));
-        if(!lucy){
-            upSpeed += Constants.gravityValue;
-        }
+        setPosition(getPosition().translate(Vector2.zero(), upSpeed * Time.fixedDeltaTime()));
     }
 
     @Override
     public void onColliderEnter(Collider other) {
-        if(other.getEntity().getTag().equals("Lucy") || other.getEntity().getTag().equals("Enemy")){
-            upSpeed = 0f;
-            lucy = true;
-            enemy = true;
-        }
     }
 
     @Override
@@ -74,9 +66,6 @@ public class Ground extends CollidableEntity implements KeyControlable{
 
     @Override
     public void onColliderExit(Collider other) {
-        if(other.getEntity().getTag().equals("Lucy")){
-            lucy = false;
-        }
     }
     
     @Override
@@ -87,11 +76,6 @@ public class Ground extends CollidableEntity implements KeyControlable{
         }
         if(keyCode == KeyEvent.VK_A){
             direction = Vector2.right();
-        }
-        if(keyCode == KeyEvent.VK_SPACE){
-            if(lucy){
-                upSpeed = -80f;
-            }
         }
     }
 

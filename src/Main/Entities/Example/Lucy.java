@@ -95,7 +95,7 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         }
         if(keyCode == KeyEvent.VK_SPACE){
             if(grounded){
-                fallSpeed = -80f;
+                fallSpeed = -100f;
             }
         }
         if(keyCode == KeyEvent.VK_P){

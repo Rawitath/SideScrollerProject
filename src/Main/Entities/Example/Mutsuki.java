@@ -54,11 +54,6 @@ public class Mutsuki extends CollidableEntity implements KeyControlable{
         if(!grounded){
             fallAcceration += Constants.gravityValue;
         }
-        //setPosition(getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
-//        setPosition(getPosition().translate(Vector2.down(), fallAcceration * Time.fixedDeltaTime()));
-//        if(!grounded){
-//            fallAcceration += Constants.gravityValue;
-//        }
     }
 
     @Override
@@ -89,11 +84,6 @@ public class Mutsuki extends CollidableEntity implements KeyControlable{
         }
         if(keyCode == KeyEvent.VK_A){
             direction = Vector2.right();
-        }
-        if(keyCode == KeyEvent.VK_SPACE){
-            if(grounded){
-                fallAcceration = -80f;
-            }
         }
     }
 
