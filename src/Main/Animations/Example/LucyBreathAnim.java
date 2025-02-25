@@ -17,5 +17,6 @@ public class LucyBreathAnim extends Animation{
         super();
         setSpriteSheet(FileReader.readImage("res/game/animation/lucy_breath.png"));
         sliceSprite(12, 128, 128, 12);
+        setLoop(true);
     }
 }

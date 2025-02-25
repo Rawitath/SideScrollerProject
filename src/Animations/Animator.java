@@ -35,10 +35,15 @@ public class Animator {
 //    public void removeAnimation(Animation anim){
 //        animations.remove(anim);
 //    }
-    public void setAnimation(Animation animation) {
-        this.animation = animation;
+    public void setAnimation(Animation animation, boolean resetAnimation) {
+        if(this.animation == null || (this.animation.getClass() != animation.getClass() || resetAnimation)){
+            this.animation = animation;
         time = 0f;
         frame = 0;
+        }
+    }
+    public void setAnimation(Animation animation) {
+        setAnimation(animation, false);
     }
 
     public BufferedImage getFrame(float time) {
@@ -49,11 +54,13 @@ public class Animator {
         this.time += time;
         if(this.time >= 1f / animation.getFps()){
             this.time = 0f;
-            if(frame + 1 >= animation.getSpriteFrame().length){
+            if(frame + 1 >= animation.getSpriteFrame().length && animation.isLoop()){
                 frame = 0;
             }
             else{
-                frame++;
+                if(frame < animation.getSpriteFrame().length - 1){
+                    frame++;
+                }     
             }
         }
         return animation.getSpriteFrame()[frame];
