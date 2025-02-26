@@ -28,7 +28,6 @@ import java.awt.event.KeyEvent;
  */
 public class Lucy extends CollidableEntity implements KeyControlable{
 
-    private Vector2 direction;
     private float speed = 18f;
     private float fallSpeed = 0f;
     private UIText lifeNum;
@@ -42,7 +41,6 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     public Lucy(Scene s) {
         super(s);
         setSprite(FileReader.readImage("res/game/lucypixel.png"));
-        direction = Vector2.zero();
         
         animator = new Animator();
         animator.setAnimation(new LucyBreathAnim());
@@ -77,7 +75,7 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     
     @Override
     public void fixedUpdate() {
-        setPosition(getPosition().translate(direction, speed * Time.fixedDeltaTime()));
+        setPosition(getPosition().translate(Vector2.zero(), speed * Time.fixedDeltaTime()));
         setPosition(getPosition().translate(Vector2.down(), fallSpeed * Time.fixedDeltaTime()));
         if(!grounded){
             fallSpeed += Constants.gravityValue;
@@ -88,7 +86,6 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     public void onKeyPressed(KeyEvent e, int keyCode) {
         if(keyCode == KeyEvent.VK_D){
             setFlip(Vector2.negativeX());
-            
         }
         if(keyCode == KeyEvent.VK_A){
             setFlip(Vector2.one());
@@ -105,9 +102,7 @@ public class Lucy extends CollidableEntity implements KeyControlable{
 
     @Override
     public void onKeyReleased(KeyEvent e, int keyCode) {
-        if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_A){
-            direction = Vector2.zero();
-        }
+        
     }
 
     @Override
