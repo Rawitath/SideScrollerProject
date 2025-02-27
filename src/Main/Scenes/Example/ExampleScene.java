@@ -23,7 +23,6 @@ public class ExampleScene extends Scene{
 
     @Override
     public void load() {
-        getCamera().setZoom(20f);
         
         AudioSource audio = new AudioSource(this);
         audio.setAudioClip("res/sound/whereami.wav");

@@ -20,7 +20,7 @@ import java.awt.event.KeyEvent;
  *
  * @author GA_IA
  */
-public class Ground extends CollidableEntity implements KeyControlable{
+public class Ground extends CollidableEntity{
     private Vector2 direction;
     private float speed = 18f;
     private float upSpeed = 0f;

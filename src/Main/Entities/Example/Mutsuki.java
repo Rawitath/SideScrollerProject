@@ -19,7 +19,7 @@ import Inputs.KeyControlable;
  *
  * @author GA_IA
  */
-public class Mutsuki extends CollidableEntity implements KeyControlable{
+public class Mutsuki extends CollidableEntity{
     
     
     

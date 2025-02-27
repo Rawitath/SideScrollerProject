@@ -8,6 +8,7 @@ import Datas.Vector2;
 import Datas.Vector2Int;
 import Entities.Entity;
 import Scenes.Scene;
+import Shifter.UIView;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
@@ -50,8 +51,8 @@ public abstract class UIEntity extends Entity{
             this.screenAnchor = parent.getScale().multiply(0.5f).multiply(screenAnchor);
         }
         else{
-            this.screenAnchor = new Vector2((getScene().getUIView().getReferenceResolution().getX() / 2),
-               (getScene().getUIView().getReferenceResolution().getY() / 2)).multiply(screenAnchor);
+            this.screenAnchor = new Vector2((UIView.getReferenceResolution().getX() / 2),
+               (UIView.getReferenceResolution().getY() / 2)).multiply(screenAnchor);
         }
         
     }
@@ -102,8 +103,8 @@ public abstract class UIEntity extends Entity{
     @Override
     public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
         if(isBoundaryVisibled()){
-            Dimension screen = getScene().getUIView().getScreenSize();
-            Vector2Int reference = getScene().getUIView().getReferenceResolution();
+            Dimension screen = UIView.getScreenSize();
+            Vector2Int reference = UIView.getReferenceResolution();
             Vector2 pos = getPosition().add(getScreenAnchor()).multiply(Vector2.negativeY())
                     .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()))
                     .add(posOffset);

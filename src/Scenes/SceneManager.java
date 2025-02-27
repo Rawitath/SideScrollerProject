@@ -84,14 +84,6 @@ public class SceneManager {
             inputManager.clearKeyControlable();
         }
         currentScene = getScene(sceneID);
-        if(currentScene.getCamera() == null){
-            System.err.println(currentScene.getName() + " has no Camera");
-            return;
-        }
-        currentScene.getCamera().setScreenSize(renderingPanel.getSize());
-        renderingPanel.setCurrentCamera(currentScene.getCamera());
-        currentScene.getUIView().setScreenSize(renderingPanel.getSize());
-        renderingPanel.setCurrentUIView(currentScene.getUIView());
         currentScene.load();
         renderingPanel.setRunning(true);
     }

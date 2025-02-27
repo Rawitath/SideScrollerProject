@@ -16,7 +16,6 @@ public class SecondScene extends Scene{
 
     @Override
     public void load() {
-        getCamera().setZoom(20f);
         addEntity(new Mutsuki(this));
     }
     

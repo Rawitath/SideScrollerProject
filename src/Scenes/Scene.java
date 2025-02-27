@@ -4,9 +4,7 @@
  */
 package Scenes;
 
-import Entities.Camera;
 import Entities.Entity;
-import Entities.UI.UIView;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -18,14 +16,10 @@ public abstract class Scene {
     private Integer id = null;
     private String name;
     private List<Entity> entities;
-    private Camera mainCamera = null;
-    private UIView mainUIView = null;
     
     public Scene(){
         entities = new CopyOnWriteArrayList<>();
         name = this.getClass().getTypeName();
-        mainCamera = new Camera(this);
-        mainUIView = new UIView(this);
     }
     
     public final void assignID(int id){
@@ -77,15 +71,6 @@ public abstract class Scene {
         }
         System.err.println("Entity with name: \""+ name +"\" does not exist.");
         return null;
-    }
-
-    
-    public Camera getCamera(){
-        return mainCamera;
-    }
-
-    public UIView getUIView() {
-        return mainUIView;
     }
     
 }

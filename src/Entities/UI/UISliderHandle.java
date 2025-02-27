@@ -6,6 +6,7 @@ package Entities.UI;
 
 import Datas.Vector2;
 import Scenes.Scene;
+import Shifter.UIView;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -78,8 +79,8 @@ public class UISliderHandle extends UIButton{
     }
     @Override
     public void update() {
-        int refX = getScene().getUIView().getReferenceResolution().getX();
-        int screenX = getScene().getUIView().getScreenSize().width;
+        int refX = UIView.getReferenceResolution().getX();
+        int screenX = UIView.getScreenSize().width;
         float ans = MouseInfo.getPointerInfo().getLocation().x * ((float)refX / (float)screenX);
         int delta = (int) (ans - mousePosition);
         if(using){

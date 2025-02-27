@@ -7,6 +7,7 @@ package Entities.UI;
 import Datas.Vector2;
 import Datas.Vector2Int;
 import Scenes.Scene;
+import Shifter.UIView;
 import Utilities.FileReader;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -87,12 +88,9 @@ public abstract class UIText extends UIEntity{
 
     @Override
     public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
-        Dimension screen = getScene().getUIView().getScreenSize();
-        Vector2Int reference = getScene().getUIView().getReferenceResolution();
+        Dimension screen = UIView.getScreenSize();
+        Vector2Int reference = UIView.getReferenceResolution();
         super.draw(g, posOffset, scaleOffset, zoom);
-        
-        
-        
         Vector2 pos = getPosition().add(getScreenAnchor()).multiply(Vector2.negativeY())
                 .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()))
                 .add(posOffset);

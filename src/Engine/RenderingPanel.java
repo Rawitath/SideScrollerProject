@@ -4,7 +4,6 @@
  */
 package Engine;
 
-import Entities.Camera;
 import Entities.Entity;
 import Entities.UI.UIEntity;
 import Entities.UI.UIView;
