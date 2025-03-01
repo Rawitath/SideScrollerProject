@@ -5,12 +5,15 @@
 package Saves;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author GA_IA
  */
 public class GameSave implements Serializable{
+    public LocalDateTime saveCreated;
+    public long playTIme;
     public int saveNumber;
     public int currentChapter;
 }
