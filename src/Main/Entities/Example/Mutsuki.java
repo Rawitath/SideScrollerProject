@@ -27,6 +27,7 @@ public class Mutsuki extends CollidableEntity{
         super(s);
         setSprite(FileReader.readImage("res/game/mutsuki.png"));
         setTag("Enemy");
+        getCollider().setSolid(true);
     }
 
     @Override

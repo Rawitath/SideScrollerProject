@@ -29,6 +29,7 @@ import java.awt.event.KeyEvent;
 public class Lucy extends CollidableEntity implements KeyControlable{
 
     private Vector2 direction;
+    private Vector2 lockDirection;
     private float speed = 18f;
     private float fallSpeed = 0f;
     private UIText lifeNum;
@@ -43,6 +44,7 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         super(s);
         setSprite(FileReader.readImage("res/game/lucypixel.png"));
         direction = Vector2.zero();
+        lockDirection = Vector2.zero();
         
         animator = new Animator();
         animator.setAnimation(new LucyBreathAnim());
@@ -84,12 +86,12 @@ public class Lucy extends CollidableEntity implements KeyControlable{
 
     @Override
     public void onKeyPressed(KeyEvent e, int keyCode) {
-        if(keyCode == KeyEvent.VK_D){
+        if(keyCode == KeyEvent.VK_D && lockDirection.getX() <= 0){
             direction = Vector2.right();
             setFlip(Vector2.negativeX());
             
         }
-        if(keyCode == KeyEvent.VK_A){
+        if(keyCode == KeyEvent.VK_A && lockDirection.getX() >= 0){
             direction = Vector2.left();
             setFlip(Vector2.one());
         }
@@ -122,6 +124,16 @@ public class Lucy extends CollidableEntity implements KeyControlable{
             grounded = true;
         }
         else if(other.getEntity().getTag().equals("Enemy")){
+            if(other.isSolid()){
+                if(getPosition().getX() > other.getEntity().getPosition().getX()){
+                    direction = Vector2.zero();
+                    lockDirection = Vector2.left();
+                }
+                else{
+                    direction = Vector2.zero();
+                    lockDirection = Vector2.right();
+                }
+            }
             life--;
             heartContainer.setHeart(life);
             
@@ -138,6 +150,11 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     public void onColliderExit(Collider other) {
         if(other.getEntity().getTag().equals("Ground")){
             grounded = false;
+        }
+        if(other.getEntity().getTag().equals("Enemy")){
+            if(other.isSolid()){
+                lockDirection = Vector2.zero();
+            }
         }
     }
 }
