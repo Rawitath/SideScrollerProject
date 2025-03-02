@@ -101,7 +101,7 @@ public abstract class UIEntity extends Entity{
 //               -(getScene().getUIView().getReferenceResolution().getY() / 2));
 //    }
     @Override
-    public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
+    public void draw(Graphics g) {
         if(isBoundaryVisibled()){
             Dimension screen = UIView.getScreenSize();
             Vector2Int reference = UIView.getReferenceResolution();

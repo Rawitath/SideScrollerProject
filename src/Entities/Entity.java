@@ -196,7 +196,7 @@ public abstract class Entity{
     public abstract void fixedUpdate();
     public void remove(){}
     
-    public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
+    public void draw(Graphics g) {
         if(isBoundaryVisibled()){
              Vector2 pos = getPosition().multiply(Vector2.negativeY()).multiply(zoom).add(posOffset);
         Vector2 scale = getScale().multiply(scaleOffset);

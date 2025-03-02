@@ -87,7 +87,7 @@ public abstract class UIText extends UIEntity{
     }
 
     @Override
-    public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
+    public void draw(Graphics g) {
         Dimension screen = UIView.getScreenSize();
         Vector2Int reference = UIView.getReferenceResolution();
         super.draw(g, posOffset, scaleOffset, zoom);

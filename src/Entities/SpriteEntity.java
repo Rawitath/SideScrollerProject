@@ -97,7 +97,7 @@ public abstract class SpriteEntity extends Entity{
         this.spriteSize = spriteSize;
     }
     @Override
-    public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
+    public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D)g;
         if(spriteVisibled){
             Vector2 pos = getPosition().multiply(Vector2.negativeY()).add(anchor).multiply(zoom).add(posOffset);
@@ -109,6 +109,6 @@ public abstract class SpriteEntity extends Entity{
                 , Math.round(scale.getY())
                 , null);
         }
-        super.draw(g, posOffset, scaleOffset, zoom);
+        super.draw(g);
     }
 }

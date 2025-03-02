@@ -7,7 +7,6 @@ package Shifter;
 import Datas.Vector2;
 import Entities.Entity;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -15,15 +14,16 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class Shifter {
     private static Vector2 shiftOffset;
-    private static List<Entity> ignoreShift = new CopyOnWriteArrayList<>();
-    
-    
-    public static void addIgnoreShift(Entity e){
-        
+    private static Entity ignoreShift;
+
+    public static Entity getIgnoreShift() {
+        return ignoreShift;
     }
-    public static void removeIgnoreShift(Entity e){
-        
+
+    public static void setIgnoreShift(Entity ignoreShift) {
+        Shifter.ignoreShift = ignoreShift;
     }
+    
     public static void shift(){
         
     }

@@ -147,9 +147,9 @@ public abstract class UIImage extends UIEntity{
     }
     
     @Override
-    public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
+    public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D)g;
-        super.draw(g, posOffset, scaleOffset, zoom);
+        super.draw(g);
         if(imageVisibled){
                     
             Dimension screen = UIView.getScreenSize();

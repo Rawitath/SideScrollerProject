@@ -6,7 +6,6 @@ package Engine;
 
 import Entities.Entity;
 import Entities.UI.UIEntity;
-import Entities.UI.UIView;
 import Physics.Collidable;
 import java.awt.Color;
 import java.awt.Graphics;
