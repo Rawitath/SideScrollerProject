@@ -77,7 +77,7 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     
     @Override
     public void fixedUpdate() {
-        setPosition(getPosition().translate(direction, speed * Time.fixedDeltaTime()));
+        setPosition(getPosition().translate(direction.add(lockDirection.negative()), speed * Time.fixedDeltaTime()));
         setPosition(getPosition().translate(Vector2.down(), fallSpeed * Time.fixedDeltaTime()));
         if(!grounded){
             fallSpeed += Constants.gravityValue;
@@ -86,12 +86,12 @@ public class Lucy extends CollidableEntity implements KeyControlable{
 
     @Override
     public void onKeyPressed(KeyEvent e, int keyCode) {
-        if(keyCode == KeyEvent.VK_D && lockDirection.getX() <= 0){
+        if(keyCode == KeyEvent.VK_D){
             direction = Vector2.right();
             setFlip(Vector2.negativeX());
             
         }
-        if(keyCode == KeyEvent.VK_A && lockDirection.getX() >= 0){
+        if(keyCode == KeyEvent.VK_A){
             direction = Vector2.left();
             setFlip(Vector2.one());
         }
@@ -126,12 +126,14 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         else if(other.getEntity().getTag().equals("Enemy")){
             if(other.isSolid()){
                 if(getPosition().getX() > other.getEntity().getPosition().getX()){
-                    direction = Vector2.zero();
                     lockDirection = Vector2.left();
+                    
+                    //Pushable
+                    other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.left(), speed * Time.fixedDeltaTime()));
                 }
                 else{
-                    direction = Vector2.zero();
                     lockDirection = Vector2.right();
+                    other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
                 }
             }
             life--;
