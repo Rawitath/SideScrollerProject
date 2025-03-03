@@ -11,6 +11,8 @@ import Inputs.InputManager;
 import Inputs.KeyControlable;
 import Inputs.MouseControlable;
 import Physics.Collidable;
+import Shifter.Shifter;
+import Shifter.UIView;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -83,6 +85,7 @@ public class SceneManager {
             renderingPanel.clearEntities();
             inputManager.clearKeyControlable();
         }
+        UIView.setScreenSize(renderingPanel.getSize());
         currentScene = getScene(sceneID);
         currentScene.load();
         renderingPanel.setRunning(true);

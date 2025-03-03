@@ -25,8 +25,6 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     private Queue<Entity> startEntities;
     private List<Entity> updateEntities;
     private List<Collidable> collidables;
-    private Camera currentCamera;
-    private UIView currentUIView;
     private boolean running;
 
     public boolean isRunning() {
@@ -73,21 +71,6 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     }
     public void clearCollidable(){
         collidables.clear();
-    }
-    public Camera getCurrentCamera() {
-        return currentCamera;
-    }
-
-    public void setCurrentCamera(Camera currentCamera) {
-        this.currentCamera = currentCamera;
-    }
-
-    public UIView getCurrentUIView() {
-        return currentUIView;
-    }
-
-    public void setCurrentUIView(UIView currentUIView) {
-        this.currentUIView = currentUIView;
     }
     
     private void doStart(Entity e){
@@ -168,7 +151,7 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     }
     private void doRender(Graphics g, Entity e){
         if(e.isActive()){
-                e.draw(g, currentCamera.getPositionOffset(), currentCamera.getScaleOffset(), currentCamera.getZoom());
+                e.draw(g);
                 for(var child : e.getChilds()){
                     doRender(g, child);
                 }
@@ -176,7 +159,7 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     }
     private void doUIRender(Graphics g, UIEntity e){
         if(e.isActive()){
-                e.draw(g, currentUIView.getPositionOffset(), currentUIView.getScaleOffset(), currentUIView.getZoom());
+                e.draw(g);
                 for(var child : e.getChilds()){
                     doUIRender(g, (UIEntity) child);
                 }

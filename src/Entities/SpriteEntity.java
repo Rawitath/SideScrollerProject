@@ -100,8 +100,8 @@ public abstract class SpriteEntity extends Entity{
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D)g;
         if(spriteVisibled){
-            Vector2 pos = getPosition().multiply(Vector2.negativeY()).add(anchor).multiply(zoom).add(posOffset);
-            Vector2 scale = getScale().multiply(flip).multiply(scaleOffset).multiply(spriteSize).multiply(pixelRatio);
+            Vector2 pos = getPosition().multiply(Vector2.negativeY()).add(anchor);
+            Vector2 scale = getScale().multiply(flip).multiply(spriteSize).multiply(pixelRatio);
             g2d.drawImage(sprite, 
                 Math.round(pos.getX() - (scale.getX() / 2))
                 ,Math.round(pos.getY() - (scale.getY() / 2)),

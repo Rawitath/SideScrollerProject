@@ -30,4 +30,5 @@ public class Shifter {
     public static Vector2 getShiftOffset(){
         return shiftOffset;
     }
+    
 }

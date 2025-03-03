@@ -90,10 +90,10 @@ public abstract class UIText extends UIEntity{
     public void draw(Graphics g) {
         Dimension screen = UIView.getScreenSize();
         Vector2Int reference = UIView.getReferenceResolution();
-        super.draw(g, posOffset, scaleOffset, zoom);
+        super.draw(g);
         Vector2 pos = getPosition().add(getScreenAnchor()).multiply(Vector2.negativeY())
                 .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()))
-                .add(posOffset);
+                ;
         g.setFont(font.deriveFont(0, size));
         g.setColor(color);
         g.drawString(text, Math.round(pos.getX()),Math.round(pos.getY()) );

@@ -1,4 +1,4 @@
-/*
+  /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -106,9 +106,8 @@ public abstract class UIEntity extends Entity{
             Dimension screen = UIView.getScreenSize();
             Vector2Int reference = UIView.getReferenceResolution();
             Vector2 pos = getPosition().add(getScreenAnchor()).multiply(Vector2.negativeY())
-                    .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()))
-                    .add(posOffset);
-            Vector2 scale = getScale().multiply(scaleOffset)
+                    .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()));
+            Vector2 scale = getScale()
                     .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()));
         g.drawRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));
         }

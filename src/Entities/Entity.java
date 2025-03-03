@@ -198,8 +198,8 @@ public abstract class Entity{
     
     public void draw(Graphics g) {
         if(isBoundaryVisibled()){
-             Vector2 pos = getPosition().multiply(Vector2.negativeY()).multiply(zoom).add(posOffset);
-        Vector2 scale = getScale().multiply(scaleOffset);
+             Vector2 pos = getPosition().multiply(Vector2.negativeY());
+        Vector2 scale = getScale();
         g.drawRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));
         }
     }

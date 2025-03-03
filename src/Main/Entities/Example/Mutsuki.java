@@ -76,27 +76,27 @@ public class Mutsuki extends CollidableEntity{
             grounded = false;
         }
     }
-        @Override
-    public void onKeyPressed(KeyEvent e, int keyCode) {
-        if(keyCode == KeyEvent.VK_D){
-            direction = Vector2.left();
-            
-        }
-        if(keyCode == KeyEvent.VK_A){
-            direction = Vector2.right();
-        }
-    }
-
-    @Override
-    public void onKeyReleased(KeyEvent e, int keyCode) {
-        if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_A){
-            direction = Vector2.zero();
-        }
-    }
-
-    @Override
-    public void onKeyTyped(KeyEvent e, int keyCode) {
-        
-    }
-    
+//        @Override
+//    public void onKeyPressed(KeyEvent e, int keyCode) {
+//        if(keyCode == KeyEvent.VK_D){
+//            direction = Vector2.left();
+//            
+//        }
+//        if(keyCode == KeyEvent.VK_A){
+//            direction = Vector2.right();
+//        }
+//    }
+//
+//    @Override
+//    public void onKeyReleased(KeyEvent e, int keyCode) {
+//        if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_A){
+//            direction = Vector2.zero();
+//        }
+//    }
+//
+//    @Override
+//    public void onKeyTyped(KeyEvent e, int keyCode) {
+//        
+//    }
+//    
 }

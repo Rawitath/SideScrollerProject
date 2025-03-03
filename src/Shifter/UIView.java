@@ -13,7 +13,7 @@ import java.awt.Dimension;
  */
 public class UIView {
     private static Dimension screenSize;
-    private static Vector2Int referenceResolution;
+    private static Vector2Int referenceResolution = new Vector2Int(1920, 1080);
 
     public static Dimension getScreenSize() {
         return screenSize;
