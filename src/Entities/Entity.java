@@ -5,6 +5,7 @@
 package Entities;
 
 import Datas.Vector2;
+import Debugger.DebugManager;
 import Debugger.Debuggable;
 import Scenes.Scene;
 import java.awt.Graphics;
@@ -44,7 +45,6 @@ public abstract class Entity implements Debuggable{
         setScale(new Vector2(1.0f, 1.0f));
         setActive(true);
         setBoundaryVisibled(false);
-        
         entityCount++;
     }
     public void onAddedToParent(){

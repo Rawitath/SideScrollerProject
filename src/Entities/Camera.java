@@ -5,14 +5,17 @@
 package Entities;
 
 import Datas.Vector2;
+import Debugger.DebugManager;
+import Inputs.KeyControlable;
 import Scenes.Scene;
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
 
 /**
  *
  * @author GA_IA
  */
-public class Camera extends Entity{
+public class Camera extends Entity implements KeyControlable{
     private Dimension screenSize;
     private float zoom;
 
@@ -69,6 +72,38 @@ public class Camera extends Entity{
     @Override
     public void onDebugActivate() {
         super.onDebugActivate();
+    }
+
+    @Override
+    public void onKeyPressed(KeyEvent e, int keyCode) {
+        if(keyCode == KeyEvent.VK_I && DebugManager.isDebug()){
+            setPosition(getPosition().translate(Vector2.down(), 20));
+        }
+        if(keyCode == KeyEvent.VK_K && DebugManager.isDebug()){
+            setPosition(getPosition().translate(Vector2.up(), 20));
+        }
+        if(keyCode == KeyEvent.VK_J && DebugManager.isDebug()){
+            setPosition(getPosition().translate(Vector2.left(), 20));
+        }
+        if(keyCode == KeyEvent.VK_L && DebugManager.isDebug()){
+            setPosition(getPosition().translate(Vector2.right(), 20));
+        }
+        if(keyCode == KeyEvent.VK_U && DebugManager.isDebug()){
+            zoom -= 0.1f;
+        }
+        if(keyCode == KeyEvent.VK_O && DebugManager.isDebug()){
+            zoom += 0.1f;
+        }
+    }
+
+    @Override
+    public void onKeyReleased(KeyEvent e, int keyCode) {
+
+    }
+
+    @Override
+    public void onKeyTyped(KeyEvent e, int keyCode) {
+
     }
     
 }

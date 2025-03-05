@@ -27,6 +27,6 @@ public class Main {
         window.setIconImage(FileReader.readImage("res/icon/aronadaingai.jpg"));
         window.start();
         
-        DebugManager.useDebug();
+        //DebugManager.useDebug();
     }
 }

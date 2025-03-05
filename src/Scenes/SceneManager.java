@@ -94,6 +94,8 @@ public class SceneManager {
         renderingPanel.setCurrentCamera(currentScene.getCamera());
         currentScene.getUIView().setScreenSize(renderingPanel.getSize());
         renderingPanel.setCurrentUIView(currentScene.getUIView());
+        addToRender(currentScene.getCamera());
+        addToRender(currentScene.getUIView());
         currentScene.load();
         renderingPanel.setRunning(true);
     }
