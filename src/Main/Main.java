@@ -17,6 +17,9 @@ import Utilities.FileReader;
  */
 public class Main {
     public static void main(String[] args) {
+        
+        DebugManager.useDebug();
+        
         //Scene added here
         SceneManager.addScene(new ExampleScene()); // This Scene will be loaded first
         
@@ -26,7 +29,5 @@ public class Main {
         SceneManager.setInputManager(window.getInputManager());
         window.setIconImage(FileReader.readImage("res/icon/aronadaingai.jpg"));
         window.start();
-        
-        //DebugManager.useDebug();
     }
 }

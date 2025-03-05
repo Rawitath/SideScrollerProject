@@ -4,6 +4,7 @@
  */
 package Debugger;
 
+import Entities.Entity;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -15,6 +16,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class DebugManager {
     private static boolean debug;
     private static List<Debuggable> debugObjects = new CopyOnWriteArrayList<>();
+    
+    private static DebugWindow debugWindow = null;
 
     public static boolean isDebug() {
         return debug;
@@ -30,8 +33,12 @@ public class DebugManager {
     }
     public static void useDebug(){
         DebugManager.debug = true;
+        debugWindow = new DebugWindow();
         for(Debuggable d : debugObjects){
             d.onDebugActivate();
         }
-    }   
+    }
+    public static void debugEntity(Entity e){
+        debugWindow.debugEntity(e);
+    }
 }

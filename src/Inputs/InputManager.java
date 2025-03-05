@@ -8,6 +8,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -15,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * @author GA_IA
  */
-public class InputManager implements KeyListener, MouseListener{
+public class InputManager implements KeyListener, MouseListener, MouseWheelListener{
     private List<KeyControlable> keyCons;
     private List<MouseControlable> mouseCons;
     
@@ -98,5 +101,11 @@ public class InputManager implements KeyListener, MouseListener{
            m.onMouseExited(e);
         }
     }
-    
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        for(var m : mouseCons){
+           m.onMouseWheelMoved(e);
+        }
+    }
 }

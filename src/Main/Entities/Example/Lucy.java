@@ -9,6 +9,7 @@ import Main.UI.Example.HeartContainer;
 import Datas.Constants;
 import Datas.Vector2;
 import Datas.Vector2Int;
+import Debugger.DebugManager;
 import Entities.Audios.AudioSource;
 import Entities.CollidableEntity;
 import Entities.UI.UIText;
@@ -71,6 +72,8 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     public void update() {
         lifeNum.setText("Life : "+ String.valueOf(life));
         setSprite(animator.getFrame(Time.deltaTime()));
+        
+        DebugManager.debugEntity(this);
     }
     
     @Override

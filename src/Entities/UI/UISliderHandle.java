@@ -10,6 +10,7 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 /**
  *
@@ -114,5 +115,9 @@ public class UISliderHandle extends UIButton{
     public void fixedUpdate() {
         
     }
-    
+
+    @Override
+    public void onMouseWheelMoved(MouseWheelEvent e) {
+
+    }
 }

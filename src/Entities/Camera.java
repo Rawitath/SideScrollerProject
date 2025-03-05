@@ -7,15 +7,18 @@ package Entities;
 import Datas.Vector2;
 import Debugger.DebugManager;
 import Inputs.KeyControlable;
+import Inputs.MouseControlable;
 import Scenes.Scene;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 /**
  *
  * @author GA_IA
  */
-public class Camera extends Entity implements KeyControlable{
+public class Camera extends Entity implements KeyControlable, MouseControlable{
     private Dimension screenSize;
     private float zoom;
 
@@ -105,5 +108,34 @@ public class Camera extends Entity implements KeyControlable{
     public void onKeyTyped(KeyEvent e, int keyCode) {
 
     }
-    
+
+    @Override
+    public void onMouseClicked(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void onMousePressed(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void onMouseReleased(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void onMouseEntered(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void onMouseExited(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void onMouseWheelMoved(MouseWheelEvent e) {
+        zoom += e.getWheelRotation();
+    }
 }
