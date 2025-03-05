@@ -5,6 +5,7 @@
 package Entities;
 
 import Datas.Vector2;
+import Debugger.Debuggable;
 import Scenes.Scene;
 import java.awt.Graphics;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * @author GA_IA
  */
-public abstract class Entity{
+public abstract class Entity implements Debuggable{
     private static int entityCount = 0; 
     
     private int id;
@@ -203,4 +204,10 @@ public abstract class Entity{
         g.drawRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));
         }
     }
+
+    @Override
+    public void onDebugActivate() {
+        setBoundaryVisibled(true);
+    }
+    
 }

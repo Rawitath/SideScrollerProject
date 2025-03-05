@@ -4,6 +4,7 @@
  */
 package Main;
 
+import Debugger.DebugManager;
 import Main.Scenes.Example.ExampleScene;
 import Engine.EngineFrame;
 import Physics.Time;
@@ -25,5 +26,7 @@ public class Main {
         SceneManager.setInputManager(window.getInputManager());
         window.setIconImage(FileReader.readImage("res/icon/aronadaingai.jpg"));
         window.start();
+        
+        DebugManager.useDebug();
     }
 }

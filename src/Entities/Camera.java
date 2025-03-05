@@ -65,5 +65,10 @@ public class Camera extends Entity{
     public void fixedUpdate() {
 
     }
+
+    @Override
+    public void onDebugActivate() {
+        super.onDebugActivate();
+    }
     
 }

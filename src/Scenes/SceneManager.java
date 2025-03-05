@@ -5,6 +5,8 @@
  */
 package Scenes;
 
+import Debugger.DebugManager;
+import Debugger.Debuggable;
 import Engine.RenderingPanel;
 import Entities.Entity;
 import Inputs.InputManager;
@@ -96,14 +98,32 @@ public class SceneManager {
         renderingPanel.setRunning(true);
     }
     public static void addToRender(Entity e){
+        assignDebugManager(e);
         renderingPanel.addEntities(e);
             assignInputManager(e);
             assignCollidable(e);
     }
     public static void removeFromRender(Entity e){
+        removeDebugManager(e);
             renderingPanel.removeEntities(e);
             removeInputManager(e);
             removeCollidable(e);
+    }
+    private static void assignDebugManager(Entity e){
+        if(e instanceof Debuggable){
+            DebugManager.addDebugObject((Debuggable) e);
+        }
+        for(var child : e.getChilds()){
+            assignDebugManager(child);
+        }
+    }
+    private static void removeDebugManager(Entity e){
+        if(e instanceof Debuggable){
+            DebugManager.removeDebugObject((Debuggable) e);
+        }
+        for(var child : e.getChilds()){
+            removeDebugManager(child);
+        }
     }
     private static void assignInputManager(Entity e){
         if(e instanceof KeyControlable){
