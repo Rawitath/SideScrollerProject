@@ -33,7 +33,9 @@ public class ExampleScene extends Scene{
         addEntity(new HellBackground(this));
         addEntity(new Ground(this));
         addEntity(new Mutsuki(this));
-        addEntity(new Lucy(this));
+        Lucy lucy = new Lucy(this);
+        lucy.setName("Lucy"); // set name for lucy to let her use it in uiimg
+        addEntity(lucy);
         
         addEntity(new HelloWorld(this));
         addEntity(new HeartContainer(this));

@@ -6,6 +6,9 @@ package Entities.UI;
 
 import Datas.Vector2;
 import Datas.Vector2Int;
+import Main.Entities.Example.Inventory;         //Inventory update
+import Main.Entities.Example.InventoryItem;     //Inventory update
+import Main.Entities.Example.Lucy;              //Inventory update
 import Scenes.Scene;
 import Utilities.FileReader;
 import java.awt.AlphaComposite;
@@ -173,6 +176,39 @@ public abstract class UIImage extends UIEntity{
                 screenSize.getX()
                 , 
                 screenSize.getY(), null);
+        }
+        drawHotbar(g); //Inventory update
+    }
+    public void drawHotbar(Graphics g) { //Big Inventory update
+        int slotSize = 50;
+        int slotSpacing = 5;
+        int totalWidth = (slotSize + slotSpacing) * 9 - slotSpacing;
+        int startX = (getScene().getUIView().getScreenSize().width - totalWidth) / 2;
+        int startY = getScene().getUIView().getScreenSize().height - slotSize - 20;
+
+        Lucy lucy = (Lucy) getScene().getEntity("Lucy");
+
+        if (lucy == null) {
+            System.err.println("Error: Lucy entity not found in the scene!");
+            return;
+        }
+
+        Inventory inventory = lucy.getInventory();
+
+
+        for (int i = 0; i < 9; i++) {
+            int x = startX + i * (slotSize + slotSpacing);
+
+            g.drawRect(x, startY, slotSize, slotSize);
+
+            InventoryItem item = inventory.getItems()[i];
+            if (item != null) {
+                g.drawImage(item.getIcon(), x + 5, startY + 5, slotSize - 10, slotSize - 10, null);
+            }
+
+            if (i == inventory.getSelectedSlot()) {
+                g.drawRect(x - 2, startY - 2, slotSize + 4, slotSize + 4);
+            }
         }
     }
 }
