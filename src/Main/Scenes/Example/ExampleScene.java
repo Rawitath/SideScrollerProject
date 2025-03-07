@@ -11,6 +11,7 @@ import Main.Entities.Example.Ground;
 import Main.Entities.Example.Lucy;
 import Main.Entities.Example.Mutsuki;
 import Entities.Audios.AudioSource;
+import Main.UI.Example.InventoryBar;
 import Main.UI.Example.MySlider;
 import Main.UI.Example.ThisIsExample;
 import Scenes.Scene;
@@ -41,6 +42,7 @@ public class ExampleScene extends Scene{
         addEntity(new HeartContainer(this));
         addEntity(new ThisIsExample(this));
         addEntity(new MySlider(this));
+        addEntity(new InventoryBar(this));
 //        addEntity(new MyProgressBar(this));
     }
     

@@ -67,8 +67,6 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         AudioSource a = getScene().getEntity("Music");
 //        a.loop(true);
 //        a.play();
-        
-//        setColliderVisibled(true);
         setSpriteSize(new Vector2Int(128, 128));
         setPixelRatio(0.1f);
     }
