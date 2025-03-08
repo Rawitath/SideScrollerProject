@@ -21,6 +21,9 @@ import java.awt.Graphics;
 public class InventoryBar extends UIEntity{
 
     private UIImage selector;
+    
+    Inventory inventory;
+    
     public InventoryBar(Scene s) {
         super(s);
         selector = new UIImageDisplay(s);
@@ -30,12 +33,21 @@ public class InventoryBar extends UIEntity{
 
     @Override
     public void start() {
+        
+        Lucy lucy = (Lucy) getScene().getEntity("Lucy");
+
+        if (lucy == null) {
+            System.err.println("Error: Lucy entity not found in the scene!");
+            return;
+        }
+        inventory = lucy.getInventory();
+        
         drawHotbar(); //Inventory update
     }
 
     @Override
     public void update() {
-
+        selector.setPosition(getChilds().get(inventory.getSelectedSlot() + 1).getPosition());
     }
 
     @Override
@@ -49,31 +61,21 @@ public class InventoryBar extends UIEntity{
         int startX = -totalWidth / 2;
         int startY = -(getScene().getUIView().getReferenceResolution().getY() / 2 - slotSize - 20);
 
-        Lucy lucy = (Lucy) getScene().getEntity("Lucy");
-
-        if (lucy == null) {
-            System.err.println("Error: Lucy entity not found in the scene!");
-            return;
-        }
-
-        Inventory inventory = lucy.getInventory();
-
-
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < inventory.getSize(); i++) {
             int x = startX + i * (slotSize + slotSpacing);
             InventorySlot e = new InventorySlot(getScene());
             addChild(e);
             e.setPosition(new Vector2(x, startY));
             e.setScale(Vector2.one().multiply(slotSize));
-            InventoryItem item = inventory.getItems()[i];
+            //InventoryItem item = inventory.getItems()[i];
 //            if (item != null) {
 //                g.drawImage(item.getIcon(), x + 5, startY + 5, slotSize - 10, slotSize - 10, null);
 //            }
 //
-            if (i == inventory.getSelectedSlot()) {
-                selector.setPosition(new Vector2(x - 2, startY - 2));
-                selector.setScale(new Vector2(slotSize * 1.2f, slotSize * 1.2f));
-            }
+//            if (i == inventory.getSelectedSlot()) {
+//                selector.setPosition(new Vector2(x - 2, startY - 2));
+//                selector.setScale(new Vector2(slotSize * 1.2f, slotSize * 1.2f));
+//            }
         }
     }
         

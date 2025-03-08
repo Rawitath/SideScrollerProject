@@ -108,6 +108,13 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         if (keyCode == KeyEvent.VK_E) { //Inventory update E to use
             inventory.useSelectedItem();
         }
+        if (keyCode == KeyEvent.VK_U) { //Inventory update E to use
+            
+            inventory.scrollDown();
+        }
+        if (keyCode == KeyEvent.VK_I) { //Inventory update E to use
+            inventory.scrollUp();
+        }
     }
     public Inventory getInventory() { //Inventory update getInventory method
         return inventory;

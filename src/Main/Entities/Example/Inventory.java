@@ -16,10 +16,17 @@ public class Inventory {
     private InventoryItem[] slots;
     private int selectedSlot = 0;
 
+    public Inventory(int size){
+        slots = new InventoryItem[size];
+    }
     public Inventory() {
-        slots = new InventoryItem[9];
+        this(9);
     }
 
+    public int getSize() {
+        return slots.length;
+    }
+    
     public boolean addItem(InventoryItem item) {
         for (int i = 0; i < slots.length; i++) {
             if (slots[i] == null) { 
@@ -36,11 +43,20 @@ public class Inventory {
         }
     }
 
-    public void scroll(MouseWheelEvent e) {
+    public void scroll() {
         //selection method coming soon
         
         if (selectedSlot < 0) selectedSlot = slots.length - 1;
         if (selectedSlot >= slots.length) selectedSlot = 0;
+    }
+    
+    public void scrollUp(){
+        selectedSlot++;
+        scroll();
+    }
+    public void scrollDown(){
+        selectedSlot--;
+        scroll();
     }
 
     public void useSelectedItem() {
