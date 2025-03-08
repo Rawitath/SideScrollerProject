@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.Entities.Example;
+package Main.GameSystem.Inventory;
 
 /**
  *
@@ -62,6 +62,7 @@ public class Inventory {
     public void useSelectedItem() {
         if (slots[selectedSlot] != null) {
             System.out.println("Used: " + slots[selectedSlot].getName());
+            removeItem(selectedSlot);
         }
     }
 

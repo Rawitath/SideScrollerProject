@@ -7,8 +7,8 @@ package Main.UI.Example;
 import Datas.Vector2;
 import Entities.UI.UIEntity;
 import Entities.UI.UIImage;
-import Main.Entities.Example.Inventory;
-import Main.Entities.Example.InventoryItem;
+import Main.GameSystem.Inventory.Inventory;
+import Main.GameSystem.Inventory.InventoryItem;
 import Main.Entities.Example.Lucy;
 import Scenes.Scene;
 import Utilities.FileReader;
@@ -48,6 +48,17 @@ public class InventoryBar extends UIEntity{
     @Override
     public void update() {
         selector.setPosition(getChilds().get(inventory.getSelectedSlot() + 1).getPosition());
+        
+        for (int i = 0; i < inventory.getSize(); i++) {
+            InventoryItem item = inventory.getItems()[i];
+            InventorySlot slot = (InventorySlot)getChilds().get(i + 1);
+            if (item != null) {
+                slot.setItem(item);
+            }
+            else{
+                slot.setItem(null);
+            }
+        }
     }
 
     @Override

@@ -6,8 +6,8 @@ package Entities.UI;
 
 import Datas.Vector2;
 import Datas.Vector2Int;
-import Main.Entities.Example.Inventory;         //Inventory update
-import Main.Entities.Example.InventoryItem;     //Inventory update
+import Main.GameSystem.Inventory.Inventory;         //Inventory update
+import Main.GameSystem.Inventory.InventoryItem;     //Inventory update
 import Main.Entities.Example.Lucy;              //Inventory update
 import Scenes.Scene;
 import Utilities.FileReader;

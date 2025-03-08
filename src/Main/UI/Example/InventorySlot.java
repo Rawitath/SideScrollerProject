@@ -6,7 +6,7 @@ package Main.UI.Example;
 
 import Datas.Vector2;
 import Entities.UI.UIImage;
-import Main.Entities.Example.InventoryItem;
+import Main.GameSystem.Inventory.InventoryItem;
 import Scenes.Scene;
 import Utilities.FileReader;
 
@@ -32,7 +32,11 @@ public class InventorySlot extends UIImage{
 
     public void setItem(InventoryItem item) {
         this.item = item;
-        itemImage.setImage(item.getIcon());
+        if(item != null){
+            itemImage.setImage(item.getIcon());
+            return;
+        }
+        itemImage.setImage(null);
     }
     
     @Override

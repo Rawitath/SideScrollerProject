@@ -4,6 +4,7 @@
  */
 package Main.Entities.Example;
 
+import Main.GameSystem.Inventory.Inventory;
 import Animations.Animator;
 import Main.UI.Example.HeartContainer;
 import Datas.Constants;
@@ -15,6 +16,7 @@ import Entities.UI.UIText;
 import Inputs.KeyControlable;
 import Inputs.MouseControlable;
 import Main.Animations.Example.LucyBreathAnim;
+import Main.GameSystem.Inventory.InventoryItem;
 import Physics.Collider;
 import Physics.Time;
 import Scenes.Scene;
@@ -108,12 +110,19 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         if (keyCode == KeyEvent.VK_E) { //Inventory update E to use
             inventory.useSelectedItem();
         }
-        if (keyCode == KeyEvent.VK_U) { //Inventory update E to use
+        if (keyCode == KeyEvent.VK_U) { //U to Scroll Forward
             
             inventory.scrollDown();
         }
-        if (keyCode == KeyEvent.VK_I) { //Inventory update E to use
+        if (keyCode == KeyEvent.VK_I) { //I to Scroll Backware
             inventory.scrollUp();
+        }
+        if (keyCode == KeyEvent.VK_T) { //T to add item(debug)
+            inventory.removeItem(inventory.getSelectedSlot());
+        }
+        if (keyCode == KeyEvent.VK_Y) { //Y to remove item(debug)
+            InventoryItem item = new InventoryItem("MyItem", 1, FileReader.readImage("res/game/kotori.jpg"));
+            inventory.addItem(item);
         }
     }
     public Inventory getInventory() { //Inventory update getInventory method
