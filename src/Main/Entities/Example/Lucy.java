@@ -72,8 +72,6 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     public void update() {
         lifeNum.setText("Life : "+ String.valueOf(life));
         setSprite(animator.getFrame(Time.deltaTime()));
-        
-        DebugManager.debugEntity(this);
     }
     
     @Override

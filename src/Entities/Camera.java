@@ -136,6 +136,6 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
 
     @Override
     public void onMouseWheelMoved(MouseWheelEvent e) {
-        zoom += e.getWheelRotation();
+        zoom -= e.getWheelRotation();
     }
 }

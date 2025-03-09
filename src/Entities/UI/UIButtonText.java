@@ -5,6 +5,7 @@
 package Entities.UI;
 
 import Scenes.Scene;
+import java.awt.event.MouseEvent;
 
 /**
  *
@@ -30,5 +31,6 @@ public class UIButtonText extends UIText{
     public void fixedUpdate() {
 
     }
+
     
 }

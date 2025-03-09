@@ -4,6 +4,8 @@
  */
 package Engine;
 
+import Debugger.DebugManager;
+import Debugger.Debuggable;
 import Entities.Camera;
 import Entities.Entity;
 import Entities.UI.UIEntity;
@@ -103,6 +105,7 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     private void doUpdate(Entity e){
         if(e.isActive()){
                 e.update();
+                e.lateUpdate();
                 for(var child : e.getChilds()){
                     doUpdate(child);
                 }

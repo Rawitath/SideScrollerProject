@@ -18,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * @author GA_IA
  */
-public class InputManager implements KeyListener, MouseListener, MouseWheelListener{
+public class InputManager implements KeyListener, MouseListener, MouseWheelListener, MouseMotionListener{
     private List<KeyControlable> keyCons;
     private List<MouseControlable> mouseCons;
     
@@ -106,6 +106,20 @@ public class InputManager implements KeyListener, MouseListener, MouseWheelListe
     public void mouseWheelMoved(MouseWheelEvent e) {
         for(var m : mouseCons){
            m.onMouseWheelMoved(e);
+        }
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        for(var m : mouseCons){
+           m.onMouseDragged(e);
+        }
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        for(var m : mouseCons){
+           m.onMouseMoved(e);
         }
     }
 }

@@ -17,5 +17,7 @@ public interface MouseControlable {
     public abstract void onMouseReleased(MouseEvent e);
     public abstract void onMouseEntered(MouseEvent e);
     public abstract void onMouseExited(MouseEvent e);
+    public abstract void onMouseDragged(MouseEvent e);
+    public abstract void onMouseMoved(MouseEvent e);
     public abstract void onMouseWheelMoved(MouseWheelEvent e);
 }
