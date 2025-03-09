@@ -43,20 +43,17 @@ public class Inventory {
         }
     }
 
-    public void scroll() {
+    public void scroll(int scrollDirection) {
         //selection method coming soon
-        
-        if (selectedSlot < 0) selectedSlot = slots.length - 1;
-        if (selectedSlot >= slots.length) selectedSlot = 0;
-    }
-    
-    public void scrollUp(){
-        selectedSlot++;
-        scroll();
-    }
-    public void scrollDown(){
-        selectedSlot--;
-        scroll();
+        if (selectedSlot + scrollDirection < 0){
+            selectedSlot = slots.length - 1;
+        }
+        else if (selectedSlot + scrollDirection >= slots.length){
+            selectedSlot = 0;
+        }
+        else{
+            selectedSlot += scrollDirection;
+        }
     }
 
     public void useSelectedItem() {

@@ -7,25 +7,27 @@ package Main.UI.Example;
 import Datas.Vector2;
 import Entities.UI.UIEntity;
 import Entities.UI.UIImage;
+import Main.Entities.Example.Lucy;
 import Main.GameSystem.Inventory.Inventory;
 import Main.GameSystem.Inventory.InventoryItem;
-import Main.Entities.Example.Lucy;
+import Physics.Time;
 import Scenes.Scene;
 import Utilities.FileReader;
-import java.awt.Graphics;
 
 /**
  *
  * @author GA_IA
  */
-public class InventoryBar extends UIEntity{
+public class InventoryScroll extends UIEntity{
 
     private UIImage selector;
     
     Inventory inventory;
     InventorySlot[] inventorySlots;
     
-    public InventoryBar(Scene s) {
+    float degreePerSlot;
+    
+    public InventoryScroll(Scene s) {
         super(s);
         selector = new UIImageDisplay(s);
         addChild(selector);
@@ -44,11 +46,29 @@ public class InventoryBar extends UIEntity{
         inventory = lucy.getInventory();
         
         drawHotbar(); //Inventory update
+        selector.setPosition(inventorySlots[0].getPosition());
     }
-
+    private int s = 0;
+    private float currentDegree = 0;
     @Override
     public void update() {
-        selector.setPosition(inventorySlots[inventory.getSelectedSlot()].getPosition());
+        if(s != inventory.getSelectedSlot()){
+            if(currentDegree < degreePerSlot * (getScale().getX() / 2) * 500){
+                for (int i = 0; i < inventorySlots.length; i++) {
+                    float x = (float) Math.cos(Math.toRadians(degreePerSlot * i));
+                    float y = (float) Math.sin(Math.toRadians(degreePerSlot * i));
+                    x = x * ((getScale().getX() / 2) * 500);
+                    y = y * ((getScale().getY() / 2) * 500);
+                    inventorySlots[i].setLocalPosition(inventorySlots[i].getLocalPosition().translate(new Vector2(x, y), Time.deltaTime()));
+//                    inventorySlots[i].setLocalPosition(inventorySlots[i].getLocalPosition().translate(Vector2.down(), 1f * Time.deltaTime()));
+                    currentDegree += 1f;
+                }
+            }
+            else{
+                currentDegree = 0;
+                s = inventory.getSelectedSlot();
+            }   
+        }
         
         for (int i = 0; i < inventory.getSize(); i++) {
             InventoryItem item = inventory.getItems()[i];
@@ -70,16 +90,19 @@ public class InventoryBar extends UIEntity{
         int slotSpacing = 5;
         int totalWidth = (slotSize + slotSpacing) * 9 - slotSpacing;
         int startX = -totalWidth / 2;
-        int startY = -(getScene().getUIView().getReferenceResolution().getY() / 2 - slotSize - 20);
+        int startY = 0;
         inventorySlots = new InventorySlot[inventory.getSize()];
+        degreePerSlot = 360 / inventorySlots.length;
         for (int i = 0; i < inventorySlots.length; i++) {
-            int x = startX + i * (slotSize + slotSpacing);
+            float x = (float) Math.cos(Math.toRadians(degreePerSlot * i));
+            float y = (float) Math.sin(Math.toRadians(degreePerSlot * i));
+            x = x * ((getScale().getX() / 2) * 500);
+            y = y * ((getScale().getY() / 2) * 500);
             InventorySlot e = new InventorySlot(getScene());
             addChild(e);
-            e.setLocalPosition(new Vector2(x, startY));
+            e.setLocalPosition(new Vector2(x, y));
             e.setLocalScale(Vector2.one().multiply(slotSize));
             inventorySlots[i] = e;
         }
     }
-        
 }

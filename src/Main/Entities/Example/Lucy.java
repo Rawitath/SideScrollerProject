@@ -112,10 +112,10 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         }
         if (keyCode == KeyEvent.VK_U) { //U to Scroll Forward
             
-            inventory.scrollDown();
+            inventory.scroll(-1);
         }
         if (keyCode == KeyEvent.VK_I) { //I to Scroll Backware
-            inventory.scrollUp();
+            inventory.scroll(1);
         }
         if (keyCode == KeyEvent.VK_T) { //T to add item(debug)
             inventory.removeItem(inventory.getSelectedSlot());
