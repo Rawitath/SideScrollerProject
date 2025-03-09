@@ -6,6 +6,9 @@ package Entities.UI;
 
 import Datas.Vector2;
 import Datas.Vector2Int;
+import Main.GameSystem.Inventory.Inventory;         //Inventory update
+import Main.GameSystem.Inventory.InventoryItem;     //Inventory update
+import Main.Entities.Example.Lucy;              //Inventory update
 import Scenes.Scene;
 import Utilities.FileReader;
 import java.awt.AlphaComposite;
@@ -148,7 +151,6 @@ public abstract class UIImage extends UIEntity{
     @Override
     public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
         Graphics2D g2d = (Graphics2D)g;
-        super.draw(g, posOffset, scaleOffset, zoom);
         if(imageVisibled){
                     
             Dimension screen = getScene().getUIView().getScreenSize();
@@ -174,5 +176,6 @@ public abstract class UIImage extends UIEntity{
                 , 
                 screenSize.getY(), null);
         }
+        super.draw(g, posOffset, scaleOffset, zoom);
     }
 }

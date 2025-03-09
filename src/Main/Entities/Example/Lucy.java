@@ -4,6 +4,7 @@
  */
 package Main.Entities.Example;
 
+import Main.GameSystem.Inventory.Inventory;
 import Animations.Animator;
 import Main.UI.Example.HeartContainer;
 import Datas.Constants;
@@ -13,14 +14,16 @@ import Entities.Audios.AudioSource;
 import Entities.CollidableEntity;
 import Entities.UI.UIText;
 import Inputs.KeyControlable;
+import Inputs.MouseControlable;
 import Main.Animations.Example.LucyBreathAnim;
+import Main.GameSystem.Inventory.InventoryItem;
 import Physics.Collider;
 import Physics.Time;
 import Scenes.Scene;
 import Scenes.SceneManager;
 import Utilities.FileReader;
 import java.awt.Font;
-import java.awt.event.KeyEvent;
+import java.awt.event.*; //Inventory update
 
 /**
  *
@@ -39,6 +42,8 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     private int life = 3;
     
     private boolean grounded = false;
+    
+    private Inventory inventory;//Inventory update
     public Lucy(Scene s) {
         super(s);
         setSprite(FileReader.readImage("res/game/lucypixel.png"));
@@ -46,6 +51,9 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         
         animator = new Animator();
         animator.setAnimation(new LucyBreathAnim());
+        
+        inventory = new Inventory(); //Inventory update
+        //inventory.addItem(new InventoryItem("Name", 1, FileReader.readImage("img location")));
     }
 
     @Override
@@ -61,8 +69,6 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         AudioSource a = getScene().getEntity("Music");
 //        a.loop(true);
 //        a.play();
-        
-//        setColliderVisibled(true);
         setSpriteSize(new Vector2Int(128, 128));
         setPixelRatio(0.1f);
     }
@@ -72,7 +78,7 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         lifeNum.setText("Life : "+ String.valueOf(life));
         setSprite(animator.getFrame(Time.deltaTime()));
     }
-    
+            
     @Override
     public void fixedUpdate() {
         setPosition(getPosition().translate(direction, speed * Time.fixedDeltaTime()));
@@ -101,8 +107,28 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         if(keyCode == KeyEvent.VK_P){
             SceneManager.loadScene(0);
         }
+        if (keyCode == KeyEvent.VK_E) { //Inventory update E to use
+            inventory.useSelectedItem();
+        }
+        if (keyCode == KeyEvent.VK_U) { //U to Scroll Forward
+            
+            inventory.scroll(-1);
+        }
+        if (keyCode == KeyEvent.VK_I) { //I to Scroll Backware
+            inventory.scroll(1);
+        }
+        if (keyCode == KeyEvent.VK_T) { //T to add item(debug)
+            inventory.removeItem(inventory.getSelectedSlot());
+        }
+        if (keyCode == KeyEvent.VK_Y) { //Y to remove item(debug)
+            InventoryItem item = new InventoryItem("MyItem", 1, FileReader.readImage("res/game/kotori.jpg"));
+            inventory.addItem(item);
+        }
     }
-
+    public Inventory getInventory() { //Inventory update getInventory method
+        return inventory;
+    }
+    
     @Override
     public void onKeyReleased(KeyEvent e, int keyCode) {
         if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_A){
