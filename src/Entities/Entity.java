@@ -46,7 +46,7 @@ public abstract class Entity implements Debuggable, MouseControlable{
     private Point mousePoint;
     
     private boolean clickable;
-    private boolean onDebug;
+    private boolean debug;
     
     public Entity(Scene s){
         scene = s;
@@ -74,6 +74,7 @@ public abstract class Entity implements Debuggable, MouseControlable{
     public void onRemoveFromParent(){
         
     }
+    
     public String getTag() {
         return tag;
     }
@@ -218,17 +219,17 @@ public abstract class Entity implements Debuggable, MouseControlable{
     
     public void lateUpdate(){
         if(DebugManager.isDebug()){
-            if(mousePoint.x >= positionOnScreen.getX() - sizeOnScreen.getX() / 2 &&
-                mousePoint.x < positionOnScreen.getX() + sizeOnScreen.getX() / 2 &&
-                mousePoint.y >= positionOnScreen.getY() - sizeOnScreen.getY() / 2 &&
-                mousePoint.y < positionOnScreen.getY() + sizeOnScreen.getY() / 2){
+            if(mousePoint.x >= positionOnScreen.getX() &&
+                mousePoint.x <= positionOnScreen.getX() + sizeOnScreen.getX() &&
+                mousePoint.y >= positionOnScreen.getY()&&
+                mousePoint.y <= positionOnScreen.getY() + sizeOnScreen.getY()){
                     clickable = true;
             }
             else{
                 clickable = false;
             }
             
-            if(onDebug){
+            if(debug){
                 DebugManager.debugEntity(this);
             }
            
@@ -243,7 +244,13 @@ public abstract class Entity implements Debuggable, MouseControlable{
         Vector2 scale = getScale().multiply(scaleOffset);
         positionOnScreen = new Vector2Int(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2));
         sizeOnScreen = new Vector2Int(Math.round(scale.getX()), Math.round(scale.getY()));
-        g.drawRect(positionOnScreen.getX(), positionOnScreen.getY(), sizeOnScreen.getX(), sizeOnScreen.getY());
+        if(clickable || debug){
+            g.fillRect(positionOnScreen.getX(), positionOnScreen.getY(), sizeOnScreen.getX(), sizeOnScreen.getY());
+        }
+        else{
+            g.drawRect(positionOnScreen.getX(), positionOnScreen.getY(), sizeOnScreen.getX(), sizeOnScreen.getY());
+        }
+        
         }
     }
 
@@ -253,6 +260,16 @@ public abstract class Entity implements Debuggable, MouseControlable{
 
     public Vector2Int getSizeOnScreen() {
         return sizeOnScreen;
+    }
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public void setDebug(boolean debug) {
+        if(DebugManager.isDebug()){
+            this.debug = debug;
+        }
     }
     
     @Override
@@ -268,7 +285,7 @@ public abstract class Entity implements Debuggable, MouseControlable{
     @Override
     public void onMousePressed(MouseEvent e) {
         if(clickable){
-            onDebug = true;
+            debug = true;
         }
     }
 
