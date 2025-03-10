@@ -250,7 +250,6 @@ public abstract class Entity implements Debuggable, MouseControlable{
         else{
             g.drawRect(positionOnScreen.getX(), positionOnScreen.getY(), sizeOnScreen.getX(), sizeOnScreen.getY());
         }
-        
         }
     }
 

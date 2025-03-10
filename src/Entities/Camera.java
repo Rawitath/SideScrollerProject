@@ -47,8 +47,8 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
     public Vector2 getPositionOffset(){
         Vector2 output = new Vector2();
         return output.add(new Vector2(
-               screenSize.width / 2 - getPosition().getX(),
-               screenSize.height / 2 - getPosition().getY()
+               screenSize.width / 2 - getPosition().getX() * zoom,
+               screenSize.height / 2 - getPosition().getY() * zoom
         ));
     }
     public Vector2 getScaleOffset(){
@@ -80,16 +80,16 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
     @Override
     public void onKeyPressed(KeyEvent e, int keyCode) {
         if(keyCode == KeyEvent.VK_I && DebugManager.isDebug()){
-            setPosition(getPosition().translate(Vector2.down(), 20));
+            setPosition(getPosition().translate(Vector2.down(), 1));
         }
         if(keyCode == KeyEvent.VK_K && DebugManager.isDebug()){
-            setPosition(getPosition().translate(Vector2.up(), 20));
+            setPosition(getPosition().translate(Vector2.up(), 1));
         }
         if(keyCode == KeyEvent.VK_J && DebugManager.isDebug()){
-            setPosition(getPosition().translate(Vector2.left(), 20));
+            setPosition(getPosition().translate(Vector2.left(), 1));
         }
         if(keyCode == KeyEvent.VK_L && DebugManager.isDebug()){
-            setPosition(getPosition().translate(Vector2.right(), 20));
+            setPosition(getPosition().translate(Vector2.right(), 1));
         }
         if(keyCode == KeyEvent.VK_U && DebugManager.isDebug()){
             zoom -= 0.1f;
