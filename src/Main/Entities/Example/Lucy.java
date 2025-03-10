@@ -101,17 +101,17 @@ public class Lucy extends CollidableEntity implements KeyControlable{
             }
         }
         if(keyCode == KeyEvent.VK_P){
-            //SceneManager.loadScene(0);
-            GameSave save = new GameSave();
-            save.saveNumber = 3;
-            save.currentChapter = 1;
-            SaveSerializer.save(save);
+            SceneManager.loadScene(0);
+//            GameSave save = new GameSave();
+//            save.saveNumber = 3;
+//            save.currentChapter = 1;
+//            SaveSerializer.save(save);
         }
         if(keyCode == KeyEvent.VK_O){
-            //SceneManager.loadScene(0);
-            GameSave save = SaveSerializer.load(0);
-            System.out.println(save.saveNumber);
-            System.out.println(save.currentChapter);
+            SceneManager.loadScene(0);
+//            GameSave save = SaveSerializer.load(0);
+//            System.out.println(save.saveNumber);
+//            System.out.println(save.currentChapter);
         }
     }
 

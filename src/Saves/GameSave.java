@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  */
 public class GameSave implements Serializable{
     public LocalDateTime saveCreated;
-    public long playTIme;
+    public long playTime;
     public int saveNumber;
     public int currentChapter;
 }
