@@ -19,6 +19,8 @@ import Main.Animations.Example.LucyBreathAnim;
 import Main.GameSystem.Inventory.InventoryItem;
 import Physics.Collider;
 import Physics.Time;
+import Saves.GameSave;
+import Saves.SaveSerializer;
 import Scenes.Scene;
 import Scenes.SceneManager;
 import Utilities.FileReader;
@@ -106,6 +108,16 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         }
         if(keyCode == KeyEvent.VK_P){
             SceneManager.loadScene(0);
+//            GameSave save = new GameSave();
+//            save.saveNumber = 3;
+//            save.currentChapter = 1;
+//            SaveSerializer.save(save);
+        }
+        if(keyCode == KeyEvent.VK_O){
+            SceneManager.loadScene(0);
+//            GameSave save = SaveSerializer.load(0);
+//            System.out.println(save.saveNumber);
+//            System.out.println(save.currentChapter);
         }
         if (keyCode == KeyEvent.VK_E) { //Inventory update E to use
             inventory.useSelectedItem();
