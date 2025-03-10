@@ -1,6 +1,23 @@
  # Lucy Engine
  An Engine for Hellderland / Little Lucy
  คนบ้าอะไรทำ Engine เอง
+ ## NEW FEATURE!!!
+ ### Debug Mode
+โหมดที่เมื่อเปิดแล้วจะทำให้เห็น Collider, Boundary ของทุก Entity และมี Debug Window สำหรับดูข้อมูล Entity แต่ละตัวได้<br>
+ใช้งานได้โดยการ <b>ไปที่ Main.java แล้ว Uncomment คำสั่งนี้</b>
+```java
+DebugManager.useDebug();
+```
+
+สามารถคลิกที่ Boundary (สี่เหลี่ยมเล็กๆบน Entity) เพื่อให้ข้อมูลขึ้นบน Debug Window ได้<br>
+สามารถขยับกล้องได้อิสระ โดย<br>
+Arrow Keys ใช้ขยับกล้อง<br>
+Scroll Mouse หรือ . กับ / เพื่อซูม<br> 
+; กับ ' เพื่อปรับความเร็วการขยับกล้อง<br>
+### MouseControlable อัปเกรด
+ทำให้ MouseControlable รองรับการเลื่อน Scroll Mouse และ Motion ของ Mouse ได้
+### Bug fixes
+แก้ระบบการซูมกลอง ไม่ให้ซูมแต่ตรงกลาง
  ## หลักการทำงาน
 Lucy Engine จะแบ่งออกเป็น <b>Scene</b> กับ <b>Entity</b> โดย<br>
 - Scene เป็นฉากที่ Engine จะโหลดขึ้น เช่น ฉากเมนูเริ่มเกม ฉากปราสาท ฉากป่า

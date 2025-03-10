@@ -21,6 +21,7 @@ import java.awt.event.MouseWheelEvent;
 public class Camera extends Entity implements KeyControlable, MouseControlable{
     private Dimension screenSize;
     private float zoom;
+    private float debugSpeed = 1;
 
     public Camera(Scene s) {
         super(s);
@@ -79,24 +80,36 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
 
     @Override
     public void onKeyPressed(KeyEvent e, int keyCode) {
-        if(keyCode == KeyEvent.VK_I && DebugManager.isDebug()){
-            setPosition(getPosition().translate(Vector2.down(), 1));
-        }
-        if(keyCode == KeyEvent.VK_K && DebugManager.isDebug()){
-            setPosition(getPosition().translate(Vector2.up(), 1));
-        }
-        if(keyCode == KeyEvent.VK_J && DebugManager.isDebug()){
-            setPosition(getPosition().translate(Vector2.left(), 1));
-        }
-        if(keyCode == KeyEvent.VK_L && DebugManager.isDebug()){
-            setPosition(getPosition().translate(Vector2.right(), 1));
-        }
-        if(keyCode == KeyEvent.VK_U && DebugManager.isDebug()){
-            zoom -= 0.1f;
-        }
-        if(keyCode == KeyEvent.VK_O && DebugManager.isDebug()){
-            zoom += 0.1f;
-        }
+        if(DebugManager.isDebug()){
+            if(keyCode == KeyEvent.VK_DOWN){
+            setPosition(getPosition().translate(Vector2.down(), debugSpeed));
+            }
+            if(keyCode == KeyEvent.VK_UP){
+                setPosition(getPosition().translate(Vector2.up(), debugSpeed));
+            }
+            if(keyCode == KeyEvent.VK_LEFT){
+                setPosition(getPosition().translate(Vector2.left(), debugSpeed));
+            }
+            if(keyCode == KeyEvent.VK_RIGHT){
+                setPosition(getPosition().translate(Vector2.right(), debugSpeed));
+            }
+            if(keyCode == 46){
+                zoom -= 0.1f;
+            }
+            if(keyCode == 47){
+                zoom += 0.1f;
+            }
+            if(keyCode == 59){
+                if(debugSpeed > 0.1f){
+                    debugSpeed -= 0.1f;
+                }
+                System.out.println(debugSpeed);
+            }
+            if(keyCode == 222){
+                debugSpeed += 0.1f;
+                System.out.println(debugSpeed);
+            }
+        }   
     }
 
     @Override
