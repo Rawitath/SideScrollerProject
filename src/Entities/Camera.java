@@ -94,21 +94,21 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
                 setPosition(getPosition().translate(Vector2.right(), debugSpeed));
             }
             if(keyCode == 46){
-                if (this.zoom < 10f){
-                    this.zoom = 9.9f;
+                if (this.zoom < 10.1f){
+                    this.zoom = 10f;
                     //System.out.println("You can't zoom out anymore.");
                 }
                 else{
-                    this.zoom -= 0.1f;
+                    this.zoom -= 1f;
                 }
             }
             if(keyCode == 47){
-                if (this.zoom > 20f){
-                    this.zoom = 20.1f;
+                if (this.zoom > 19.9f){
+                    this.zoom = 20f;
                     //System.out.println("You can't zoom in anymore.");
                 }
                 else{
-                    this.zoom += 0.1f;
+                    this.zoom += 1f;
                 }
             }
             if(keyCode == 59){
@@ -162,12 +162,12 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
     @Override
     public void onMouseWheelMoved(MouseWheelEvent e) {
         if (this.zoom > 20f){
-            this.zoom = 19.9f;
-            //System.out.println("You can't zoom in anymore.");
+            this.zoom = 20f;
+            System.out.println("You can't zoom in anymore.");
         }
         else if (this.zoom < 10f){
-            this.zoom = 10.1f;
-            //System.out.println("You can't zoom out anymore.");
+            this.zoom = 10f;
+            System.out.println("You can't zoom out anymore.");
         }
         else{
             zoom -= e.getWheelRotation();
