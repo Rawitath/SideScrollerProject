@@ -82,10 +82,10 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
     public void onKeyPressed(KeyEvent e, int keyCode) {
         if(DebugManager.isDebug()){
             if(keyCode == KeyEvent.VK_DOWN){
-            setPosition(getPosition().translate(Vector2.down(), debugSpeed));
+            setPosition(getPosition().translate(Vector2.up(), debugSpeed));
             }
             if(keyCode == KeyEvent.VK_UP){
-                setPosition(getPosition().translate(Vector2.up(), debugSpeed));
+                setPosition(getPosition().translate(Vector2.down(), debugSpeed));
             }
             if(keyCode == KeyEvent.VK_LEFT){
                 setPosition(getPosition().translate(Vector2.left(), debugSpeed));
@@ -94,10 +94,22 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
                 setPosition(getPosition().translate(Vector2.right(), debugSpeed));
             }
             if(keyCode == 46){
-                zoom -= 0.1f;
+                if (this.zoom < 10f){
+                    this.zoom = 9.9f;
+                    //System.out.println("You can't zoom out anymore.");
+                }
+                else{
+                    this.zoom -= 0.1f;
+                }
             }
             if(keyCode == 47){
-                zoom += 0.1f;
+                if (this.zoom > 20f){
+                    this.zoom = 20.1f;
+                    //System.out.println("You can't zoom in anymore.");
+                }
+                else{
+                    this.zoom += 0.1f;
+                }
             }
             if(keyCode == 59){
                 if(debugSpeed > 0.1f){
@@ -149,6 +161,16 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
 
     @Override
     public void onMouseWheelMoved(MouseWheelEvent e) {
-        zoom -= e.getWheelRotation();
+        if (this.zoom > 20f){
+            this.zoom = 19.9f;
+            //System.out.println("You can't zoom in anymore.");
+        }
+        else if (this.zoom < 10f){
+            this.zoom = 10.1f;
+            //System.out.println("You can't zoom out anymore.");
+        }
+        else{
+            zoom -= e.getWheelRotation();
+        }
     }
 }
