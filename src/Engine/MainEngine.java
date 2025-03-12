@@ -83,7 +83,7 @@ public class MainEngine extends Engine{
         
         while(isRunning()){
             dT = System.nanoTime();
-            while(nUpdate <= System.nanoTime() - current){
+            while(nUpdate <= System.nanoTime() - current && updateSpeed != 0){
                 fixedUpdate();
                 current += nUpdate;
             }

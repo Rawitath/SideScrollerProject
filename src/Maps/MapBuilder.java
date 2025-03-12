@@ -5,6 +5,7 @@
 package Maps;
 
 import Datas.Vector2;
+import Physics.Time;
 import Scenes.Scene;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,24 +25,42 @@ import java.util.logging.Logger;
 public class MapBuilder {
     private static List<TileEntity> loadedTileEntities = new CopyOnWriteArrayList<>();
     
-    private static void buildMap(Scene s, MapFile map){
+    private static EditorWindow editor = null;
+    
+    private static boolean useEditor;
+    
+    private static Scene currentScene;
+
+    public static boolean isUseEditor() {
+        return useEditor;
+    }
+
+    public static void setUseEditor(boolean useEditor) {
+        MapBuilder.useEditor = useEditor;
+    }
+    
+    public static void useMapBuilder(Scene s){
+        currentScene = s;
+        if(useEditor){
+            editor = new EditorWindow();
+        }
+    } 
+    
+    private static void buildMap(MapFile map){
         for(int i = 0; i < map.getTiles().length; i++){
             TileFile tile = map.getTiles()[i];
-            TileEntity tileEntity = new TileEntity(s);
+            TileEntity tileEntity = new TileEntity(currentScene);
             tileEntity.setPosition(new Vector2(
                     tile.getColumn() * map.getTileRatio() + map.getOffsetX(),
                     tile.getRow() * map.getTileRatio() + map.getOffsetY()
             ));
             tileEntity.setTag(tile.getTag());
-            if(tile.isSolid()){
-                //wait
-            }
             loadedTileEntities.add(tileEntity);
-            s.addEntity(tileEntity);
+            currentScene.addEntity(tileEntity);
         }
     }
     
-    public static void loadMap(String mapPath, Scene s){
+    public static void loadMap(String mapPath){
         if(!loadedTileEntities.isEmpty()){
             System.err.println("There's a map loaded, please unload them first.");
             return;
@@ -49,7 +68,7 @@ public class MapBuilder {
         try(FileInputStream fin = new FileInputStream(mapPath);
             ObjectInputStream oin = new ObjectInputStream(fin);){
             MapFile map = (MapFile) oin.readObject();
-            buildMap(s, map);
+            buildMap(map);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MapBuilder.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

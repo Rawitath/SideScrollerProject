@@ -11,12 +11,11 @@ import java.io.Serializable;
  * @author GA_IA
  */
 public class TileFile implements Serializable{
-    private int tileSheet;
+    private String tilePath;
     private int column;
     private int row;
     private int tileCutSize;
     private boolean hasCollider;
-    private boolean solid;
     private String tag;
 
     public boolean hasCollider() {
@@ -25,14 +24,6 @@ public class TileFile implements Serializable{
 
     public void setHasCollider(boolean hasCollider) {
         this.hasCollider = hasCollider;
-    }
-
-    public boolean isSolid() {
-        return solid;
-    }
-
-    public void setSolid(boolean solid) {
-        this.solid = solid;
     }
     
     public String getTag() {
@@ -43,12 +34,12 @@ public class TileFile implements Serializable{
         this.tag = tag;
     }
 
-    public int getTileSheet() {
-        return tileSheet;
+    public String getTileSheet() {
+        return tilePath;
     }
 
-    public void setTileSheet(int tileSheet) {
-        this.tileSheet = tileSheet;
+    public void setTileSheet(String tilePath) {
+        this.tilePath = tilePath;
     }
     
     public int getTileCutSize() {

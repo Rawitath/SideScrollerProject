@@ -6,6 +6,7 @@ package Main;
 
 import Main.Scenes.Example.ExampleScene;
 import Engine.EngineFrame;
+import Maps.MapBuilder;
 import Physics.Time;
 import Scenes.SceneManager;
 import Utilities.FileReader;
@@ -16,6 +17,9 @@ import Utilities.FileReader;
  */
 public class Main {
     public static void main(String[] args) {
+        
+        MapBuilder.setUseEditor(true);
+        
         //Scene added here
         SceneManager.addScene(new ExampleScene()); // This Scene will be loaded first
         

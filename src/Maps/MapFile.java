@@ -12,25 +12,19 @@ import java.io.Serializable;
  */
 public class MapFile implements Serializable{
     private String name;
-    private String[] requiredTileSet;
     private TileFile[] tiles;
     private float tileRatio;
     private float offsetX;
     private float offsetY;
 
-    public MapFile(String name, String[] requiredTileSet, TileFile[] tiles) {
+    public MapFile(String name, TileFile[] tiles) {
         this.name = name;
-        this.requiredTileSet = requiredTileSet;
         this.tiles = tiles;
         tileRatio = 1;
     }
 
     public String getName() {
         return name;
-    }
-
-    public String[] getRequiredTileSet() {
-        return requiredTileSet;
     }
 
     public TileFile[] getTiles() {

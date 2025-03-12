@@ -7,6 +7,7 @@ package Entities;
 import Datas.Vector2;
 import Scenes.Scene;
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -14,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * @author GA_IA
  */
-public abstract class Entity{
+public abstract class Entity implements Serializable{
     private static int entityCount = 0; 
     
     private int id;
