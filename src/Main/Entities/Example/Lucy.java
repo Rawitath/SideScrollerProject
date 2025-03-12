@@ -79,6 +79,7 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     public void update() {
         lifeNum.setText("Life : "+ String.valueOf(life));
         setSprite(animator.getFrame(Time.deltaTime()));
+        //getScene().getCamera().setPosition(getPosition().multiply(getScene().getCamera().getZoom()).multiply(Vector2.negativeY()));
     }
             
     @Override
@@ -93,13 +94,22 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     @Override
     public void onKeyPressed(KeyEvent e, int keyCode) {
         if(keyCode == KeyEvent.VK_D){
-            direction = Vector2.right();
-            setFlip(Vector2.negativeX());
-            
+            if(direction.getX() <= -1){
+                direction = Vector2.zero();
+            }
+            else{
+                direction = Vector2.right();
+                setFlip(Vector2.negativeX());
+            }
         }
         if(keyCode == KeyEvent.VK_A){
-            direction = Vector2.left();
-            setFlip(Vector2.one());
+            if(direction.getX() >= 1){
+                direction = Vector2.zero();
+            }
+            else{
+                direction = Vector2.left();
+                setFlip(Vector2.one());
+            }
         }
         if(keyCode == KeyEvent.VK_SPACE){
             if(grounded){
@@ -133,6 +143,17 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     
     @Override
     public void onKeyReleased(KeyEvent e, int keyCode) {
+        if(direction.getX() == 0){
+            if(keyCode == KeyEvent.VK_D){
+                direction = Vector2.left();
+                setFlip(Vector2.one());
+            }
+            else if(keyCode == KeyEvent.VK_A){
+                direction = Vector2.right();
+                setFlip(Vector2.negativeX());
+            }
+            return;
+        }
         if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_A){
             direction = Vector2.zero();
         }
@@ -142,47 +163,67 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     public void onKeyTyped(KeyEvent e, int keyCode) {
         
     }
+    
+    private void onGroundTouch(){
+        fallSpeed = 0f;
+        grounded = true;
+    }
 
     @Override
     public void onColliderEnter(Collider other) {
-        if(other.getEntity().getTag().equals("Ground")){
-            fallSpeed = 0f;
-            grounded = true;
-        }
-        else if(other.getEntity().getTag().equals("Enemy")){
-            if(other.isSolid()){
-                if(getPosition().getX() > other.getEntity().getPosition().getX()){
-                    lockDirection = Vector2.left();
-                    
-                    //Pushable
-                    other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.left(), speed * Time.fixedDeltaTime()));
+        if(other.isSolid()){
+                if(getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
+                        <=
+                    other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2){
+                    onGroundTouch();
                 }
-                else{
+                if(getPosition().getX() + getCollider().getCenter().getX() > other.getEntity().getPosition().getX() + other.getCenter().getX()){
+                    lockDirection = Vector2.left();
+                    //Pushable
+                    //other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.left(), speed * Time.fixedDeltaTime()));
+                }
+                else if(getPosition().getX() + getCollider().getCenter().getX() < other.getEntity().getPosition().getX() + other.getCenter().getX()){
                     lockDirection = Vector2.right();
-                    other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
+                    //other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
                 }
             }
+        if(other.getEntity().getTag().equals("Ground")){
+            onGroundTouch();
+        }
+        else if(other.getEntity().getTag().equals("Enemy")){            
             life--;
             heartContainer.setHeart(life);
-            
         }
     }
 
     @Override
     public void onColliderStay(Collider other) {
         
-        
     }
 
     @Override
     public void onColliderExit(Collider other) {
+        if(other.isSolid()){
+            if(getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
+                        <=
+                    other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2
+                        &&
+                (getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
+                                >=
+                 other.getEntity().getPosition().getX() + other.getCenter().getX() + other.getBound().getX() / 2
+                    &&
+                    getPosition().getY() + getCollider().getCenter().getY() + getCollider().getBound().getY() / 2
+                                <=
+                 other.getEntity().getPosition().getX() + other.getCenter().getX() - other.getBound().getX() / 2)){
+                grounded = false;
+            }
+            lockDirection = Vector2.zero();
+        }
         if(other.getEntity().getTag().equals("Ground")){
             grounded = false;
         }
         if(other.getEntity().getTag().equals("Enemy")){
-            if(other.isSolid()){
-                lockDirection = Vector2.zero();
-            }
+            
         }
     }
 }
