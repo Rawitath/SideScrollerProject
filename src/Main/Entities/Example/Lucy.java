@@ -31,7 +31,6 @@ import java.awt.event.*; //Inventory update
 public class Lucy extends CollidableEntity implements KeyControlable{
 
     private Vector2 direction;
-    private Vector2 lockDirection;
     private float speed = 18f;
     private float fallSpeed = 0f;
     private UIText lifeNum;
@@ -40,6 +39,9 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     private Animator animator;
     
     private int life = 3;
+    
+    private Vector2 lockDirection;
+    private Collider lockObject;
     
     private boolean grounded = false;
     private Collider groundObject = null;
@@ -166,10 +168,12 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     }
     
     private void onGroundTouch(Collider other){
-        fallSpeed = 0f;
-        grounded = true;
-        groundObject = other;
-        groundPosition = other.getEntity().getPosition();
+        if(fallSpeed >= 0f){
+            fallSpeed = 0f;
+            grounded = true;
+            groundObject = other;
+            groundPosition = other.getEntity().getPosition();
+        }
     }
     private void onGroundExit(){
         groundObject = null;
@@ -180,50 +184,70 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     @Override
     public void onColliderEnter(Collider other) {
         if(other.isSolid()){
-                if(!grounded &&
-                        (getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
+            if(!grounded){
+                //Check the bottom is colliding with top of other
+                if((getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
                         <=
-                    other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2)
+                    other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2
+                    
                         &&
                         getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
                         >
-                    (other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2) - 0.1f){
+                    (other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2) - 0.15f)){
                     onGroundTouch(other);
                 }
-                if(groundObject != other){
-                    if(!direction.equals(Vector2.zero())){
-                    if(getPosition().getX() + getCollider().getCenter().getX() > other.getEntity().getPosition().getX() + other.getCenter().getX()){
-                        lockDirection = Vector2.left();
-                        //Pushable
-//                        other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.left(), speed * Time.fixedDeltaTime()));
-                    }
-                    else if(getPosition().getX() + getCollider().getCenter().getX() < other.getEntity().getPosition().getX() + other.getCenter().getX()){
-                        lockDirection = Vector2.right();
-//                        other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
-                    }          
+                //Check the top is colliding with bottom of other
+                if(getPosition().getY() + getCollider().getCenter().getY() + getCollider().getBound().getY() / 2
+                        >=
+                    other.getEntity().getPosition().getY() + other.getCenter().getY() - other.getBound().getY() / 2
+                        &&
+                        getPosition().getY() + getCollider().getCenter().getY() + getCollider().getBound().getY() / 2
+                        <
+                    (other.getEntity().getPosition().getY() + other.getCenter().getY() - other.getBound().getY() / 2) + 0.15f){
+                    fallSpeed = 0f;
                 }
-                }                      
             }
-//        if(other.getEntity().getTag().equals("Ground")){
-//            onGroundTouch(other);
-//        }
+                
+                
+        }
+        
         if(other.getEntity().getTag().equals("Enemy")){            
             life--;
             heartContainer.setHeart(life);
         }
     }
-
+    
     @Override
     public void onColliderStay(Collider other) {
-        if(groundObject == other){
-            if (!groundPosition.equals(other.getEntity().getPosition())){
-                Vector2 drift = getPosition().add(groundPosition.add(other.getEntity().getPosition().negative()).multiply(Vector2.one().negative()));
-                if(!lockDirection.equals(Vector2.zero())){
-                    drift = drift.multiply(Vector2.up());
+        if(other.isSolid()){
+            //Check if standing on top of solid object
+            if(groundObject == other){
+                if (!groundPosition.equals(other.getEntity().getPosition())){
+                    Vector2 drift = getPosition().add(groundPosition.add(other.getEntity().getPosition().negative()).multiply(Vector2.one().negative()));
+                    if(!lockDirection.equals(Vector2.zero())){
+                        drift = drift.multiply(Vector2.up());
+                    }
+                    setPosition(drift);
                 }
-                setPosition(drift);
+                groundPosition = other.getEntity().getPosition();
             }
-            groundPosition = other.getEntity().getPosition();
+            //Check if approch right or left of other, lockDirection will lock if approch is true
+            if(groundObject != other){
+                        if(getPosition().getX() + getCollider().getCenter().getX() > other.getEntity().getPosition().getX() + other.getCenter().getX()){
+                            lockDirection = Vector2.left();
+                            lockObject = other;
+                            if(other.getEntity().getTag().equals("Pushable")){
+                                other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.left(), speed * Time.fixedDeltaTime()));
+                            }
+                        }
+                        else if(getPosition().getX() + getCollider().getCenter().getX() < other.getEntity().getPosition().getX() + other.getCenter().getX()){
+                            lockDirection = Vector2.right();
+                            lockObject = other;
+                            if(other.getEntity().getTag().equals("Pushable")){
+                                other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
+                            }
+                        }
+           }                      
         }
     }
 
@@ -233,26 +257,13 @@ public class Lucy extends CollidableEntity implements KeyControlable{
             if(groundObject == other){
                 onGroundExit();
             }
-//            if(getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
-//                        <=
-//                    other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2
-//                        &&
-//                (getPosition().getX() + getCollider().getCenter().getX() - getCollider().getBound().getX() / 2
-//                                >=
-//                 other.getEntity().getPosition().getX() + other.getCenter().getX() + other.getBound().getX() / 2
-//                    &&
-//                    getPosition().getX() + getCollider().getCenter().getX() + getCollider().getBound().getX() / 2
-//                                <=
-//                 other.getEntity().getPosition().getX() + other.getCenter().getX() - other.getBound().getX() / 2)){
-//                grounded = false;
-//            }
-            lockDirection = Vector2.zero();            
+            if(lockObject == other){
+                lockDirection = Vector2.zero();
+                lockObject = null;
+            }
         }
-//        if(other.getEntity().getTag().equals("Ground")){
-//            onGroundExit();
-//        }
         if(other.getEntity().getTag().equals("Enemy")){
             
         }
-    }    
+    }
 }

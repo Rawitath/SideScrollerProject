@@ -33,7 +33,7 @@ public class Kotori extends CollidableEntity{
 
     @Override
     public void start() {
-        setPosition(new Vector2(-14.5f, -8f));
+        setPosition(new Vector2(-20.5f, -1f));
         getCollider().setBound(new Vector2(4.2f, 4.2f));
 //        setColliderVisibled(true);
     }
@@ -42,22 +42,36 @@ public class Kotori extends CollidableEntity{
     public void update() {
         
     }
-
+    float sec = 4f;
+    float previous = Time.time();
+    boolean reverse = false;
     @Override
     public void fixedUpdate() {
-        //setPosition(getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
-//        setPosition(getPosition().translate(Vector2.down(), fallAcceration * Time.fixedDeltaTime()));
-//        if(!grounded){
-//            fallAcceration += Constants.gravityValue;
-//        }
+        if(Time.time() - previous < sec){
+            if(reverse){
+                setPosition(getPosition().translate(Vector2.up(), 3 * Time.fixedDeltaTime()));
+            }
+            else{
+                setPosition(getPosition().translate(Vector2.down(), 3 * Time.fixedDeltaTime()));
+            }
+        }
+        else{
+            previous = Time.time();
+            reverse = !reverse;
+        }
     }
 
     @Override
     public void onColliderEnter(Collider other) {
-//        if(other.getEntity().getTag().equals("Ground")){
-//            fallAcceration = 0f;
-//            grounded = true;
-//        }
+if(getPosition().getX() + getCollider().getCenter().getX() > other.getEntity().getPosition().getX() + other.getCenter().getX()){
+                            
+                            //Pushable
+                            other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.left(), speed * Time.fixedDeltaTime()));
+                        }
+                        else if(getPosition().getX() + getCollider().getCenter().getX() < other.getEntity().getPosition().getX() + other.getCenter().getX()){
+                            
+                            other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
+                        }
     }
 
     @Override
@@ -68,8 +82,6 @@ public class Kotori extends CollidableEntity{
 
     @Override
     public void onColliderExit(Collider other) {
-//        if(other.getEntity().getTag().equals("Ground")){
-//            grounded = false;
-//        }
+        
     }
 }

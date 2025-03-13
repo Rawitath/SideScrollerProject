@@ -46,7 +46,7 @@ public class ExampleScene extends Scene{
         addEntity(new HeartContainer(this));
         addEntity(new ThisIsExample(this));
         addEntity(new MySlider(this));
-//        addEntity(new InventoryBar(this));
+        addEntity(new InventoryBar(this));
 //        addEntity(new InventoryScroll(this));
 //        addEntity(new MyProgressBar(this));
     }

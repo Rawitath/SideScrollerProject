@@ -26,7 +26,7 @@ public class Mutsuki extends CollidableEntity{
     public Mutsuki(Scene s) {
         super(s);
         setSprite(FileReader.readImage("res/game/mutsuki.png"));
-        setTag("Enemy");
+        setTag("Pushable");
         getCollider().setSolid(true);
     }
 
