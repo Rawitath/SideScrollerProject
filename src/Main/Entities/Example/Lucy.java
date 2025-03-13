@@ -14,7 +14,6 @@ import Entities.Audios.AudioSource;
 import Entities.CollidableEntity;
 import Entities.UI.UIText;
 import Inputs.KeyControlable;
-import Inputs.MouseControlable;
 import Main.Animations.Example.LucyBreathAnim;
 import Main.GameSystem.Inventory.InventoryItem;
 import Physics.Collider;
@@ -43,13 +42,19 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     
     private int life = 3;
     
+    private Vector2 lockDirection;
+    private Collider lockObject;
+    
     private boolean grounded = false;
+    private Collider groundObject = null;
+    private Vector2 groundPosition = null;
     
     private Inventory inventory;//Inventory update
     public Lucy(Scene s) {
         super(s);
         setSprite(FileReader.readImage("res/game/lucypixel.png"));
         direction = Vector2.zero();
+        lockDirection = Vector2.zero();
         
         animator = new Animator();
         animator.setAnimation(new LucyBreathAnim());
@@ -79,11 +84,12 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     public void update() {
         lifeNum.setText("Life : "+ String.valueOf(life));
         setSprite(animator.getFrame(Time.deltaTime()));
+        //getScene().getCamera().setPosition(getPosition().multiply(getScene().getCamera().getZoom()).multiply(Vector2.negativeY()));
     }
             
     @Override
     public void fixedUpdate() {
-        setPosition(getPosition().translate(direction, speed * Time.fixedDeltaTime()));
+        setPosition(getPosition().translate(direction.add(lockDirection.negative()), speed * Time.fixedDeltaTime()));
         setPosition(getPosition().translate(Vector2.down(), fallSpeed * Time.fixedDeltaTime()));
         if(!grounded){
             fallSpeed += Constants.gravityValue;
@@ -93,13 +99,22 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     @Override
     public void onKeyPressed(KeyEvent e, int keyCode) {
         if(keyCode == KeyEvent.VK_D){
-            direction = Vector2.right();
-            setFlip(Vector2.negativeX());
-            
+            if(direction.getX() <= -1){
+                direction = Vector2.zero();
+            }
+            else{
+                direction = Vector2.right();
+                setFlip(Vector2.negativeX());
+            }
         }
         if(keyCode == KeyEvent.VK_A){
-            direction = Vector2.left();
-            setFlip(Vector2.one());
+            if(direction.getX() >= 1){
+                direction = Vector2.zero();
+            }
+            else{
+                direction = Vector2.left();
+                setFlip(Vector2.one());
+            }
         }
         if(keyCode == KeyEvent.VK_SPACE){
             if(grounded){
@@ -143,6 +158,17 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     
     @Override
     public void onKeyReleased(KeyEvent e, int keyCode) {
+        if(direction.getX() == 0){
+            if(keyCode == KeyEvent.VK_D){
+                direction = Vector2.left();
+                setFlip(Vector2.one());
+            }
+            else if(keyCode == KeyEvent.VK_A){
+                direction = Vector2.right();
+                setFlip(Vector2.negativeX());
+            }
+            return;
+        }
         if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_A){
             direction = Vector2.zero();
         }
@@ -152,30 +178,104 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     public void onKeyTyped(KeyEvent e, int keyCode) {
         
     }
-
-    @Override
-    public void onColliderEnter(Collider other) {
-        if(other.getEntity().getTag().equals("Ground")){
+    
+    private void onGroundTouch(Collider other){
+        if(fallSpeed >= 0f){
             fallSpeed = 0f;
             grounded = true;
+            groundObject = other;
+            groundPosition = other.getEntity().getPosition();
         }
-        else if(other.getEntity().getTag().equals("Enemy")){
-            life--;
-            heartContainer.setHeart(life);
-            
-        }
+    }
+    private void onGroundExit(){
+        groundObject = null;
+            grounded = false;
+            groundPosition = null;
     }
 
     @Override
+    public void onColliderEnter(Collider other) {
+        if(other.isSolid()){
+            if(!grounded){
+                //Check the bottom is colliding with top of other
+                if((getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
+                        <=
+                    other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2
+                    
+                        &&
+                        getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
+                        >
+                    (other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2) - 0.15f)){
+                    onGroundTouch(other);
+                }
+                //Check the top is colliding with bottom of other
+                if(getPosition().getY() + getCollider().getCenter().getY() + getCollider().getBound().getY() / 2
+                        >=
+                    other.getEntity().getPosition().getY() + other.getCenter().getY() - other.getBound().getY() / 2
+                        &&
+                        getPosition().getY() + getCollider().getCenter().getY() + getCollider().getBound().getY() / 2
+                        <
+                    (other.getEntity().getPosition().getY() + other.getCenter().getY() - other.getBound().getY() / 2) + 0.15f){
+                    fallSpeed = 0f;
+                }
+            }
+                
+                
+        }
+        
+        if(other.getEntity().getTag().equals("Enemy")){            
+            life--;
+            heartContainer.setHeart(life);
+        }
+    }
+    
+    @Override
     public void onColliderStay(Collider other) {
-        
-        
+        if(other.isSolid()){
+            //Check if standing on top of solid object
+            if(groundObject == other){
+                if (!groundPosition.equals(other.getEntity().getPosition())){
+                    Vector2 drift = getPosition().add(groundPosition.add(other.getEntity().getPosition().negative()).multiply(Vector2.one().negative()));
+                    if(!lockDirection.equals(Vector2.zero())){
+                        drift = drift.multiply(Vector2.up());
+                    }
+                    setPosition(drift);
+                }
+                groundPosition = other.getEntity().getPosition();
+            }
+            //Check if approch right or left of other, lockDirection will lock if approch is true
+            if(groundObject != other){
+                        if(getPosition().getX() + getCollider().getCenter().getX() > other.getEntity().getPosition().getX() + other.getCenter().getX()){
+                            lockDirection = Vector2.left();
+                            lockObject = other;
+                            if(other.getEntity().getTag().equals("Pushable")){
+                                other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.left(), speed * Time.fixedDeltaTime()));
+                            }
+                        }
+                        else if(getPosition().getX() + getCollider().getCenter().getX() < other.getEntity().getPosition().getX() + other.getCenter().getX()){
+                            lockDirection = Vector2.right();
+                            lockObject = other;
+                            if(other.getEntity().getTag().equals("Pushable")){
+                                other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
+                            }
+                        }
+           }                      
+        }
     }
 
     @Override
     public void onColliderExit(Collider other) {
-        if(other.getEntity().getTag().equals("Ground")){
-            grounded = false;
+        if(other.isSolid()){
+            if(groundObject == other){
+                onGroundExit();
+            }
+            if(lockObject == other){
+                lockDirection = Vector2.zero();
+                lockObject = null;
+            }
+        }
+        if(other.getEntity().getTag().equals("Enemy")){
+            
         }
     }
 }

@@ -8,7 +8,6 @@ import Datas.Vector2;
 import Datas.Vector2Int;
 import Entities.CollidableEntity;
 import Physics.Collider;
-import Physics.Time;
 import Scenes.Scene;
 import Utilities.FileReader;
 
@@ -25,6 +24,7 @@ public class Ground extends CollidableEntity{
         setScale(new Vector2(20f ,getScale().getY()));
         getCollider().setBound(new Vector2(20f ,3f));
         setTag("Ground");
+        getCollider().setSolid(true);
 //        setColliderVisibled(true);
     }
 
