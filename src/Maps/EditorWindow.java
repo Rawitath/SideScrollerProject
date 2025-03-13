@@ -4,70 +4,109 @@
  */
 package Maps;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import javax.imageio.ImageIO;
 
-/**
- *
- * @author GA_IA
- */
-public class EditorWindow extends JFrame implements WindowListener{
-    private JButton save = new JButton("Save");
+public class EditorWindow extends JFrame {
+    private JTextField directoryField = new JTextField(20);
+    private JButton selectDirButton = new JButton("Select");
+    private JButton saveButton = new JButton("Save");
     private JPanel tilePanel = new JPanel();
-    public EditorWindow(){
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    private String directory;
+    private BufferedImage[] tiles;
+    private JLabel[] tileLabels;
+    private int selectedTile = -1;
+
+    public EditorWindow() {
         setTitle("Map Editor");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
-       
-        
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout());
-        
-        
-        buttonPanel.add(save);
+
+        JPanel topPanel = new JPanel(new FlowLayout());
+        topPanel.add(directoryField);
+        topPanel.add(selectDirButton);
+
+        tilePanel.setLayout(new GridLayout(4, 4));
+        selectDirButton.addActionListener(e ->selectDirectory());
+        saveButton.addActionListener(e -> saveSelectedTile());
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.add(saveButton);
+
+        add(topPanel, BorderLayout.NORTH);
         add(tilePanel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
-        
-        setSize(250, 640);
+        add(bottomPanel, BorderLayout.SOUTH);
+
+        setSize(400, 450);
         setVisible(true);
     }
 
-    @Override
-    public void windowOpened(WindowEvent e) {
-
+    private void selectDirectory() { //select
+        JFileChooser fileChooser = new JFileChooser(); // find file
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) { //selected
+            directory = fileChooser.getSelectedFile().getAbsolutePath();
+            directoryField.setText(directory);
+            loadTiles();
+        }
     }
 
-    @Override
-    public void windowClosing(WindowEvent e) {
-        
+    private void loadTiles() {
+        File dir = new File(directory);
+        File[] files = dir.listFiles((d, name) -> name.endsWith(".png") || name.endsWith(".jpg")); // show only jpg/png
+        if (files != null) {
+            tiles = new BufferedImage[files.length];
+            tileLabels = new JLabel[files.length];
+            tilePanel.removeAll();
+
+            for (int i = 0; i < files.length; i++) { // empty file case
+                try {
+                    tiles[i] = ImageIO.read(files[i]);
+                    ImageIcon icon = new ImageIcon(tiles[i].getScaledInstance(64, 64, Image.SCALE_SMOOTH));
+                    tileLabels[i] = new JLabel(icon, JLabel.CENTER);
+
+                    int index = i;
+                    tileLabels[i].addMouseListener(new MouseAdapter() {
+                        public void mouseClicked(MouseEvent e) {
+                            highlightSelectedTile(index);
+                        }
+                    });
+                    tilePanel.add(tileLabels[i]);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            tilePanel.revalidate();
+            tilePanel.repaint();
+        }
     }
 
-    @Override
-    public void windowClosed(WindowEvent e) {
-
+    private void highlightSelectedTile(int index) { // smaller add border
+        if (selectedTile == index) { // Deselect
+            tileLabels[selectedTile].setIcon(new ImageIcon(tiles[selectedTile].getScaledInstance(64, 64, Image.SCALE_SMOOTH)));
+            tileLabels[selectedTile].setBorder(null);
+            selectedTile = -1;
+        } else {
+            if (selectedTile != -1) {
+                tileLabels[selectedTile].setIcon(new ImageIcon(tiles[selectedTile].getScaledInstance(64, 64, Image.SCALE_SMOOTH)));
+                tileLabels[selectedTile].setBorder(null);
+            }
+            selectedTile = index;
+            tileLabels[index].setIcon(new ImageIcon(tiles[index].getScaledInstance(54, 54, Image.SCALE_SMOOTH)));
+            tileLabels[index].setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        }
     }
 
-    @Override
-    public void windowIconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-
+    private void saveSelectedTile() { // save-comingsoon
+        if (selectedTile != -1) {
+            JOptionPane.showMessageDialog(this, "Selected Tile Index: " + selectedTile);
+        } else {
+            JOptionPane.showMessageDialog(this, "No tile selected!");
+        }
     }
 }
