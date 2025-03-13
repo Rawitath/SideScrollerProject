@@ -21,7 +21,8 @@ import javax.imageio.ImageIO;
 
 public class EditorWindow extends JFrame{
     
-    private static final String recentFile = "builder/recent.rf";
+    private static final String recentDir = "builder";
+    private static final String recentFile = recentDir + "/recent.rf";
     
     private JTextField directoryField = new JTextField(20);
     private JButton selectDirButton = new JButton("Select");
@@ -91,12 +92,21 @@ public class EditorWindow extends JFrame{
                 Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
-            }   
+            }
+        recentMenu.removeAll();
+        for(JMenuItem item : recentsList){
+            item.addActionListener(e -> selectDirectoryFromMenu(item.getText()));
+            recentMenu.add(item);
+        }
     }
     
     private List<JMenuItem> loadRecent(){
+        File recentsDir = new File(recentDir);
         File recents = new File(recentFile);
         List<JMenuItem> recentsList = null;
+        if(!recentsDir.exists()){
+            recentsDir.mkdir();
+        }
         if(!recents.exists()){
             saveRecent(new ArrayList<>());
         }
