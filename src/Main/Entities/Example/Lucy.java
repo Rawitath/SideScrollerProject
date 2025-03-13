@@ -14,7 +14,6 @@ import Entities.Audios.AudioSource;
 import Entities.CollidableEntity;
 import Entities.UI.UIText;
 import Inputs.KeyControlable;
-import Inputs.MouseControlable;
 import Main.Animations.Example.LucyBreathAnim;
 import Main.GameSystem.Inventory.InventoryItem;
 import Physics.Collider;
@@ -43,6 +42,8 @@ public class Lucy extends CollidableEntity implements KeyControlable{
     private int life = 3;
     
     private boolean grounded = false;
+    private Collider groundObject = null;
+    private Vector2 groundPosition = null;
     
     private Inventory inventory;//Inventory update
     public Lucy(Scene s) {
@@ -164,33 +165,49 @@ public class Lucy extends CollidableEntity implements KeyControlable{
         
     }
     
-    private void onGroundTouch(){
+    private void onGroundTouch(Collider other){
         fallSpeed = 0f;
         grounded = true;
+        groundObject = other;
+        groundPosition = other.getEntity().getPosition();
+    }
+    private void onGroundExit(){
+        groundObject = null;
+            grounded = false;
+            groundPosition = null;
     }
 
     @Override
     public void onColliderEnter(Collider other) {
         if(other.isSolid()){
-                if(getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
+                if(!grounded &&
+                        (getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
                         <=
-                    other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2){
-                    onGroundTouch();
+                    other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2)
+                        &&
+                        getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
+                        >
+                    (other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2) - 0.1f){
+                    onGroundTouch(other);
                 }
-                if(getPosition().getX() + getCollider().getCenter().getX() > other.getEntity().getPosition().getX() + other.getCenter().getX()){
-                    lockDirection = Vector2.left();
-                    //Pushable
-                    //other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.left(), speed * Time.fixedDeltaTime()));
+                if(groundObject != other){
+                    if(!direction.equals(Vector2.zero())){
+                    if(getPosition().getX() + getCollider().getCenter().getX() > other.getEntity().getPosition().getX() + other.getCenter().getX()){
+                        lockDirection = Vector2.left();
+                        //Pushable
+//                        other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.left(), speed * Time.fixedDeltaTime()));
+                    }
+                    else if(getPosition().getX() + getCollider().getCenter().getX() < other.getEntity().getPosition().getX() + other.getCenter().getX()){
+                        lockDirection = Vector2.right();
+//                        other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
+                    }          
                 }
-                else if(getPosition().getX() + getCollider().getCenter().getX() < other.getEntity().getPosition().getX() + other.getCenter().getX()){
-                    lockDirection = Vector2.right();
-                    //other.getEntity().setPosition(other.getEntity().getPosition().translate(Vector2.right(), speed * Time.fixedDeltaTime()));
-                }
+                }                      
             }
-        if(other.getEntity().getTag().equals("Ground")){
-            onGroundTouch();
-        }
-        else if(other.getEntity().getTag().equals("Enemy")){            
+//        if(other.getEntity().getTag().equals("Ground")){
+//            onGroundTouch(other);
+//        }
+        if(other.getEntity().getTag().equals("Enemy")){            
             life--;
             heartContainer.setHeart(life);
         }
@@ -198,32 +215,44 @@ public class Lucy extends CollidableEntity implements KeyControlable{
 
     @Override
     public void onColliderStay(Collider other) {
-        
+        if(groundObject == other){
+            if (!groundPosition.equals(other.getEntity().getPosition())){
+                Vector2 drift = getPosition().add(groundPosition.add(other.getEntity().getPosition().negative()).multiply(Vector2.one().negative()));
+                if(!lockDirection.equals(Vector2.zero())){
+                    drift = drift.multiply(Vector2.up());
+                }
+                setPosition(drift);
+            }
+            groundPosition = other.getEntity().getPosition();
+        }
     }
 
     @Override
     public void onColliderExit(Collider other) {
         if(other.isSolid()){
-            if(getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
-                        <=
-                    other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2
-                        &&
-                (getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
-                                >=
-                 other.getEntity().getPosition().getX() + other.getCenter().getX() + other.getBound().getX() / 2
-                    &&
-                    getPosition().getY() + getCollider().getCenter().getY() + getCollider().getBound().getY() / 2
-                                <=
-                 other.getEntity().getPosition().getX() + other.getCenter().getX() - other.getBound().getX() / 2)){
-                grounded = false;
+            if(groundObject == other){
+                onGroundExit();
             }
-            lockDirection = Vector2.zero();
+//            if(getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
+//                        <=
+//                    other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2
+//                        &&
+//                (getPosition().getX() + getCollider().getCenter().getX() - getCollider().getBound().getX() / 2
+//                                >=
+//                 other.getEntity().getPosition().getX() + other.getCenter().getX() + other.getBound().getX() / 2
+//                    &&
+//                    getPosition().getX() + getCollider().getCenter().getX() + getCollider().getBound().getX() / 2
+//                                <=
+//                 other.getEntity().getPosition().getX() + other.getCenter().getX() - other.getBound().getX() / 2)){
+//                grounded = false;
+//            }
+            lockDirection = Vector2.zero();            
         }
-        if(other.getEntity().getTag().equals("Ground")){
-            grounded = false;
-        }
+//        if(other.getEntity().getTag().equals("Ground")){
+//            onGroundExit();
+//        }
         if(other.getEntity().getTag().equals("Enemy")){
             
         }
-    }
+    }    
 }

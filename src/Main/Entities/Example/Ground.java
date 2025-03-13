@@ -25,6 +25,7 @@ public class Ground extends CollidableEntity{
         setScale(new Vector2(20f ,getScale().getY()));
         getCollider().setBound(new Vector2(20f ,3f));
         setTag("Ground");
+        getCollider().setSolid(true);
 //        setColliderVisibled(true);
     }
 
