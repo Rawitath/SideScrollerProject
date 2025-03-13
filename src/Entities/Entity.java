@@ -5,8 +5,17 @@
 package Entities;
 
 import Datas.Vector2;
+import Datas.Vector2Int;
+import Debugger.DebugManager;
+import Debugger.Debuggable;
+import Entities.UI.UISlider;
+import Inputs.MouseControlable;
 import Scenes.Scene;
 import java.awt.Graphics;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -14,7 +23,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * @author GA_IA
  */
-public abstract class Entity{
+public abstract class Entity implements Debuggable, MouseControlable{
     private static int entityCount = 0; 
     
     private int id;
@@ -30,7 +39,15 @@ public abstract class Entity{
     
     private boolean active;
     private boolean boundaryVisibled;
-
+    
+    private Vector2Int positionOnScreen;
+    private Vector2Int sizeOnScreen;
+    
+    private Point mousePoint;
+    
+    private boolean clickable;
+    private boolean debug;
+    
     public Entity(Scene s){
         scene = s;
         id = entityCount;
@@ -44,6 +61,11 @@ public abstract class Entity{
         setActive(true);
         setBoundaryVisibled(false);
         
+        positionOnScreen = new Vector2Int();
+        sizeOnScreen = new Vector2Int();
+        
+        mousePoint = new Point();
+        
         entityCount++;
     }
     public void onAddedToParent(){
@@ -52,6 +74,7 @@ public abstract class Entity{
     public void onRemoveFromParent(){
         
     }
+    
     public String getTag() {
         return tag;
     }
@@ -193,6 +216,25 @@ public abstract class Entity{
     
     public abstract void start();
     public abstract void update();
+    
+    public void lateUpdate(){
+        if(DebugManager.isDebug()){
+            if(mousePoint.x >= positionOnScreen.getX() &&
+                mousePoint.x <= positionOnScreen.getX() + sizeOnScreen.getX() &&
+                mousePoint.y >= positionOnScreen.getY()&&
+                mousePoint.y <= positionOnScreen.getY() + sizeOnScreen.getY()){
+                    clickable = true;
+            }
+            else{
+                clickable = false;
+            }
+            
+            if(debug){
+                DebugManager.debugEntity(this);
+            }
+           
+        }
+    }
     public abstract void fixedUpdate();
     public void remove(){}
     
@@ -200,7 +242,80 @@ public abstract class Entity{
         if(isBoundaryVisibled()){
              Vector2 pos = getPosition().multiply(Vector2.negativeY()).multiply(zoom).add(posOffset);
         Vector2 scale = getScale().multiply(scaleOffset);
-        g.drawRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));
+        positionOnScreen = new Vector2Int(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2));
+        sizeOnScreen = new Vector2Int(Math.round(scale.getX()), Math.round(scale.getY()));
+        if(clickable || debug){
+            g.fillRect(positionOnScreen.getX(), positionOnScreen.getY(), sizeOnScreen.getX(), sizeOnScreen.getY());
+        }
+        else{
+            g.drawRect(positionOnScreen.getX(), positionOnScreen.getY(), sizeOnScreen.getX(), sizeOnScreen.getY());
+        }
         }
     }
+
+    public Vector2Int getPositionOnScreen() {
+        return positionOnScreen;
+    }
+
+    public Vector2Int getSizeOnScreen() {
+        return sizeOnScreen;
+    }
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public void setDebug(boolean debug) {
+        if(DebugManager.isDebug()){
+            this.debug = debug;
+        }
+    }
+    
+    @Override
+    public void onDebugActivate() {
+        setBoundaryVisibled(true);
+    }
+
+    @Override
+    public void onMouseClicked(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void onMousePressed(MouseEvent e) {
+        if(clickable){
+            debug = true;
+        }
+    }
+
+    @Override
+    public void onMouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void onMouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void onMouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void onMouseWheelMoved(MouseWheelEvent e) {
+
+    }
+
+    @Override
+    public void onMouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void onMouseMoved(MouseEvent e) {
+        mousePoint = e.getPoint();
+    }
+    
 }

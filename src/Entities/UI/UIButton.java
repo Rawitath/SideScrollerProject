@@ -62,10 +62,10 @@ public abstract class UIButton extends UIImage implements MouseControlable{
     }
     
     private boolean isMouseOnButton(MouseEvent e){
-        return e.getPoint().x >= getScreenPoint().getX() &&
-           e.getPoint().x <= getScreenPoint().getX() + getScreenSize().getX() &&
-           e.getPoint().y >= getScreenPoint().getY() &&
-           e.getPoint().y <= getScreenPoint().getY() + getScreenSize().getY();
+        return e.getPoint().x >= getPositionOnScreen().getX() &&
+           e.getPoint().x <= getPositionOnScreen().getX() + getScreenSize().getX() &&
+           e.getPoint().y >= getPositionOnScreen().getY() &&
+           e.getPoint().y <= getPositionOnScreen().getY() + getScreenSize().getY();
     }
     public abstract void onButtonClicked();
     public abstract void onButtonPressed();

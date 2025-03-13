@@ -9,6 +9,7 @@ import Entities.UI.UIButton;
 import Scenes.Scene;
 import Utilities.FileReader;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 /**
  *
@@ -48,6 +49,11 @@ public class MyButton extends UIButton{
 
     @Override
     public void onButtonReleased() {
+
+    }
+
+    @Override
+    public void onMouseWheelMoved(MouseWheelEvent e) {
 
     }
 }

@@ -10,6 +10,7 @@ import Main.UI.Example.HeartContainer;
 import Datas.Constants;
 import Datas.Vector2;
 import Datas.Vector2Int;
+import Debugger.DebugManager;
 import Entities.Audios.AudioSource;
 import Entities.CollidableEntity;
 import Entities.UI.UIText;

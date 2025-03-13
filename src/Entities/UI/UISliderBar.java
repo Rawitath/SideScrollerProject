@@ -7,6 +7,7 @@ package Entities.UI;
 import Datas.Vector2;
 import Datas.Vector2Int;
 import Scenes.Scene;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 /**
@@ -38,5 +39,4 @@ public class UISliderBar extends UIProgressBar{
     public void fixedUpdate() {
 
     }
-    
 }

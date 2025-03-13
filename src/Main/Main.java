@@ -4,6 +4,7 @@
  */
 package Main;
 
+import Debugger.DebugManager;
 import Main.Scenes.Example.ExampleScene;
 import Engine.EngineFrame;
 import Physics.Time;
@@ -16,6 +17,9 @@ import Utilities.FileReader;
  */
 public class Main {
     public static void main(String[] args) {
+        //Uncomment to use Debug Mode
+//        DebugManager.useDebug();
+        
         //Scene added here
         SceneManager.addScene(new ExampleScene()); // This Scene will be loaded first
         

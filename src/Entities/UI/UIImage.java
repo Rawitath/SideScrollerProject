@@ -81,7 +81,8 @@ public abstract class UIImage extends UIEntity{
         this.alpha = alpha;
     }
     
-    protected Vector2Int getScreenPoint(){
+    @Override
+    public Vector2Int getPositionOnScreen(){
         return screenPoint;
     }
     protected void setScreentPoint(Vector2Int screenPoint){

@@ -13,6 +13,7 @@ import Utilities.FileReader;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
@@ -83,5 +84,6 @@ public class UIProgressBarFill extends UIImage{
     public void fixedUpdate() {
         
     }
+
     
 }
