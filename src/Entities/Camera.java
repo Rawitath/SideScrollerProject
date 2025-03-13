@@ -94,21 +94,24 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
                 setPosition(getPosition().translate(Vector2.right(), debugSpeed));
             }
             if(keyCode == 46){
-                if (this.zoom < 10.1f){
-                    this.zoom = 10f;
+                if (this.zoom - 1f < 0.1f){
+                    this.zoom = 0.1f;
                     //System.out.println("You can't zoom out anymore.");
                 }
                 else{
                     this.zoom -= 1f;
+                    debugSpeed += 0.7f;
                 }
             }
             if(keyCode == 47){
-                if (this.zoom > 19.9f){
-                    this.zoom = 20f;
+                
+                if (this.zoom > 699.9f){
+                    this.zoom = 700f;
                     //System.out.println("You can't zoom in anymore.");
                 }
                 else{
                     this.zoom += 1f;
+                    debugSpeed -= 0.7f;
                 }
             }
             if(keyCode == 59){
@@ -161,16 +164,23 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
 
     @Override
     public void onMouseWheelMoved(MouseWheelEvent e) {
-        if (this.zoom > 20f){
-            this.zoom = 20f;
-            System.out.println("You can't zoom in anymore.");
+        if (this.zoom > 699f){
+            this.zoom = 700f;
+//            System.out.println("You can't zoom in anymore.");
         }
-        else if (this.zoom < 10f){
-            this.zoom = 10f;
-            System.out.println("You can't zoom out anymore.");
+//        if (this.zoom < 0.1f){
+//            this.zoom = 0.1f;
+////            System.out.println("You can't zoom out anymore.");
+//        }
+//        else{
+//            zoom -= e.getWheelRotation();
+//        }
+        if(this.zoom > 0.1f || e.getWheelRotation() < 0){
+            zoom -= e.getWheelRotation();
+            debugSpeed += e.getWheelRotation() * 0.7f;
         }
         else{
-            zoom -= e.getWheelRotation();
+            this.zoom = 0.1f;
         }
     }
 }
