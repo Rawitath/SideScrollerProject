@@ -4,14 +4,25 @@
  */
 package Maps;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
-public class EditorWindow extends JFrame {
+public class EditorWindow extends JFrame{
+    
+    private static final String recentFile = "builder/recent.rf";
+    
     private JTextField directoryField = new JTextField(20);
     private JButton selectDirButton = new JButton("Select");
     private JButton saveButton = new JButton("Save");
@@ -19,12 +30,38 @@ public class EditorWindow extends JFrame {
     private String directory;
     private BufferedImage[] tiles;
     private JLabel[] tileLabels;
+    private JMenu fileMenu;
+    private JMenu recentMenu;
+    private JMenuItem newMenu;
+    private JMenuItem saveMenu;
+    private List<JMenuItem> recentList;
     private int selectedTile = -1;
 
     public EditorWindow() {
         setTitle("Map Editor");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
+        
+        JMenuBar menubar = new JMenuBar();
+        fileMenu = new JMenu("File");
+        
+        newMenu = new JMenuItem("New");
+        fileMenu.add(newMenu);
+        
+        recentMenu = new JMenu("Recent");
+        fileMenu.add(recentMenu);
+        
+        recentList = loadRecent();
+        
+        saveMenu = new JMenuItem("Save");
+        fileMenu.addSeparator();
+        fileMenu.add(saveMenu);
+        
+        for(JMenuItem item : recentList){
+            item.addActionListener(e -> selectDirectoryFromMenu(item.getText()));
+            recentMenu.add(item);
+        }
+        menubar.add(fileMenu);
 
         JPanel topPanel = new JPanel(new FlowLayout());
         topPanel.add(directoryField);
@@ -36,7 +73,8 @@ public class EditorWindow extends JFrame {
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.add(saveButton);
-
+        
+        setJMenuBar(menubar);
         add(topPanel, BorderLayout.NORTH);
         add(tilePanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
@@ -44,19 +82,62 @@ public class EditorWindow extends JFrame {
         setSize(400, 450);
         setVisible(true);
     }
+    
+    private void saveRecent(List<JMenuItem> recentsList){
+        try(FileOutputStream fout = new FileOutputStream(recentFile);
+                ObjectOutputStream os = new ObjectOutputStream(fout);){
+                os.writeObject(recentsList);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }   
+    }
+    
+    private List<JMenuItem> loadRecent(){
+        File recents = new File(recentFile);
+        List<JMenuItem> recentsList = null;
+        if(!recents.exists()){
+            saveRecent(new ArrayList<>());
+        }
+        try(FileInputStream fin = new FileInputStream(recents);
+            ObjectInputStream os = new ObjectInputStream(fin)){
+            recentsList = (List<JMenuItem>) os.readObject();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return recentsList;
+    }
+    
+    private void setDirLoad(String dir){
+        directory = dir;
+        directoryField.setText(directory);
+        loadTiles();
+    }
 
     private void selectDirectory() { //select
         JFileChooser fileChooser = new JFileChooser(); // find file
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) { //selected
-            directory = fileChooser.getSelectedFile().getAbsolutePath();
-            directoryField.setText(directory);
-            loadTiles();
+            setDirLoad(fileChooser.getSelectedFile().getAbsolutePath());
         }
+        
+        for(JMenuItem item : recentList){
+            if(item.getText().equals(directory)){
+                return;
+            }
+        }
+        recentList.add(new JMenuItem(directory));
+        saveRecent(recentList);
     }
 
     private void loadTiles() {
+        selectedTile = -1;
         File dir = new File(directory);
         File[] files = dir.listFiles((d, name) -> name.endsWith(".png") || name.endsWith(".jpg")); // show only jpg/png
         if (files != null) {
@@ -108,5 +189,9 @@ public class EditorWindow extends JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "No tile selected!");
         }
+    }
+    
+    private void selectDirectoryFromMenu(String dir){
+        setDirLoad(dir);
     }
 }
