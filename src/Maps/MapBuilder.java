@@ -30,6 +30,8 @@ public class MapBuilder {
     private static boolean useEditor;
     
     private static Scene currentScene;
+    
+    private static SelectorBox selector;
 
     public static boolean isUseEditor() {
         return useEditor;
@@ -43,6 +45,8 @@ public class MapBuilder {
         currentScene = s;
         if(useEditor){
             editor = new EditorWindow();
+            selector = new SelectorBox(s);
+            currentScene.addEntity(selector);
         }
     } 
     
