@@ -37,4 +37,10 @@ dist/
 nbdist/
 .nb-gradle/
 
+### Github ###
+.github
+
+### Map Builder ###
+builder/recent.rf
+
 # End of https://www.toptal.com/developers/gitignore/api/java,netbeans

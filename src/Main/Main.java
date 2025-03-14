@@ -7,6 +7,7 @@ package Main;
 import Debugger.DebugManager;
 import Main.Scenes.Example.ExampleScene;
 import Engine.EngineFrame;
+import Maps.MapBuilder;
 import Physics.Time;
 import Scenes.SceneManager;
 import Utilities.FileReader;
@@ -19,6 +20,7 @@ public class Main {
     public static void main(String[] args) {
         //Uncomment to use Debug Mode
 //        DebugManager.useDebug();
+//         MapBuilder.setUseEditor(true);
         
         //Scene added here
         SceneManager.addScene(new ExampleScene()); // This Scene will be loaded first

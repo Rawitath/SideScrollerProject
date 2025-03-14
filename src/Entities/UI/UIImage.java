@@ -176,6 +176,8 @@ public abstract class UIImage extends UIEntity{
                 screenSize.getX()
                 , 
                 screenSize.getY(), null);
+            ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1);
+            g2d.setComposite(ac);
         }
         super.draw(g, posOffset, scaleOffset, zoom);
     }

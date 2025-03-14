@@ -29,6 +29,7 @@ public class ThisIsExample extends UIText{
     public void start() {
         setPosition(new Vector2(0 ,200));
         setText("This is Example!");
+        setBoundaryVisibled(true);
     }
 
     @Override

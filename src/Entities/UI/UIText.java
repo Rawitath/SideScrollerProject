@@ -92,12 +92,11 @@ public abstract class UIText extends UIEntity{
         super.draw(g, posOffset, scaleOffset, zoom);
         
         
-        
-        Vector2 pos = getPosition().add(getScreenAnchor()).multiply(Vector2.negativeY())
-                .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()))
-                .add(posOffset);
         g.setFont(font.deriveFont(0, size));
         g.setColor(color);
+        Vector2 pos = getPosition().add(getScreenAnchor()).multiply(Vector2.negativeY())
+                .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()))
+                .add(posOffset).add(new Vector2(-g.getFontMetrics().stringWidth(text) / 2, g.getFontMetrics().getHeight() / 3.25f));
         g.drawString(text, Math.round(pos.getX()),Math.round(pos.getY()) );
     }
     
