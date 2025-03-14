@@ -17,9 +17,8 @@ public class MapFile implements Serializable{
     private float offsetX;
     private float offsetY;
 
-    public MapFile(String name, TileFile[] tiles) {
+    public MapFile(String name) {
         this.name = name;
-        this.tiles = tiles;
         tileRatio = 1;
     }
 

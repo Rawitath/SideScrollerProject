@@ -46,6 +46,9 @@ public class MapBuilder {
         if(useEditor){
             editor = new EditorWindow();
             selector = new SelectorBox(s);
+            if(editor.getCurrentMap() == null){
+                selector.setActive(false);
+            }
             currentScene.addEntity(selector);
         }
     } 
