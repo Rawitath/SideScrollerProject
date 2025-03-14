@@ -53,5 +53,11 @@ public abstract class CollidableEntity extends SpriteEntity implements Collidabl
         g.fillRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));
         }
     }
+
+    @Override
+    public void onDebugActivate() {
+        super.onDebugActivate();
+        setColliderVisibled(true);
+    }
     
 }

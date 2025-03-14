@@ -32,6 +32,8 @@ public class EngineFrame extends JFrame{
         inputManager = new InputManager();
         canvas.addKeyListener(inputManager);
         canvas.addMouseListener(inputManager);
+        canvas.addMouseMotionListener(inputManager);
+        canvas.addMouseWheelListener(inputManager);
         canvas.setFocusable(true);
         
         setVisible(true);   

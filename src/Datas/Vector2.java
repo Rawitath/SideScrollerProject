@@ -86,4 +86,10 @@ public class Vector2 {
     public static final Vector2 negativeY(){
         return new Vector2(1f, -1f);
     }
+
+    public boolean equals(Vector2 vec) {
+        return this.x == vec.getX() && this.y == vec.getY();
+    }
+    
+    
 }

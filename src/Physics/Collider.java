@@ -18,12 +18,14 @@ public class Collider{
     private Entity entity;
     private Vector2 center;
     private Vector2 bound;
+    private boolean solid;
     private List<Collider> collidedObject;
     
     public Collider(Entity entity, Vector2 center, Vector2 bound){
         this.entity = entity;
         this.center = center;
         this.bound = bound;
+        this.solid = false;
         
         collidedObject = new CopyOnWriteArrayList<>();
         
@@ -67,7 +69,7 @@ public class Collider{
                 (tw < tx || tw > rx) &&
                 (th < ty || th > ry));
     }
-
+    
     public Entity getEntity() {
         return entity;
     }
@@ -86,6 +88,14 @@ public class Collider{
 
     public void setBound(Vector2 bound) {
         this.bound = bound;
+    }
+
+    public boolean isSolid() {
+        return solid;
+    }
+
+    public void setSolid(boolean solid) {
+        this.solid = solid;
     }
     
     
