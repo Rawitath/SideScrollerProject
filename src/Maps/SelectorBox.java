@@ -23,8 +23,12 @@ public class SelectorBox extends SpriteEntity{
     private BufferedImage activeIcon;
     private Vector2 currentTilePosition;
     private Vector2 tileSize;
-    public SelectorBox(Scene s) {
+    
+    private EditorBridge controller;
+    
+    public SelectorBox(Scene s, EditorBridge controller) {    
         super(s);
+        this.controller = controller;
         defaultIcon = FileReader.readImage("res/default/framesquare.png");
         activeIcon = FileReader.readImage("res/default/blacksquare.png");
         setSprite(defaultIcon, true);
@@ -34,7 +38,7 @@ public class SelectorBox extends SpriteEntity{
         tileSize = new Vector2(3f, 3f);
         currentTilePosition = Vector2.zero();
     }
-
+    
     @Override
     public void start() {
         
@@ -70,6 +74,11 @@ public class SelectorBox extends SpriteEntity{
     public void onMousePressed(MouseEvent e) {
         setSprite(activeIcon, true);
         super.onMousePressed(e); 
+        TileEntity tile = controller.getTile();
+        if(tile != null){
+            getScene().addEntity(tile);
+            tile.setPosition(getPosition());
+        }
     }
 
     @Override

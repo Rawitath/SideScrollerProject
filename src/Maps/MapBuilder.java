@@ -7,6 +7,7 @@ package Maps;
 import Datas.Vector2;
 import Physics.Time;
 import Scenes.Scene;
+import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -31,7 +32,7 @@ public class MapBuilder {
     
     private static Scene currentScene;
     
-    private static SelectorBox selector;
+    private static EditorBridge controller;
 
     public static boolean isUseEditor() {
         return useEditor;
@@ -41,17 +42,19 @@ public class MapBuilder {
         MapBuilder.useEditor = useEditor;
     }
     
+    public static BufferedImage getCurrentTile(){
+        if(editor.getSelectedTile() != -1){
+            return editor.getTiles()[editor.getSelectedTile()];
+        }
+        return null;
+    }
+    
     public static void useMapBuilder(Scene s){
         currentScene = s;
         if(useEditor){
-            editor = new EditorWindow();
-            selector = new SelectorBox(s);
-            if(editor.getCurrentMap() == null){
-                selector.setActive(false);
-            }
-            currentScene.addEntity(selector);
+            controller = new EditorBridge(s);
         }
-    } 
+    }
     
     private static void buildMap(MapFile map){
         for(int i = 0; i < map.getTiles().length; i++){

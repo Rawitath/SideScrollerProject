@@ -40,8 +40,12 @@ public class EditorWindow extends JFrame{
     private int selectedTile = -1;
     
     private MapFile currentMap = null;
+    
+    private EditorBridge controller;
 
-    public EditorWindow() {
+    public EditorWindow(EditorBridge controller) {
+        this.controller = controller;
+        
         setTitle("<No Map Loaded>");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
@@ -209,6 +213,8 @@ public class EditorWindow extends JFrame{
                 ObjectInputStream os = new ObjectInputStream(fin);){
                 currentMap = (MapFile) os.readObject();
                 setTitle(currentMap.getName());
+                directoryField.setEditable(true);
+                selectDirButton.setEnabled(true);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -216,8 +222,9 @@ public class EditorWindow extends JFrame{
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
             }
-             directoryField.setEditable(true);
-            selectDirButton.setEnabled(true);
+            finally{
+                controller.setSelectorState();
+            }
 //            //save to recent
 //        for(JMenuItem item : recentList){
 //            if(item.getText().equals(directory)){
@@ -227,6 +234,7 @@ public class EditorWindow extends JFrame{
 //        recentList.add(new JMenuItem(directory));
 //        saveRecent(recentList);
         }
+        
     }
     
     private void setDirLoad(String dir){
@@ -311,5 +319,13 @@ public class EditorWindow extends JFrame{
     
     private void selectDirectoryFromMenu(String dir){
         setDirLoad(dir);
+    }
+
+    public BufferedImage[] getTiles() {
+        return tiles;
+    }
+
+    public int getSelectedTile() {
+        return selectedTile;
     }
 }
