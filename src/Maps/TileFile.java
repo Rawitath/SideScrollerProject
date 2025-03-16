@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author GA_IA
  */
 public class TileFile implements Serializable{
-    private String tilePath;
+    private int tile;
     private int column;
     private int row;
     private int tileCutSize;
@@ -34,12 +34,12 @@ public class TileFile implements Serializable{
         this.tag = tag;
     }
 
-    public String getTileSheet() {
-        return tilePath;
+    public int getTile() {
+        return tile;
     }
 
-    public void setTileSheet(String tilePath) {
-        this.tilePath = tilePath;
+    public void setTileSheet(int tile) {
+        this.tile = tile;
     }
     
     public int getTileCutSize() {

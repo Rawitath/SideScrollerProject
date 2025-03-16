@@ -11,6 +11,7 @@ import java.io.Serializable;
  * @author GA_IA
  */
 public class MapFile implements Serializable{
+    private static final long serialVersionUID = 8669086114808669426L;
     private String name;
     private TileFile[] tiles;
     private float tileRatio;
@@ -20,6 +21,19 @@ public class MapFile implements Serializable{
     public MapFile(String name) {
         this.name = name;
         tileRatio = 1;
+    }
+    
+    public float columnToWorldX(int column){
+        return column * tileRatio + getOffsetX();
+    }
+    public float rowToWorldY(int row){
+        return row * tileRatio + getOffsetY();
+    }
+    public int worldXToColumn(float x){
+        return (int) ((x - getOffsetX() / tileRatio) + tileRatio / 2);
+    }
+    public int worldYToRow(float y){
+        return (int) ((y - getOffsetY() / tileRatio) + tileRatio / 2);
     }
 
     public String getName() {

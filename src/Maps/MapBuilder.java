@@ -61,8 +61,8 @@ public class MapBuilder {
             TileFile tile = map.getTiles()[i];
             TileEntity tileEntity = new TileEntity(currentScene);
             tileEntity.setPosition(new Vector2(
-                    tile.getColumn() * map.getTileRatio() + map.getOffsetX(),
-                    tile.getRow() * map.getTileRatio() + map.getOffsetY()
+                    map.columnToWorldX(tile.getColumn()),
+                    map.rowToWorldY(tile.getRow())
             ));
             tileEntity.setTag(tile.getTag());
             loadedTileEntities.add(tileEntity);
@@ -72,7 +72,7 @@ public class MapBuilder {
     
     public static void loadMap(String mapPath){
         if(!loadedTileEntities.isEmpty()){
-            System.err.println("There's a map loaded, please unload them first.");
+            System.err.println("There's a map loaded, please unload it first.");
             return;
         }
         try(FileInputStream fin = new FileInputStream(mapPath);

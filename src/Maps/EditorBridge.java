@@ -4,6 +4,7 @@
  */
 package Maps;
 
+import Datas.Vector2;
 import Scenes.Scene;
 
 /**
@@ -32,14 +33,29 @@ public class EditorBridge {
         }
         else{
             selector.setActive(true);
+            selector.setScale(Vector2.one().multiply(getMap().getTileRatio()));
         }
     }
-    public TileEntity getTile(){
+    public void placeTile(Vector2 mousePos){
         if(editor.getSelectedTile() != -1){
             TileEntity tile = new TileEntity(currentScene);
             tile.setSprite(editor.getTiles()[editor.getSelectedTile()]);
-            return tile;
+            currentScene.addEntity(tile);
+            tile.setPosition(new Vector2(
+                    getMap().columnToWorldX(getMap().worldXToColumn(mousePos.getX())),
+                    getMap().rowToWorldY(getMap().worldYToRow(mousePos.getY()))
+            ));
         }
-        return null;
+    }
+    public void setSelectorPosition(Vector2 mousePos){
+        if(getMap() != null){
+            selector.setPosition(new Vector2(
+                        getMap().columnToWorldX(getMap().worldXToColumn(mousePos.getX())),
+                        getMap().rowToWorldY(getMap().worldYToRow(mousePos.getY()))
+                ));
+        }
+    }
+    public MapFile getMap(){
+        return editor.getCurrentMap();
     }
 }

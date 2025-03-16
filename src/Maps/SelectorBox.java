@@ -21,8 +21,6 @@ public class SelectorBox extends SpriteEntity{
 
     private BufferedImage defaultIcon;
     private BufferedImage activeIcon;
-    private Vector2 currentTilePosition;
-    private Vector2 tileSize;
     
     private EditorBridge controller;
     
@@ -32,11 +30,9 @@ public class SelectorBox extends SpriteEntity{
         defaultIcon = FileReader.readImage("res/default/framesquare.png");
         activeIcon = FileReader.readImage("res/default/blacksquare.png");
         setSprite(defaultIcon, true);
-        setSpriteSize(new Vector2Int(300, 300));
+        setPixelRatio(1);
+        setSpriteSize(new Vector2Int(1, 1));
         setAlpha(0.75f);
-        
-        tileSize = new Vector2(3f, 3f);
-        currentTilePosition = Vector2.zero();
     }
     
     @Override
@@ -53,38 +49,18 @@ public class SelectorBox extends SpriteEntity{
     public void fixedUpdate() {
 
     }
-
-    public Vector2 getCurrentTilePosition() {
-        return currentTilePosition;
-    }
-
-    public void setCurrentTilePosition(Vector2 currentTilePosition) {
-        this.currentTilePosition = currentTilePosition;
-    }
-
-    public Vector2 getTileSize() {
-        return tileSize;
-    }
-
-    public void setTileSize(Vector2 tileSize) {
-        this.tileSize = tileSize;
-    }
     
     @Override
     public void onMousePressed(MouseEvent e) {
-        setSprite(activeIcon, true);
         super.onMousePressed(e); 
-        TileEntity tile = controller.getTile();
-        if(tile != null){
-            getScene().addEntity(tile);
-            tile.setPosition(getPosition());
-        }
+        setSprite(activeIcon, true);
+        controller.placeTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)));
     }
 
     @Override
     public void onMouseReleased(MouseEvent e) {
-        setSprite(defaultIcon, true);
         super.onMouseReleased(e); 
+        setSprite(defaultIcon, true);
     }
     
     @Override
@@ -101,22 +77,6 @@ public class SelectorBox extends SpriteEntity{
     
     private void setSelectorPosition(MouseEvent e){
         Vector2 mousePos = getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y));
-        
-        //right
-        if(mousePos.getX() > getPosition().getX() + tileSize.getX() / 2){
-            setPosition(getPosition().add(new Vector2(tileSize.getX(), 0)));
-        }
-        //left
-        if(mousePos.getX() < getPosition().getX() - tileSize.getX() / 2){
-            setPosition(getPosition().add(new Vector2(tileSize.getX(), 0).negative()));
-        }
-        //down
-        if(mousePos.getY() > getPosition().getY() + tileSize.getY() / 2){
-            setPosition(getPosition().add(new Vector2(0, tileSize.getY())));
-        }
-        //down
-        if(mousePos.getY() < getPosition().getY() - tileSize.getY() / 2){
-            setPosition(getPosition().add(new Vector2(0, tileSize.getY()).negative()));
-        }
+        controller.setSelectorPosition(mousePos);
     }
 }
