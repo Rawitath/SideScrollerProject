@@ -12,6 +12,7 @@ import Scenes.Scene;
 import Utilities.FileReader;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -50,16 +51,28 @@ public class SelectorBox extends SpriteEntity{
 
     }
     
+    private boolean isReplaced = false;
+    
     @Override
     public void onMousePressed(MouseEvent e) {
         super.onMousePressed(e); 
         setSprite(activeIcon, true);
-        controller.placeTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)));
+        if(SwingUtilities.isLeftMouseButton(e)){ //Left Mouse Button
+            isReplaced = controller.placeTile(
+                    getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)),
+                    true
+            );
+        }
+        if(SwingUtilities.isRightMouseButton(e)){ //Right Mouse Button
+            controller.removeTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)));
+        }
     }
 
     @Override
     public void onMouseReleased(MouseEvent e) {
         super.onMouseReleased(e); 
+        controller.moveSelectorOnTop();
+        isReplaced = false;
         setSprite(defaultIcon, true);
     }
     
@@ -67,7 +80,15 @@ public class SelectorBox extends SpriteEntity{
     public void onMouseDragged(MouseEvent e) {
         super.onMouseDragged(e);
         setSelectorPosition(e);
-        controller.placeTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)));
+        if(SwingUtilities.isLeftMouseButton(e)){ //Left Mouse Button
+            controller.placeTile(
+                getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)),
+                isReplaced
+            );
+        }
+        if(SwingUtilities.isRightMouseButton(e)){ //Right Mouse Button
+            controller.removeTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)));
+        }
     }
 
     @Override

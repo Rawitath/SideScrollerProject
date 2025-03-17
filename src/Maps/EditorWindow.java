@@ -44,12 +44,14 @@ public class EditorWindow extends JFrame{
     private MapFile currentMap = null;
     
     private EditorController controller;
+    
+    private boolean isSaved = true;
 
     public EditorWindow(EditorController controller) {
         this.controller = controller;
         
         setTitle("<No Map Loaded>");
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
         
         JMenuBar menubar = new JMenuBar();
@@ -69,6 +71,7 @@ public class EditorWindow extends JFrame{
 //        recentList = loadRecent();
         
         saveMenu = new JMenuItem("Save");
+        saveMenu.addActionListener(e -> saveMap());
         fileMenu.addSeparator();
         fileMenu.add(saveMenu);
         
@@ -104,6 +107,14 @@ public class EditorWindow extends JFrame{
         setButtonsState(false);
         
         addWindowListener(controller);
+    }
+
+    public boolean isSaved() {
+        return isSaved;
+    }
+
+    public void setIsSaved(boolean isSaved) {
+        this.isSaved = isSaved;
     }
 
     public MapFile getCurrentMap() {
@@ -195,7 +206,7 @@ public class EditorWindow extends JFrame{
             dir = new File(directory +"/"+map.getName()+"/"+"tile");
             dir.mkdir();
         }
-        saveMap(map, dir.getParentFile().getAbsolutePath());
+        EditorWindow.this.saveMap(map, dir.getParentFile().getAbsolutePath());
         
         currentMap = map;
         setTitle(currentMap.getName());
@@ -216,6 +227,7 @@ public class EditorWindow extends JFrame{
             ObjectOutputStream os = new ObjectOutputStream(fout);){
             os.writeObject(map);
             mapDirectory = directory;
+            isSaved = true;
         } catch (FileNotFoundException ex) {
             Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -223,9 +235,14 @@ public class EditorWindow extends JFrame{
         } 
     }
     
+    public void saveMap(){
+        EditorWindow.this.saveMap(currentMap, mapDirectory);
+        setTitle(currentMap.getName());
+    }
     public void updateMap(MapFile map){
-        saveMap(map, mapDirectory);
+        isSaved = false;
         controller.updateScreen();
+        setTitle(currentMap.getName() + " (Not Saved)");
     }
     
     private void openLoadMap(){

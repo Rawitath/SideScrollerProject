@@ -25,7 +25,7 @@ public class EditMapWindow extends JDialog implements ActionListener{
     private JTextField offsetXField = new JTextField();
     private JTextField offsetYField = new JTextField();
     
-    private JButton saveButton = new JButton("Save");
+    private JButton saveButton = new JButton("Edit");
     
     private EditorWindow editor;
     

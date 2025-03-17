@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -31,14 +32,16 @@ public class EditorController implements WindowListener{
     private Scene currentScene;
     
     // Concept of 2D Resizable Array - GA_IA
-    private Map<Integer, Map<Integer, TileEntity>> tileColumn;
+    private Map<Integer, Map<Integer, TileEntity>> tileGrid;
     private List<BufferedImage> usedImages;
+    private Map<BufferedImage, Integer> imageUsage;
     
-    public EditorController(Scene s){
-        
+    public EditorController(Scene s){     
         currentScene = s;
-        tileColumn = Collections.synchronizedMap(new HashMap<>());
-        usedImages = new ArrayList<>();
+        
+        tileGrid = Collections.synchronizedMap(new HashMap<>());
+        imageUsage = Collections.synchronizedMap(new HashMap<>());
+        usedImages = Collections.synchronizedList(new ArrayList<>());
         
         this.editor = new EditorWindow(this);
         this.selector = new SelectorBox(s, this);
@@ -60,9 +63,9 @@ public class EditorController implements WindowListener{
             selector.setActive(true);
             selector.setScale(Vector2.one().multiply(getMap().getTileRatio()));
         }
-        for(Integer ck : tileColumn.keySet()){
-            for(Integer rk : tileColumn.get(ck).keySet()){
-                TileEntity tile = tileColumn.get(ck).get(rk);
+        for(Integer ck : tileGrid.keySet()){
+            for(Integer rk : tileGrid.get(ck).keySet()){
+                TileEntity tile = tileGrid.get(ck).get(rk);
                 tile.setPosition(new Vector2(
                     getMap().columnToWorldX(tile.getTileFile().getColumn()),
                     getMap().rowToWorldY(tile.getTileFile().getRow())
@@ -75,22 +78,26 @@ public class EditorController implements WindowListener{
             }
         }
     }
-    public void placeTile(Vector2 mousePos){
+    public boolean placeTile(Vector2 mousePos, boolean overrideTile){
+        boolean isReplaced = false;
+        
         if(editor.getSelectedTile() != -1){
             int tileID = -1;
             for(int i = 0; i < usedImages.size() + 1; i++){
-                if(i < usedImages.size()){
+                if(i < imageUsage.size()){
                     if(!usedImages.get(i).equals(editor.getTiles()[editor.getSelectedTile()])){
                         continue;
                     }
                     else{
+                        imageUsage.put(usedImages.get(i), imageUsage.get(usedImages.get(i)) + 1);
                         tileID = i;
                         break;
                     }
                 }
                 //Not in list
                 usedImages.add(editor.getTiles()[editor.getSelectedTile()]);
-                tileID = usedImages.size() - 1;
+                imageUsage.put(usedImages.get(i), 1);
+                tileID = imageUsage.size() - 1;
                 break;
             }
             
@@ -98,13 +105,18 @@ public class EditorController implements WindowListener{
             int row = getMap().worldYToRow(mousePos.getY());
             
             //Check if already placed
-            if(tileColumn.containsKey(column)){
-                if(tileColumn.get(column).containsKey(row)){
-                    if(tileColumn.get(column).get(row).getTileFile().getTile() == tileID){
-                        return;
-                    }
+            if(tileGrid.containsKey(column) && tileGrid.get(column).containsKey(row)){
+                if(tileGrid.get(column).get(row).getTileFile().getTile() == tileID){
+                    return isReplaced;
                 }
-            }
+                if(overrideTile){
+                    removeTile(mousePos);
+                    isReplaced = true;
+                }
+                else{
+                    return isReplaced;
+                }
+            }   
             
             //Placing Tile
             TileFile tileFile = new TileFile();
@@ -125,12 +137,44 @@ public class EditorController implements WindowListener{
             ));
             tile.setTileFile(tileFile);
             
-            if(tileColumn.containsKey(column)){
-                tileColumn.get(column).put(row, tile);
+            if(tileGrid.containsKey(column)){
+                tileGrid.get(column).put(row, tile);
+                return isReplaced;
+            }
+            tileGrid.put(column, new HashMap<>());
+            tileGrid.get(column).put(row, tile);
+        }
+        return isReplaced;
+    }
+    public void removeTile(Vector2 mousePos){ 
+        if(editor.getTiles() != null && editor.getTiles().length > 0){
+            int column = getMap().worldXToColumn(mousePos.getX());
+            int row = getMap().worldYToRow(mousePos.getY());
+            
+            //Check if empty
+            if(!tileGrid.containsKey(column)){
                 return;
             }
-            tileColumn.put(column, new HashMap<>());
-            tileColumn.get(column).put(row, tile);
+            if(!tileGrid.get(column).containsKey(row)){
+                return;
+            }
+
+            TileEntity tile = tileGrid.get(column).get(row);
+            BufferedImage image = usedImages.get(tile.getTileFile().getTile());
+            
+            currentScene.removeEntity(tile);
+
+            imageUsage.put(image
+                    , imageUsage.get(image) - 1);
+            if(imageUsage.get(image) <= 0){
+                imageUsage.remove(image);
+                usedImages.remove(image);
+            }
+
+            tileGrid.get(column).remove(row);
+            if(tileGrid.get(column).keySet().size() <= 0){
+                tileGrid.remove(column);
+            }
         }
     }
     public void setSelectorPosition(Vector2 mousePos){
@@ -142,6 +186,11 @@ public class EditorController implements WindowListener{
                 ));
         }
     }
+    public void moveSelectorOnTop(){
+        //Inefficient jud jud
+        currentScene.removeEntity(this.selector);
+        currentScene.addEntity(selector);
+    }
     public MapFile getMap(){
         return editor.getCurrentMap();
     }
@@ -152,7 +201,11 @@ public class EditorController implements WindowListener{
 
     @Override
     public void windowClosing(WindowEvent e) {
-        if(e.getSource().equals(editor)){
+        if(editor.isSaved()){
+            if (JOptionPane.showConfirmDialog(editor, "Map file is not saved yet. Do you want to save?", "WARNING",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                editor.saveMap();
+            }
         }
     }
 
