@@ -67,6 +67,7 @@ public class SelectorBox extends SpriteEntity{
     public void onMouseDragged(MouseEvent e) {
         super.onMouseDragged(e);
         setSelectorPosition(e);
+        controller.placeTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)));
     }
 
     @Override

@@ -163,7 +163,7 @@ public class EditorWindow extends JFrame{
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) { //selected
             JDialog newPane = new JDialog();
-            newPane.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+            newPane.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             newPane.setTitle("Enter map name");
             JTextField textfield = new JTextField();
             newPane.setLayout(new BorderLayout());
