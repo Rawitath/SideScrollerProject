@@ -12,28 +12,31 @@ import java.io.Serializable;
  */
 public class MapFile implements Serializable{
     private static final long serialVersionUID = 8669086114808669426L;
+    
     private String name;
     private TileFile[] tiles;
     private float tileRatio;
+    private float imageSizeMultiplier;
     private float offsetX;
     private float offsetY;
 
     public MapFile(String name) {
         this.name = name;
         tileRatio = 1;
+        imageSizeMultiplier = 1;
     }
     
     public float columnToWorldX(int column){
-        return column * tileRatio + getOffsetX();
+        return column * tileRatio - (tileRatio * tileRatio) / 2 + getOffsetX();
     }
     public float rowToWorldY(int row){
-        return row * tileRatio + getOffsetY();
+        return row * tileRatio - (tileRatio * tileRatio) / 2 + getOffsetY();
     }
     public int worldXToColumn(float x){
-        return (int) ((x - getOffsetX() / tileRatio) + tileRatio / 2);
+        return (int) ((x - getOffsetX()) / tileRatio + tileRatio / 2);
     }
     public int worldYToRow(float y){
-        return (int) ((y - getOffsetY() / tileRatio) + tileRatio / 2);
+        return (int) ((y - getOffsetY()) / tileRatio + tileRatio / 2);
     }
 
     public String getName() {
@@ -66,6 +69,14 @@ public class MapFile implements Serializable{
 
     public void setTileRatio(float tileRatio) {
         this.tileRatio = tileRatio;
+    }
+
+    public float getImageSizeMultiplier() {
+        return imageSizeMultiplier;
+    }
+
+    public void setImageSizeMultiplier(float imageSizeMultiplier) {
+        this.imageSizeMultiplier = imageSizeMultiplier;
     }
     
 }

@@ -13,7 +13,8 @@ import Scenes.Scene;
  * @author GA_IA
  */
 public class TileEntity extends CollidableEntity{
-
+    private TileFile tileFile;
+            
     public TileEntity(Scene s) {
         super(s);
     }
@@ -46,6 +47,14 @@ public class TileEntity extends CollidableEntity{
     @Override
     public void onColliderExit(Collider other) {
 
+    }
+
+    public TileFile getTileFile() {
+        return tileFile;
+    }
+
+    public void setTileFile(TileFile tileFile) {
+        this.tileFile = tileFile;
     }
     
 }

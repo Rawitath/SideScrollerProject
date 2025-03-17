@@ -22,9 +22,9 @@ public class SelectorBox extends SpriteEntity{
     private BufferedImage defaultIcon;
     private BufferedImage activeIcon;
     
-    private EditorBridge controller;
+    private EditorController controller;
     
-    public SelectorBox(Scene s, EditorBridge controller) {    
+    public SelectorBox(Scene s, EditorController controller) {    
         super(s);
         this.controller = controller;
         defaultIcon = FileReader.readImage("res/default/framesquare.png");

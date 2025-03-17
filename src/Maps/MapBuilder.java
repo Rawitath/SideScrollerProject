@@ -32,7 +32,7 @@ public class MapBuilder {
     
     private static Scene currentScene;
     
-    private static EditorBridge controller;
+    private static EditorController controller;
 
     public static boolean isUseEditor() {
         return useEditor;
@@ -52,7 +52,7 @@ public class MapBuilder {
     public static void useMapBuilder(Scene s){
         currentScene = s;
         if(useEditor){
-            controller = new EditorBridge(s);
+            controller = new EditorController(s);
         }
     }
     
