@@ -15,8 +15,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.JOptionPane;
 
 
@@ -36,6 +34,9 @@ public class EditorController implements WindowListener{
     private List<BufferedImage> usedImages;
     private Map<BufferedImage, Integer> imageUsage;
     
+    private MapFile currentMap = null;
+    private boolean isSaved = true;
+    
     public EditorController(Scene s){     
         currentScene = s;
         
@@ -47,7 +48,7 @@ public class EditorController implements WindowListener{
         this.selector = new SelectorBox(s, this);
         currentScene.addEntity(selector);
         
-        if(editor.getCurrentMap() == null){
+        if(currentMap == null){
             selector.setActive(false);
         }
         else{
@@ -56,7 +57,7 @@ public class EditorController implements WindowListener{
         }
     }
     public void updateScreen(){
-        if(editor.getCurrentMap() == null){
+        if(currentMap == null){
             selector.setActive(false);
         }
         else{
@@ -78,6 +79,7 @@ public class EditorController implements WindowListener{
             }
         }
     }
+    
     public boolean placeTile(Vector2 mousePos, boolean overrideTile){
         boolean isReplaced = false;
         
@@ -144,6 +146,8 @@ public class EditorController implements WindowListener{
             tileGrid.put(column, new HashMap<>());
             tileGrid.get(column).put(row, tile);
         }
+        isSaved = false;
+        editor.notifySave();
         return isReplaced;
     }
     public void removeTile(Vector2 mousePos){ 
@@ -176,6 +180,8 @@ public class EditorController implements WindowListener{
                 tileGrid.remove(column);
             }
         }
+        isSaved = false;
+        editor.notifySave();
     }
     public void setSelectorPosition(Vector2 mousePos){
         if(getMap() != null){
@@ -191,9 +197,23 @@ public class EditorController implements WindowListener{
         currentScene.removeEntity(this.selector);
         currentScene.addEntity(selector);
     }
+    
     public MapFile getMap(){
-        return editor.getCurrentMap();
+        return currentMap;
     }
+
+    public void setMap(MapFile currentMap) {
+        this.currentMap = currentMap;
+    }
+    
+    public boolean isSaved() {
+        return isSaved;
+    }
+
+    public void setIsSaved(boolean isSaved) {
+        this.isSaved = isSaved;
+    }
+    
     @Override
     public void windowOpened(WindowEvent e) {
 
@@ -201,7 +221,7 @@ public class EditorController implements WindowListener{
 
     @Override
     public void windowClosing(WindowEvent e) {
-        if(editor.isSaved()){
+        if(!isSaved){
             if (JOptionPane.showConfirmDialog(editor, "Map file is not saved yet. Do you want to save?", "WARNING",
                 JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 editor.saveMap();

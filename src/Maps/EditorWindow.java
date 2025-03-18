@@ -41,11 +41,7 @@ public class EditorWindow extends JFrame{
     //private List<JMenuItem> recentList;
     private int selectedTile = -1;
     
-    private MapFile currentMap = null;
-    
     private EditorController controller;
-    
-    private boolean isSaved = true;
 
     public EditorWindow(EditorController controller) {
         this.controller = controller;
@@ -109,16 +105,15 @@ public class EditorWindow extends JFrame{
         addWindowListener(controller);
     }
 
-    public boolean isSaved() {
-        return isSaved;
-    }
-
-    public void setIsSaved(boolean isSaved) {
-        this.isSaved = isSaved;
-    }
-
-    public MapFile getCurrentMap() {
-        return currentMap;
+    public void notifySave(){
+        if(controller.getMap() != null){
+            if(controller.isSaved()){
+                setTitle(controller.getMap().getName());
+            }
+            else{
+                setTitle(controller.getMap().getName() + " (Not Saved)");
+            }
+        }  
     }
     
 //    private void saveRecent(List<JMenuItem> recentsList){
@@ -208,8 +203,8 @@ public class EditorWindow extends JFrame{
         }
         EditorWindow.this.saveMap(map, dir.getParentFile().getAbsolutePath());
         
-        currentMap = map;
-        setTitle(currentMap.getName());
+        controller.setMap(map);
+        setTitle(controller.getMap().getName());
         setButtonsState(true);
         controller.updateScreen();
 //        //save to recent
@@ -227,7 +222,7 @@ public class EditorWindow extends JFrame{
             ObjectOutputStream os = new ObjectOutputStream(fout);){
             os.writeObject(map);
             mapDirectory = directory;
-            isSaved = true;
+            controller.setIsSaved(true);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -236,15 +231,17 @@ public class EditorWindow extends JFrame{
     }
     
     public void saveMap(){
-        EditorWindow.this.saveMap(currentMap, mapDirectory);
-        setTitle(currentMap.getName());
+        EditorWindow.this.saveMap(controller.getMap(), mapDirectory);
+        notifySave();
     }
     public void updateMap(MapFile map){
-        isSaved = false;
+        controller.setIsSaved(false);
         controller.updateScreen();
-        setTitle(currentMap.getName() + " (Not Saved)");
+        notifySave();
     }
-    
+    public MapFile getCurrentMap(){
+        return controller.getMap();
+    }
     private void openLoadMap(){
         JFileChooser fileChooser = new JFileChooser(); // find file
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -257,8 +254,8 @@ public class EditorWindow extends JFrame{
                 JOptionPane.showMessageDialog(this, "Invalid map folder");
                 return;
             }
-            currentMap = loadMap(checkFiles[0]);
-            setTitle(currentMap.getName());
+            controller.setMap(loadMap(checkFiles[0]));
+            setTitle(controller.getMap().getName());
             setButtonsState(true);
             controller.updateScreen();
         }
@@ -359,7 +356,6 @@ public class EditorWindow extends JFrame{
             tileLabels[index].setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         }
     }
-
     private void saveSelectedTile() { // save-comingsoon
         if (selectedTile != -1) {
             JOptionPane.showMessageDialog(this, "Selected Tile Index: " + selectedTile);
