@@ -4,6 +4,8 @@
  */
 package Maps;
 
+import Engine.Window.ControllableWindow;
+import Engine.Window.WindowEventManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -13,13 +15,11 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
-public class EditorWindow extends JFrame{
+public class EditorWindow extends ControllableWindow{
     
     private static final String recentDir = "builder";
     private static final String recentFile = recentDir + "/recent.rf";
@@ -44,10 +44,11 @@ public class EditorWindow extends JFrame{
     private EditorController controller;
 
     public EditorWindow(EditorController controller) {
+        super(1);
         this.controller = controller;
         
         setTitle("<No Map Loaded>");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
         
         JMenuBar menubar = new JMenuBar();
@@ -102,7 +103,7 @@ public class EditorWindow extends JFrame{
         
         setButtonsState(false);
         
-        addWindowListener(controller);
+        WindowEventManager.getInstance().addControlable(this);
     }
 
     public void notifySave(){
@@ -378,5 +379,48 @@ public class EditorWindow extends JFrame{
 
     public int getSelectedTile() {
         return selectedTile;
+    }
+    @Override
+    public void onWindowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void onWindowClosing(WindowEvent e) {
+        if(!controller.isSaved()){
+            if (JOptionPane.showConfirmDialog(this, "Map file is not saved yet. Do you want to save?", "WARNING",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                saveMap();
+            }
+        }
+        WindowEventManager.getInstance().removeControlable(this);
+        if(e.getSource().equals(this)){
+            dispose();
+        }
+    }
+
+    @Override
+    public void onWindowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void onWindowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void onWindowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void onWindowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void onWindowDeactivated(WindowEvent e) {
+
     }
 }

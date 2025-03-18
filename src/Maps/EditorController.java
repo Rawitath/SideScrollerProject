@@ -6,9 +6,10 @@ package Maps;
 
 import Datas.Vector2;
 import Datas.Vector2Int;
+import Engine.Window.WindowControlable;
+import Engine.Window.WindowEventManager;
 import Scenes.Scene;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +23,7 @@ import javax.swing.JOptionPane;
  *
  * @author GA_IA
  */
-public class EditorController implements WindowListener{
+public class EditorController{
     
     private EditorWindow editor;
     private SelectorBox selector;
@@ -212,45 +213,5 @@ public class EditorController implements WindowListener{
 
     public void setIsSaved(boolean isSaved) {
         this.isSaved = isSaved;
-    }
-    
-    @Override
-    public void windowOpened(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e) {
-        if(!isSaved){
-            if (JOptionPane.showConfirmDialog(editor, "Map file is not saved yet. Do you want to save?", "WARNING",
-                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                editor.saveMap();
-            }
-        }
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-        
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-
     }
 }
