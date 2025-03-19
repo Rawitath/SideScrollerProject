@@ -159,7 +159,7 @@ public class EditorWindow extends ControllableWindow{
     
     private void saveMap(MapFile map, String directory){
         controller.writeMap();
-        File tileDir = new File(directory +"/"+map.getName()+"/"+"tile");
+        File tileDir = new File(directory +"/"+"tile");
         File[] imgs = tileDir.listFiles();
         if(imgs != null){
             for(File f : imgs){ //Clear all images for re-writing
@@ -172,7 +172,7 @@ public class EditorWindow extends ControllableWindow{
             os.writeObject(map);
             if(map.getUsedImages() != null){
                 for(int i = 0; i < map.getUsedImages().size(); i++){
-                    ImageIO.write(map.getUsedImages().get(i), "png", new File(directory +"/"+map.getName()+"/"+"tile"+"/"+i));
+                    ImageIO.write(map.getUsedImages().get(i), "png", new File(directory +"/"+"tile"+"/"+i+".png"));
                 }
             }
             mapDirectory = directory;
@@ -210,8 +210,8 @@ public class EditorWindow extends ControllableWindow{
             }
             controller.setMap(loadMap(checkFiles[0]));
             setTitle(controller.getMap().getName());
-            setButtonsState(true);
             controller.readMap();
+            setButtonsState(true);
         }
     }
     
@@ -220,13 +220,15 @@ public class EditorWindow extends ControllableWindow{
                 ObjectInputStream os = new ObjectInputStream(fin);){
                 mapDirectory = mapFile.getParentFile().getAbsolutePath();
                 MapFile map = (MapFile) os.readObject();
-                File tileDir = new File(mapDirectory +"/"+map.getName()+"/"+"tile");
+                File tileDir = new File(mapDirectory+"/"+"tile");
                 File[] imgs = tileDir.listFiles();
-                for(File img : imgs){
-                    if(map.getUsedImages() == null){
-                        map.setUsedImages(new ArrayList<>());
+                if(map.getUsedImages() == null){
+                    map.setUsedImages(new ArrayList<>());
+                }
+                if(imgs != null){
+                    for(File img : imgs){
+                        map.getUsedImages().add(ImageIO.read(img));
                     }
-                    map.getUsedImages().add(ImageIO.read(img));
                 }
                 return map;
             } catch (FileNotFoundException ex) {

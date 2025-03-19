@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * @author GA_IA
  */
 public class MapBuilder {
-    private static List<TileEntity> loadedTileEntities = new CopyOnWriteArrayList<>();
+    private static List<TileDisplayEntity> loadedTileEntities = new CopyOnWriteArrayList<>();
     
     private static boolean useEditor;
     
@@ -59,7 +59,7 @@ public class MapBuilder {
     private static void buildMap(MapFile map){
 //        for(int i = 0; i < map.getTiles().length; i++){
 //            TileFile tile = map.getTiles()[i];
-//            TileEntity tileEntity = new TileEntity(currentScene);
+//            TileDisplayEntity tileEntity = new TileDisplayEntity(currentScene);
 //            tileEntity.setPosition(new Vector2(
 //                    map.columnToWorldX(tile.getColumn()),
 //                    map.rowToWorldY(tile.getRow())

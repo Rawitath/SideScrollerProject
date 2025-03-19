@@ -4,23 +4,24 @@
  */
 package Maps;
 
-import Entities.UI.UIText;
+import Entities.SpriteEntity;
+import Physics.Collider;
 import Scenes.Scene;
 
 /**
  *
  * @author GA_IA
  */
-public class TextBox extends UIText{
-
-    public TextBox(Scene s) {
+public class TileDisplayEntity extends SpriteEntity{
+    private TileFile tileFile;
+            
+    public TileDisplayEntity(Scene s) {
         super(s);
-        setSize(20);
     }
 
     @Override
     public void start() {
-
+        
     }
 
     @Override
@@ -31,6 +32,14 @@ public class TextBox extends UIText{
     @Override
     public void fixedUpdate() {
 
+    }
+
+    public TileFile getTileFile() {
+        return tileFile;
+    }
+
+    public void setTileFile(TileFile tileFile) {
+        this.tileFile = tileFile;
     }
     
 }

@@ -19,6 +19,8 @@ public class MapFile implements Serializable{
     private TileFile[][] tiles;
     private float tileRatio;
     private float imageSizeMultiplier;
+    private int columnOffset;
+    private int rowOffset;
     private float offsetX;
     private float offsetY;
     private transient List<BufferedImage> usedImages;
@@ -41,6 +43,24 @@ public class MapFile implements Serializable{
     public int worldYToRow(float y){
         return (int) ((y - getOffsetY()) / tileRatio + tileRatio / 2);
     }
+
+    public int getColumnOffset() {
+        return columnOffset;
+    }
+
+    public void setColumnOffset(int columnOffset) {
+        this.columnOffset = columnOffset;
+    }
+
+    public int getRowOffset() {
+        return rowOffset;
+    }
+
+    public void setRowOffset(int rowOffset) {
+        this.rowOffset = rowOffset;
+    }
+    
+    
 
     public List<BufferedImage> getUsedImages() {
         return usedImages;
