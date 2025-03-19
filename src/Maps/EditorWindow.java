@@ -15,14 +15,12 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 public class EditorWindow extends ControllableWindow{
-    
-    private static final String recentDir = "builder";
-    private static final String recentFile = recentDir + "/recent.rf";
     
     private JTextField directoryField = new JTextField(20);
     private JButton selectDirButton = new JButton("Select");
@@ -34,11 +32,9 @@ public class EditorWindow extends ControllableWindow{
     private BufferedImage[] tiles;
     private JLabel[] tileLabels;
     private JMenu fileMenu;
-    //private JMenu recentMenu;
     private JMenuItem newMenu;
     private JMenuItem loadMenu;
     private JMenuItem saveMenu;
-    //private List<JMenuItem> recentList;
     private int selectedTile = -1;
     
     private EditorController controller;
@@ -62,20 +58,11 @@ public class EditorWindow extends ControllableWindow{
         loadMenu.addActionListener(e -> openLoadMap());
         fileMenu.add(loadMenu);
         
-//        recentMenu = new JMenu("Recent");
-//        fileMenu.add(recentMenu);
-//        
-//        recentList = loadRecent();
-        
         saveMenu = new JMenuItem("Save");
         saveMenu.addActionListener(e -> saveMap());
         fileMenu.addSeparator();
         fileMenu.add(saveMenu);
         
-//        for(JMenuItem item : recentList){
-//            item.addActionListener(e -> selectDirectoryFromMenu(item.getText()));
-//            recentMenu.add(item);
-//        }
         menubar.add(fileMenu);
 
         JPanel topPanel = new JPanel(new FlowLayout());
@@ -116,46 +103,6 @@ public class EditorWindow extends ControllableWindow{
             }
         }  
     }
-    
-//    private void saveRecent(List<JMenuItem> recentsList){
-//        try(FileOutputStream fout = new FileOutputStream(recentFile);
-//                ObjectOutputStream os = new ObjectOutputStream(fout);){
-//                os.writeObject(recentsList);
-//            } catch (FileNotFoundException ex) {
-//                Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (IOException ex) {
-//                Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        recentMenu.removeAll();
-//        for(JMenuItem item : recentsList){
-//            item.addActionListener(e -> selectDirectoryFromMenu(item.getText()));
-//            recentMenu.add(item);
-//        }
-//    }
-//    
-//    private List<JMenuItem> loadRecent(){
-//        File recentsDir = new File(recentDir);
-//        File recents = new File(recentFile);
-//        List<JMenuItem> recentsList = null;
-//        if(!recentsDir.exists()){
-//            recentsDir.mkdir();
-//        }
-//        if(!recents.exists()){
-//            saveRecent(new ArrayList<>());
-//        }
-//        try(FileInputStream fin = new FileInputStream(recents);
-//            ObjectInputStream os = new ObjectInputStream(fin)){
-//            recentsList = (List<JMenuItem>) os.readObject();
-//        } catch (FileNotFoundException ex) {
-//            Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (ClassNotFoundException ex) {
-//            Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return recentsList;
-//    }
-//    
     
     private void setButtonsState(boolean s){
         directoryField.setEditable(s);
@@ -202,26 +149,32 @@ public class EditorWindow extends ControllableWindow{
             dir = new File(directory +"/"+map.getName()+"/"+"tile");
             dir.mkdir();
         }
-        EditorWindow.this.saveMap(map, dir.getParentFile().getAbsolutePath());
+        saveMap(map, dir.getParentFile().getAbsolutePath());
         
         controller.setMap(map);
         setTitle(controller.getMap().getName());
         setButtonsState(true);
         controller.updateScreen();
-//        //save to recent
-//        for(JMenuItem item : recentList){
-//            if(item.getText().equals(tileDirectory + "/" +mapName)){
-//                return;
-//            }
-//        }
-//        recentList.add(new JMenuItem(tileDirectory + "/" +mapName));
-//        saveRecent(recentList);
     }
     
     private void saveMap(MapFile map, String directory){
+        controller.writeMap();
+        File tileDir = new File(directory +"/"+map.getName()+"/"+"tile");
+        File[] imgs = tileDir.listFiles();
+        if(imgs != null){
+            for(File f : imgs){ //Clear all images for re-writing
+                f.delete();
+            }
+        }
+        
         try(FileOutputStream fout = new FileOutputStream(directory +"/"+ map.getName() + ".map");
             ObjectOutputStream os = new ObjectOutputStream(fout);){
             os.writeObject(map);
+            if(map.getUsedImages() != null){
+                for(int i = 0; i < map.getUsedImages().size(); i++){
+                    ImageIO.write(map.getUsedImages().get(i), "png", new File(directory +"/"+map.getName()+"/"+"tile"+"/"+i));
+                }
+            }
             mapDirectory = directory;
             controller.setIsSaved(true);
         } catch (FileNotFoundException ex) {
@@ -232,7 +185,7 @@ public class EditorWindow extends ControllableWindow{
     }
     
     public void saveMap(){
-        EditorWindow.this.saveMap(controller.getMap(), mapDirectory);
+        saveMap(controller.getMap(), mapDirectory);
         notifySave();
     }
     public void updateMap(MapFile map){
@@ -258,7 +211,7 @@ public class EditorWindow extends ControllableWindow{
             controller.setMap(loadMap(checkFiles[0]));
             setTitle(controller.getMap().getName());
             setButtonsState(true);
-            controller.updateScreen();
+            controller.readMap();
         }
     }
     
@@ -266,7 +219,16 @@ public class EditorWindow extends ControllableWindow{
             try(FileInputStream fin = new FileInputStream(mapFile);
                 ObjectInputStream os = new ObjectInputStream(fin);){
                 mapDirectory = mapFile.getParentFile().getAbsolutePath();
-                return (MapFile) os.readObject();
+                MapFile map = (MapFile) os.readObject();
+                File tileDir = new File(mapDirectory +"/"+map.getName()+"/"+"tile");
+                File[] imgs = tileDir.listFiles();
+                for(File img : imgs){
+                    if(map.getUsedImages() == null){
+                        map.setUsedImages(new ArrayList<>());
+                    }
+                    map.getUsedImages().add(ImageIO.read(img));
+                }
+                return map;
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -274,14 +236,6 @@ public class EditorWindow extends ControllableWindow{
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
             }
-//            //save to recent
-//        for(JMenuItem item : recentList){
-//            if(item.getText().equals(tileDirectory)){
-//                return;
-//            }
-//        }
-//        recentList.add(new JMenuItem(tileDirectory));
-//        saveRecent(recentList);
         
         return null;
     }
@@ -300,15 +254,6 @@ public class EditorWindow extends ControllableWindow{
         if (result == JFileChooser.APPROVE_OPTION) { //selected
             setDirLoad(fileChooser.getSelectedFile().getAbsolutePath());
         }
-        
-//        //save to recent
-//        for(JMenuItem item : recentList){
-//            if(item.getText().equals(tileDirectory)){
-//                return;
-//            }
-//        }
-//        recentList.add(new JMenuItem(tileDirectory));
-//        saveRecent(recentList);
     }
 
     private void loadTiles() {

@@ -26,8 +26,6 @@ import java.util.logging.Logger;
 public class MapBuilder {
     private static List<TileEntity> loadedTileEntities = new CopyOnWriteArrayList<>();
     
-    private static EditorWindow editor = null;
-    
     private static boolean useEditor;
     
     private static Scene currentScene;
@@ -42,32 +40,34 @@ public class MapBuilder {
         MapBuilder.useEditor = useEditor;
     }
     
-    public static BufferedImage getCurrentTile(){
-        if(editor.getSelectedTile() != -1){
-            return editor.getTiles()[editor.getSelectedTile()];
-        }
-        return null;
-    }
+//    public static BufferedImage getCurrentTile(){
+//        if(editor.getSelectedTile() != -1){
+//            return editor.getTiles()[editor.getSelectedTile()];
+//        }
+//        return null;
+//    }
     
     public static void useMapBuilder(Scene s){
         currentScene = s;
         if(useEditor){
-            controller = new EditorController(s);
+            if(controller == null){
+                controller = new EditorController(s);
+            }          
         }
     }
     
     private static void buildMap(MapFile map){
-        for(int i = 0; i < map.getTiles().length; i++){
-            TileFile tile = map.getTiles()[i];
-            TileEntity tileEntity = new TileEntity(currentScene);
-            tileEntity.setPosition(new Vector2(
-                    map.columnToWorldX(tile.getColumn()),
-                    map.rowToWorldY(tile.getRow())
-            ));
-            tileEntity.setTag(tile.getTag());
-            loadedTileEntities.add(tileEntity);
-            currentScene.addEntity(tileEntity);
-        }
+//        for(int i = 0; i < map.getTiles().length; i++){
+//            TileFile tile = map.getTiles()[i];
+//            TileEntity tileEntity = new TileEntity(currentScene);
+//            tileEntity.setPosition(new Vector2(
+//                    map.columnToWorldX(tile.getColumn()),
+//                    map.rowToWorldY(tile.getRow())
+//            ));
+//            tileEntity.setTag(tile.getTag());
+//            loadedTileEntities.add(tileEntity);
+//            currentScene.addEntity(tileEntity);
+//        }
     }
     
     public static void loadMap(String mapPath){

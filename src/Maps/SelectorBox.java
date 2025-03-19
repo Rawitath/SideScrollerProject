@@ -8,6 +8,7 @@ import Datas.Vector2;
 import Datas.Vector2Int;
 import Entities.SpriteEntity;
 import Inputs.MouseControlable;
+import Physics.Time;
 import Scenes.Scene;
 import Utilities.FileReader;
 import java.awt.event.MouseEvent;
@@ -43,12 +44,12 @@ public class SelectorBox extends SpriteEntity{
 
     @Override
     public void update() {
-
+        
     }
 
     @Override
     public void fixedUpdate() {
-
+        
     }
     
     private boolean isReplaced = false;

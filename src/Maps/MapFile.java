@@ -4,7 +4,9 @@
  */
 package Maps;
 
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -14,11 +16,12 @@ public class MapFile implements Serializable{
     private static final long serialVersionUID = 8669086114808669426L;
     
     private String name;
-    private TileFile[] tiles;
+    private TileFile[][] tiles;
     private float tileRatio;
     private float imageSizeMultiplier;
     private float offsetX;
     private float offsetY;
+    private transient List<BufferedImage> usedImages;
 
     public MapFile(String name) {
         this.name = name;
@@ -39,14 +42,26 @@ public class MapFile implements Serializable{
         return (int) ((y - getOffsetY()) / tileRatio + tileRatio / 2);
     }
 
+    public List<BufferedImage> getUsedImages() {
+        return usedImages;
+    }
+
+    public void setUsedImages(List<BufferedImage> usedImages) {
+        this.usedImages = usedImages;
+    }
+
     public String getName() {
         return name;
     }
 
-    public TileFile[] getTiles() {
+    public TileFile[][] getTiles() {
         return tiles;
     }
 
+    public void setTiles(TileFile[][] tiles) {
+        this.tiles = tiles;
+    }
+    
     public float getOffsetX() {
         return offsetX;
     }
