@@ -188,6 +188,7 @@ public class EditorController{
                         }
                     }
                 }
+                updateScreen();
         isSaved = false;
         editor.notifySave();
         }
