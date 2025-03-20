@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 public class EditorWindow extends ControllableWindow{
-    
     private JTextField directoryField = new JTextField(20);
     private JButton selectDirButton = new JButton("Select");
     private JButton saveButton = new JButton("Save");
@@ -152,6 +151,7 @@ public class EditorWindow extends ControllableWindow{
         saveMap(map, dir.getParentFile().getAbsolutePath());
         
         controller.setMap(map);
+        controller.readMap();
         setTitle(controller.getMap().getName());
         setButtonsState(true);
         controller.updateScreen();
