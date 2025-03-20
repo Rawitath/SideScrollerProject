@@ -19,12 +19,13 @@ import Utilities.FileReader;
  */
 public class Kotori extends CollidableEntity{
     private Vector2 direction;
-    private float speed = 18f;
+    private float speed = 14f;
     private float fallAcceration = 0f;
     private boolean grounded = false;
-
+    
     public Kotori(Scene s) {
         super(s);
+        this.direction = Vector2.zero();
         setSprite(FileReader.readImage("res/game/kotori.jpg"));
         setSpriteSize(new Vector2Int(500, 500));
         setTag("Enemy");
@@ -42,23 +43,42 @@ public class Kotori extends CollidableEntity{
     public void update() {
         
     }
+    
     float sec = 4f;
     float previous = Time.time();
     boolean reverse = false;
     @Override
     public void fixedUpdate() {
-        if(Time.time() - previous < sec){
-            if(reverse){
-                setPosition(getPosition().translate(Vector2.up(), 3 * Time.fixedDeltaTime()));
+        var lucy = this.getScene().getEntity("Lucy");
+        Vector2 lucyDistance = lucy.getPosition();
+        Vector2 kotoriDistance = this.getPosition();
+        
+        float limit = 20f;
+        
+        // enemy move on X-axis
+        if (Math.abs(lucyDistance.getX() - kotoriDistance.getX()) < limit){
+            if (lucyDistance.getX() - 5 > kotoriDistance.getX()){
+                this.setPosition(getPosition().translate(direction.add(direction.right()) , speed * Time.fixedDeltaTime()));
             }
-            else{
-                setPosition(getPosition().translate(Vector2.down(), 3 * Time.fixedDeltaTime()));
+            else if (lucyDistance.getX() + 5 < kotoriDistance.getX()){
+                this.setPosition(getPosition().translate(direction.add(direction.left()) , speed * Time.fixedDeltaTime()));
             }
         }
-        else{
-            previous = Time.time();
-            reverse = !reverse;
+        else {
+            this.direction = direction.zero();
         }
+//        if(Time.time() - previous < sec){
+//            if(reverse){
+//                setPosition(getPosition().translate(Vector2.up(), 3 * Time.fixedDeltaTime()));
+//            }
+//            else{
+//                setPosition(getPosition().translate(Vector2.down(), 3 * Time.fixedDeltaTime()));
+//            }
+//        }
+//        else{
+//            previous = Time.time();
+//            reverse = !reverse;
+//        }
     }
 
     @Override
