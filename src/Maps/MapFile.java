@@ -32,16 +32,16 @@ public class MapFile implements Serializable{
     }
     
     public float columnToWorldX(int column){
-        return column * tileRatio - (tileRatio * tileRatio) / 2 + getOffsetX();
+        return column * tileRatio - (tileRatio * tileRatio) / 2;
     }
     public float rowToWorldY(int row){
-        return row * tileRatio - (tileRatio * tileRatio) / 2 + getOffsetY();
+        return row * tileRatio - (tileRatio * tileRatio) / 2;
     }
     public int worldXToColumn(float x){
-        return (int) ((x - getOffsetX()) / tileRatio + tileRatio / 2);
+        return (int) (x / tileRatio + tileRatio / 2);
     }
     public int worldYToRow(float y){
-        return (int) ((y - getOffsetY()) / tileRatio + tileRatio / 2);
+        return (int) (y / tileRatio + tileRatio / 2);
     }
 
     public int getColumnOffset() {
