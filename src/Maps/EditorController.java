@@ -9,6 +9,7 @@ import Datas.Vector2Int;
 import Scenes.Scene;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -211,25 +212,27 @@ public class EditorController{
             if(currentMap.getTiles() != null){
                 usedImages = currentMap.getUsedImages();
                 for(int i = 0; i < currentMap.getTiles().length; i++){
-                    for(int j = 0; j < currentMap.getTiles()[i].length; j++){
-                        if(currentMap.getTiles()[i][j] != null){
-                            TileDisplayEntity tile = new TileDisplayEntity(currentScene);
-                            tile.setTileFile(currentMap.getTiles()[i][j]);
-                            BufferedImage tileImage = usedImages.get(tile.getTileFile().getTile());
-                            tile.setSprite(tileImage);
-                            
-                            if(!imageUsage.containsKey(tileImage)){
-                                imageUsage.put(tileImage, 0);
-                            }
-                            imageUsage.put(tileImage, imageUsage.get(tileImage) + 1);
-                            
-                            currentScene.addEntity(tile);
-                            if(tileGrid.containsKey(i + currentMap.getColumnOffset())){
+                    if(currentMap.getTiles()[i] != null){
+                        for(int j = 0; j < currentMap.getTiles()[i].length; j++){
+                            if(currentMap.getTiles()[i][j] != null){
+                                TileDisplayEntity tile = new TileDisplayEntity(currentScene);
+                                tile.setTileFile(currentMap.getTiles()[i][j]);
+                                BufferedImage tileImage = usedImages.get(tile.getTileFile().getTile());
+                                tile.setSprite(tileImage);
+
+                                if(!imageUsage.containsKey(tileImage)){
+                                    imageUsage.put(tileImage, 0);
+                                }
+                                imageUsage.put(tileImage, imageUsage.get(tileImage) + 1);
+
+                                currentScene.addEntity(tile);
+                                if(tileGrid.containsKey(i + currentMap.getColumnOffset())){
+                                    tileGrid.get(i + currentMap.getColumnOffset()).put(j + currentMap.getRowOffset(), tile);
+                                    continue;
+                                }
+                                tileGrid.put(i + currentMap.getColumnOffset(), new HashMap<>());
                                 tileGrid.get(i + currentMap.getColumnOffset()).put(j + currentMap.getRowOffset(), tile);
-                                continue;
                             }
-                            tileGrid.put(i + currentMap.getColumnOffset(), new HashMap<>());
-                            tileGrid.get(i + currentMap.getColumnOffset()).put(j + currentMap.getRowOffset(), tile);
                         }
                     }
                 }
@@ -258,15 +261,15 @@ public class EditorController{
                     minRow = rowList.getFirst() < minRow ? rowList.getFirst() : minRow;
                     maxRow = rowList.getLast() > maxRow ? rowList.getLast() : maxRow;
                 }
-                for(int i = 0; i < tileFiles.length; i++){
-                    tileFiles[i] = new TileFile[(maxRow - minRow) + 1];
-
+                
+                for(Integer i : columnList){
+                    tileFiles[i - columnList.getFirst()] = new TileFile[(maxRow - minRow) + 1];
+                    
                     List<Integer> rowList = new ArrayList<>();
-                    rowList.addAll(tileGrid.get(columnList.get(i)).keySet());
+                    rowList.addAll(tileGrid.get(i).keySet());
                     Collections.sort(rowList);
-
                     for(Integer row : rowList){
-                        tileFiles[i][row - minRow] = tileGrid.get(i + columnList.getFirst()).get(row).getTileFile();
+                        tileFiles[i - columnList.getFirst()][row - minRow] = tileGrid.get(i).get(row).getTileFile();
                     }
                 }
                 currentMap.setColumnOffset(columnList.getFirst());

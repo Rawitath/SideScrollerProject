@@ -66,22 +66,24 @@ public class MapBuilder {
     private static void buildMap(MapFile map){
         if(map.getTiles() != null){
             for(int i = 0; i < map.getTiles().length; i++){
-                for(int j = 0; j < map.getTiles()[i].length; j++){
-                    if(map.getTiles()[i][j] != null){
-                        TileDisplayEntity tile = new TileDisplayEntity(currentScene);
-                        tile.setTileFile(map.getTiles()[i][j]);
-                        BufferedImage tileImage = map.getUsedImages().get(tile.getTileFile().getTile());
-                        tile.setSprite(tileImage);
-                        tile.setPosition(new Vector2(
-                            map.columnToWorldX(i + map.getColumnOffset()) + map.getOffsetX(),
-                            map.rowToWorldY(j + map.getRowOffset()) + map.getOffsetY()
-                        ));
-                        tile.setScale(Vector2.one().multiply(map.getTileRatio()));
-                        tile.setSpriteSize(new Vector2Int(
-                                (int)(tile.getSprite().getWidth() * map.getImageSizeMultiplier()),
-                                (int)(tile.getSprite().getHeight() * map.getImageSizeMultiplier())
-                        ));
-                        container.addChild(tile);
+                if(map.getTiles()[i] != null){
+                    for(int j = 0; j < map.getTiles()[i].length; j++){
+                        if(map.getTiles()[i][j] != null){
+                            TileDisplayEntity tile = new TileDisplayEntity(currentScene);
+                            tile.setTileFile(map.getTiles()[i][j]);
+                            BufferedImage tileImage = map.getUsedImages().get(tile.getTileFile().getTile());
+                            tile.setSprite(tileImage);
+                            tile.setPosition(new Vector2(
+                                map.columnToWorldX(i + map.getColumnOffset()) + map.getOffsetX(),
+                                map.rowToWorldY(j + map.getRowOffset()) + map.getOffsetY()
+                            ));
+                            tile.setScale(Vector2.one().multiply(map.getTileRatio()));
+                            tile.setSpriteSize(new Vector2Int(
+                                    (int)(tile.getSprite().getWidth() * map.getImageSizeMultiplier()),
+                                    (int)(tile.getSprite().getHeight() * map.getImageSizeMultiplier())
+                            ));
+                            container.addChild(tile);
+                        }
                     }
                 }
             }
@@ -91,6 +93,10 @@ public class MapBuilder {
     public static void loadMap(String mapPath){
         if(currentScene == null){
             System.err.println("There is no scene using MapBuilder, please use it first.");
+            return;
+        }
+        if(useEditor){
+            System.err.println("You cannot load scene on Editor mode.");
             return;
         }
         if(!container.getChilds().isEmpty()){
@@ -136,6 +142,10 @@ public class MapBuilder {
     public static void unloadMap(){
         if(currentScene == null){
             System.err.println("There is no scene using MapBuilder, please use it first.");
+            return;
+        }
+        if(useEditor){
+            System.err.println("You cannot unload scene on Editor mode.");
             return;
         }
         for (Entity child : container.getChilds()) {
