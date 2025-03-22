@@ -71,12 +71,12 @@ public class EditorWindow extends ControllableWindow{
 
         tilePanel.setLayout(new GridLayout(4, 4));
         selectDirButton.addActionListener(e ->selectDirectory());
-//        saveButton.addActionListener(e -> saveSelectedTile());
+        saveButton.addActionListener(e -> saveSelectedTile());
         
         editMapButton.addActionListener(e -> openEditMap());
 
         JPanel bottomPanel = new JPanel();
-//        bottomPanel.add(saveButton);
+        bottomPanel.add(saveButton);
         bottomPanel.add(editMapButton);
         
         setJMenuBar(menubar);

@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -37,13 +38,13 @@ public class EditorController{
     private boolean isSaved = true;
     
     private int modeList;
-    private int currentMode = 1;
+    private int currentMode = 0;
     
     public EditorController(Scene s){     
         currentScene = s;
         
-        tileGrid = new HashMap<>();
-        selectedTiles = new HashMap<>();
+        tileGrid = new ConcurrentHashMap<>();
+        selectedTiles = new ConcurrentHashMap<>();
         imageUsage = new HashMap<>();
         usedImages = new ArrayList<>();
         
@@ -143,7 +144,7 @@ public class EditorController{
                     selectedTiles.get(column).put(row, tile);
                     return;
                 }
-                selectedTiles.put(column, new HashMap<>());
+                selectedTiles.put(column, new ConcurrentHashMap<>());
                 selectedTiles.get(column).put(row, tile);
         }
     }
@@ -171,34 +172,60 @@ public class EditorController{
                 }
         }
     }
-//     if(selected.containsKey(ck + (int)direction.getX())){
-//                    selected.get(ck + (int)direction.getX()).put(rk + (int)direction.getY(), selectedTiles.get(ck).get(rk));
-//                    continue;
-//                }
-//                selected.put(ck + (int)direction.getX(), new HashMap<>());
-//                selected.get(ck + (int)direction.getX()).put(rk + (int)direction.getY(), selectedTiles.get(ck).get(rk));
+
     public void moveTile(Vector2 direction){
         Map<Integer, Map<Integer, TileDisplayEntity>> t = tileGrid;
-        for(Integer ck : selectedTiles.keySet()){
-            for(Integer rk : selectedTiles.get(ck).keySet()){
-                if(t.get(ck + (int)direction.getX()).get(rk + (int)direction.getY()) != null){
-                    return;
+        Map<Integer, Map<Integer, TileDisplayEntity>> s = selectedTiles;
+        
+        List<Integer> columnList = new ArrayList<>();
+        columnList.addAll(selectedTiles.keySet());
+        Collections.sort(columnList);
+        if(direction.equals(Vector2.right())){
+            Collections.reverse(columnList);
+        }
+        for(Integer ck : columnList){
+            List<Integer> rowList = new ArrayList<>();
+            rowList.addAll(selectedTiles.get(ck).keySet());
+            Collections.sort(rowList);
+            if(direction.equals(Vector2.up())){
+                Collections.reverse(rowList);
+            }
+            for(Integer rk : rowList){
+                if(t.get(ck + (int)direction.getX()) != null){
+                    if(t.get(ck + (int)direction.getX()).get(rk + (int)direction.getY()) != null){
+                        return;
+                    }
                 }
+                
                 if(t.containsKey(ck + (int)direction.getX())){
                     t.get(ck + (int)direction.getX()).put(rk + (int)direction.getY(), t.get(ck).get(rk));
-                    System.out.println(t.get(ck).get(rk));
                 }
                 else{
-                    t.put(ck + (int)direction.getX(), new HashMap<>());
+                    t.put(ck + (int)direction.getX(), new ConcurrentHashMap<>());
                     t.get(ck + (int)direction.getX()).put(rk + (int)direction.getY(), t.get(ck).get(rk));
                 }
-                t.get(ck).remove(ck);
+                
+                if(s.containsKey(ck + (int)direction.getX())){
+                    s.get(ck + (int)direction.getX()).put(rk + (int)direction.getY(), s.get(ck).get(rk));
+                }
+                else{
+                    s.put(ck + (int)direction.getX(), new ConcurrentHashMap<>());
+                    s.get(ck + (int)direction.getX()).put(rk + (int)direction.getY(), s.get(ck).get(rk));
+                }
+                
+                t.get(ck).remove(rk);
                 if(t.get(ck).keySet().size() <= 0){
                     t.remove(ck);
+                }
+        
+                s.get(ck).remove(rk);
+                if(s.get(ck).keySet().size() <= 0){
+                    s.remove(ck);
                 }
             }
         }
         tileGrid = t;
+        selectedTiles = s;
         
         isSaved = false;
         editor.notifySave();
@@ -274,7 +301,7 @@ public class EditorController{
                     tileGrid.get(column).put(row, tile);
                     return isReplaced;
                 }
-                tileGrid.put(column, new HashMap<>());
+                tileGrid.put(column, new ConcurrentHashMap<>());
                 tileGrid.get(column).put(row, tile);
             }
             isSaved = false;
@@ -336,7 +363,7 @@ public class EditorController{
                     }
                 }
             }
-            tileGrid = new HashMap<>();
+            tileGrid = new ConcurrentHashMap<>();
             imageUsage = new HashMap<>();
             usedImages = new ArrayList<>();
             
