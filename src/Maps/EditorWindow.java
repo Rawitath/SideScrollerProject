@@ -23,7 +23,7 @@ import javax.imageio.ImageIO;
 public class EditorWindow extends ControllableWindow{
     private JTextField directoryField = new JTextField(20);
     private JButton selectDirButton = new JButton("Select");
-    private JButton saveButton = new JButton("Save");
+    private JButton saveButton = new JButton("Select");
     private JButton editMapButton = new JButton("Edit Map");
     private JPanel tilePanel = new JPanel();
     private String mapDirectory;
@@ -71,12 +71,12 @@ public class EditorWindow extends ControllableWindow{
 
         tilePanel.setLayout(new GridLayout(4, 4));
         selectDirButton.addActionListener(e ->selectDirectory());
-        saveButton.addActionListener(e -> saveSelectedTile());
+//        saveButton.addActionListener(e -> saveSelectedTile());
         
         editMapButton.addActionListener(e -> openEditMap());
 
         JPanel bottomPanel = new JPanel();
-        bottomPanel.add(saveButton);
+//        bottomPanel.add(saveButton);
         bottomPanel.add(editMapButton);
         
         setJMenuBar(menubar);
@@ -107,6 +107,7 @@ public class EditorWindow extends ControllableWindow{
         directoryField.setEditable(s);
         selectDirButton.setEnabled(s);
         editMapButton.setEnabled(s);
+        saveButton.setEnabled(s);
     }
     
     private void createNewMap(){
@@ -305,11 +306,13 @@ public class EditorWindow extends ControllableWindow{
         }
     }
     private void saveSelectedTile() { // save-comingsoon
-        if (selectedTile != -1) {
-            JOptionPane.showMessageDialog(this, "Selected Tile Index: " + selectedTile);
-        } else {
-            JOptionPane.showMessageDialog(this, "No tile selected!");
-        }
+        controller.changeMode();
+        saveButton.setText(controller.getModeName());
+//        if (selectedTile != -1) {
+//            JOptionPane.showMessageDialog(this, "Selected Tile Index: " + selectedTile);
+//        } else {
+//            JOptionPane.showMessageDialog(this, "No tile selected!");
+//        }
     }
     
     private void openEditMap(){

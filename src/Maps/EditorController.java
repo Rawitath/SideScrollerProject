@@ -29,16 +29,21 @@ public class EditorController{
     
     // Concept of 2D Resizable Array - GA_IA
     private Map<Integer, Map<Integer, TileDisplayEntity>> tileGrid;
+    private Map<Integer, Map<Integer, TileDisplayEntity>> selectedTiles;
     private List<BufferedImage> usedImages;
     private Map<BufferedImage, Integer> imageUsage;
     
     private MapFile currentMap = null;
     private boolean isSaved = true;
     
+    private int modeList;
+    private int currentMode = 1;
+    
     public EditorController(Scene s){     
         currentScene = s;
         
         tileGrid = new HashMap<>();
+        selectedTiles = new HashMap<>();
         imageUsage = new HashMap<>();
         usedImages = new ArrayList<>();
         
@@ -53,7 +58,37 @@ public class EditorController{
             selector.setActive(true);
             selector.setScale(Vector2.one().multiply(getMap().getTileRatio()));
         }
+        
+        modeList = 3;
     }
+    
+    public void changeMode(){
+        currentMode = (currentMode + 1) % modeList;
+    }
+
+    public int getCurrentMode() {
+        return currentMode;
+    }
+    
+    public String getModeName(){
+        String name;
+        switch(currentMode){
+            case 0:
+                name = "Select";
+                break;
+            case 1:
+                name = "Place";
+                break;
+            case 2:
+                name = "Edit";
+                break;
+            default:
+                name = "";
+                break;
+        }
+        return name;
+    }
+    
     public void updateScreen(){
         if(currentMap == null){
             selector.setActive(false);
@@ -79,6 +114,102 @@ public class EditorController{
         if(selector != null){
             moveSelectorOnTop();
         }
+    }
+    
+    public void selectTile(Vector2 mousePos){
+        if(currentMap != null){
+            int column = getMap().worldXToColumn(mousePos.getX());
+                int row = getMap().worldYToRow(mousePos.getY());
+                
+                if(!tileGrid.containsKey(column)){
+                    return;
+                }
+                if(!tileGrid.get(column).containsKey(row)){
+                    return;
+                }
+                
+                TileDisplayEntity tile = tileGrid.get(column).get(row);
+                //Check if already selected
+                if(selectedTiles.containsKey(column) && selectedTiles.get(column).containsKey(row)){
+                    if(selectedTiles.get(column).get(row) == tile){
+                        return;
+                    }
+                }   
+
+                //Select tile 
+                highlightTile(tile);
+
+                if(selectedTiles.containsKey(column)){
+                    selectedTiles.get(column).put(row, tile);
+                    return;
+                }
+                selectedTiles.put(column, new HashMap<>());
+                selectedTiles.get(column).put(row, tile);
+        }
+    }
+    
+    public void deselectTile(Vector2 mousePos){
+        if(currentMap != null){
+            int column = getMap().worldXToColumn(mousePos.getX());
+                int row = getMap().worldYToRow(mousePos.getY());
+ 
+                if(!selectedTiles.containsKey(column)){
+                    return;
+                }
+                if(!selectedTiles.get(column).containsKey(row)){
+                    return;
+                }
+                
+                TileDisplayEntity tile = selectedTiles.get(column).get(row);
+
+                //Select tile 
+                unHighlightTile(tile);
+
+                selectedTiles.get(column).remove(row);
+                if(selectedTiles.get(column).keySet().size() <= 0){
+                    selectedTiles.remove(column);
+                }
+        }
+    }
+//     if(selected.containsKey(ck + (int)direction.getX())){
+//                    selected.get(ck + (int)direction.getX()).put(rk + (int)direction.getY(), selectedTiles.get(ck).get(rk));
+//                    continue;
+//                }
+//                selected.put(ck + (int)direction.getX(), new HashMap<>());
+//                selected.get(ck + (int)direction.getX()).put(rk + (int)direction.getY(), selectedTiles.get(ck).get(rk));
+    public void moveTile(Vector2 direction){
+        Map<Integer, Map<Integer, TileDisplayEntity>> t = tileGrid;
+        for(Integer ck : selectedTiles.keySet()){
+            for(Integer rk : selectedTiles.get(ck).keySet()){
+                if(t.get(ck + (int)direction.getX()).get(rk + (int)direction.getY()) != null){
+                    return;
+                }
+                if(t.containsKey(ck + (int)direction.getX())){
+                    t.get(ck + (int)direction.getX()).put(rk + (int)direction.getY(), t.get(ck).get(rk));
+                    System.out.println(t.get(ck).get(rk));
+                }
+                else{
+                    t.put(ck + (int)direction.getX(), new HashMap<>());
+                    t.get(ck + (int)direction.getX()).put(rk + (int)direction.getY(), t.get(ck).get(rk));
+                }
+                t.get(ck).remove(ck);
+                if(t.get(ck).keySet().size() <= 0){
+                    t.remove(ck);
+                }
+            }
+        }
+        tileGrid = t;
+        
+        isSaved = false;
+        editor.notifySave();
+        updateScreen();
+    }
+    
+    private void highlightTile(TileDisplayEntity tile){
+        tile.setAlpha(0.7f);
+    }
+    private void unHighlightTile(TileDisplayEntity tile){
+        tile.setAlpha(1f);
     }
     
     public boolean placeTile(Vector2 mousePos, boolean overrideTile){
