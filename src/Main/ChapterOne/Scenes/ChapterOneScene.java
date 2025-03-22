@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Main.ChapterOne.Scenes;
+import Main.Entities.Example.Lucy;
 import Maps.MapBuilder;
 import Maps.MapFile;
 import Scenes.Scene;
