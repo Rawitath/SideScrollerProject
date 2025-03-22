@@ -4,22 +4,24 @@
  */
 package Maps;
 
-import Entities.UI.UIImage;
+import Entities.SpriteEntity;
+import Physics.Collider;
 import Scenes.Scene;
 
 /**
  *
  * @author GA_IA
  */
-public class TileDisplay extends UIImage{
-
-    public TileDisplay(Scene s) {
+public class TileDisplayEntity extends SpriteEntity{
+    private TileFile tileFile;
+            
+    public TileDisplayEntity(Scene s) {
         super(s);
     }
 
     @Override
     public void start() {
-
+        
     }
 
     @Override
@@ -30,6 +32,14 @@ public class TileDisplay extends UIImage{
     @Override
     public void fixedUpdate() {
 
+    }
+
+    public TileFile getTileFile() {
+        return tileFile;
+    }
+
+    public void setTileFile(TileFile tileFile) {
+        this.tileFile = tileFile;
     }
     
 }

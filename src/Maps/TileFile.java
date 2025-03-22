@@ -11,9 +11,9 @@ import java.io.Serializable;
  * @author GA_IA
  */
 public class TileFile implements Serializable{
-    private String tilePath;
-    private int column;
-    private int row;
+    private static final long serialVersionUID = 8669086114808669427L;
+    
+    private int tile;
     private int tileCutSize;
     private boolean hasCollider;
     private String tag;
@@ -34,12 +34,12 @@ public class TileFile implements Serializable{
         this.tag = tag;
     }
 
-    public String getTileSheet() {
-        return tilePath;
+    public int getTile() {
+        return tile;
     }
 
-    public void setTileSheet(String tilePath) {
-        this.tilePath = tilePath;
+    public void setTileSheet(int tile) {
+        this.tile = tile;
     }
     
     public int getTileCutSize() {
@@ -48,22 +48,5 @@ public class TileFile implements Serializable{
 
     public void setTileCutSize(int tileCutSize) {
         this.tileCutSize = tileCutSize;
-    }
-
-    public int getColumn() {
-        return column;
-    }
-
-    public void setColumn(int column) {
-        this.column = column;
-    }
-
-    public int getRow() {
-        return row;
-    }
-
-    public void setRow(int row) {
-        this.row = row;
-    }
-    
+    }    
 }

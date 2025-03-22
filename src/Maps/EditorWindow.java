@@ -4,6 +4,8 @@
  */
 package Maps;
 
+import Engine.Window.ControllableWindow;
+import Engine.Window.WindowEventManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -14,66 +16,68 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
-public class EditorWindow extends JFrame{
-    
-    private static final String recentDir = "builder";
-    private static final String recentFile = recentDir + "/recent.rf";
-    
+public class EditorWindow extends ControllableWindow{
     private JTextField directoryField = new JTextField(20);
     private JButton selectDirButton = new JButton("Select");
-    private JButton saveButton = new JButton("Save");
+    private JButton saveButton = new JButton("Select");
+    private JButton editMapButton = new JButton("Edit Map");
     private JPanel tilePanel = new JPanel();
-    private String directory;
+    private String mapDirectory;
+    private String tileDirectory;
     private BufferedImage[] tiles;
     private JLabel[] tileLabels;
     private JMenu fileMenu;
-    private JMenu recentMenu;
     private JMenuItem newMenu;
+    private JMenuItem loadMenu;
     private JMenuItem saveMenu;
-    private List<JMenuItem> recentList;
     private int selectedTile = -1;
+    
+    private EditorController controller;
 
-    public EditorWindow() {
-        setTitle("Map Editor");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    public EditorWindow(EditorController controller) {
+        super(1);
+        this.controller = controller;
+        
+        setTitle("<No Map Loaded>");
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
         
         JMenuBar menubar = new JMenuBar();
         fileMenu = new JMenu("File");
         
         newMenu = new JMenuItem("New");
+        newMenu.addActionListener(e -> createNewMap());
         fileMenu.add(newMenu);
         
-        recentMenu = new JMenu("Recent");
-        fileMenu.add(recentMenu);
-        
-        recentList = loadRecent();
+        loadMenu = new JMenuItem("Load");
+        loadMenu.addActionListener(e -> openLoadMap());
+        fileMenu.add(loadMenu);
         
         saveMenu = new JMenuItem("Save");
+        saveMenu.addActionListener(e -> saveMap());
         fileMenu.addSeparator();
         fileMenu.add(saveMenu);
         
-        for(JMenuItem item : recentList){
-            item.addActionListener(e -> selectDirectoryFromMenu(item.getText()));
-            recentMenu.add(item);
-        }
         menubar.add(fileMenu);
 
         JPanel topPanel = new JPanel(new FlowLayout());
+
         topPanel.add(directoryField);
         topPanel.add(selectDirButton);
 
         tilePanel.setLayout(new GridLayout(4, 4));
         selectDirButton.addActionListener(e ->selectDirectory());
-        saveButton.addActionListener(e -> saveSelectedTile());
+//        saveButton.addActionListener(e -> saveSelectedTile());
+        
+        editMapButton.addActionListener(e -> openEditMap());
 
         JPanel bottomPanel = new JPanel();
-        bottomPanel.add(saveButton);
+//        bottomPanel.add(saveButton);
+        bottomPanel.add(editMapButton);
         
         setJMenuBar(menubar);
         add(topPanel, BorderLayout.NORTH);
@@ -82,73 +86,182 @@ public class EditorWindow extends JFrame{
 
         setSize(400, 450);
         setVisible(true);
+        
+        setButtonsState(false);
+        
+        WindowEventManager.getInstance().addControlable(this);
     }
-    
-    private void saveRecent(List<JMenuItem> recentsList){
-        try(FileOutputStream fout = new FileOutputStream(recentFile);
-                ObjectOutputStream os = new ObjectOutputStream(fout);){
-                os.writeObject(recentsList);
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
+
+    public void notifySave(){
+        if(controller.getMap() != null){
+            if(controller.isSaved()){
+                setTitle(controller.getMap().getName());
             }
-        recentMenu.removeAll();
-        for(JMenuItem item : recentsList){
-            item.addActionListener(e -> selectDirectoryFromMenu(item.getText()));
-            recentMenu.add(item);
-        }
+            else{
+                setTitle(controller.getMap().getName() + " (Not Saved)");
+            }
+        }  
     }
     
-    private List<JMenuItem> loadRecent(){
-        File recentsDir = new File(recentDir);
-        File recents = new File(recentFile);
-        List<JMenuItem> recentsList = null;
-        if(!recentsDir.exists()){
-            recentsDir.mkdir();
+    private void setButtonsState(boolean s){
+        directoryField.setEditable(s);
+        selectDirButton.setEnabled(s);
+        editMapButton.setEnabled(s);
+        saveButton.setEnabled(s);
+    }
+    
+    private void createNewMap(){
+        JFileChooser fileChooser = new JFileChooser(); // find file
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setSelectedFile(new File("").getAbsoluteFile()); //Set default tileDirectory in fileChooser
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) { //selected
+            JDialog newPane = new JDialog();
+            newPane.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            newPane.setTitle("Enter map name");
+            JTextField textfield = new JTextField();
+            newPane.setLayout(new BorderLayout());
+            newPane.add(textfield, BorderLayout.NORTH);
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.setLayout(new FlowLayout());
+            JButton createbutton = new JButton("Create");
+            
+            createbutton.addActionListener(e -> createAndClose(newPane, 
+                    fileChooser.getSelectedFile().getAbsolutePath(), 
+                    textfield.getText()));
+            
+            buttonPanel.add(createbutton);
+            newPane.add(buttonPanel, BorderLayout.SOUTH);
+            newPane.pack();
+            newPane.setVisible(true);
         }
-        if(!recents.exists()){
-            saveRecent(new ArrayList<>());
+    }
+    private void createAndClose(JDialog d,String directory, String mapName){
+        if(mapName.equals("")){
+            JOptionPane.showMessageDialog(this, "Map name cannot be blank.");
+            return;
         }
-        try(FileInputStream fin = new FileInputStream(recents);
-            ObjectInputStream os = new ObjectInputStream(fin)){
-            recentsList = (List<JMenuItem>) os.readObject();
+        d.dispose();
+        MapFile map = new MapFile(mapName);
+        File dir = new File(directory +"/"+map.getName());
+        if(!dir.exists()){
+            dir.mkdir();
+            dir = new File(directory +"/"+map.getName()+"/"+"tile");
+            dir.mkdir();
+        }
+        saveMap(map, dir.getParentFile().getAbsolutePath());
+        
+        controller.setMap(map);
+        controller.readMap();
+        setTitle(controller.getMap().getName());
+        setButtonsState(true);
+        controller.updateScreen();
+    }
+    
+    private void saveMap(MapFile map, String directory){
+        controller.writeMap();
+        File tileDir = new File(directory +"/"+"tile");
+        File[] imgs = tileDir.listFiles();
+        if(imgs != null){
+            for(File f : imgs){ //Clear all images for re-writing
+                f.delete();
+            }
+        }
+        
+        try(FileOutputStream fout = new FileOutputStream(directory +"/"+ map.getName() + ".map");
+            ObjectOutputStream os = new ObjectOutputStream(fout);){
+            os.writeObject(map);
+            if(map.getUsedImages() != null){
+                for(int i = 0; i < map.getUsedImages().size(); i++){
+                    ImageIO.write(map.getUsedImages().get(i), "png", new File(directory +"/"+"tile"+"/"+i+".png"));
+                }
+            }
+            mapDirectory = directory;
+            controller.setIsSaved(true);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+    
+    public void saveMap(){
+        saveMap(controller.getMap(), mapDirectory);
+        notifySave();
+    }
+    public void updateMap(MapFile map){
+        controller.setIsSaved(false);
+        controller.updateScreen();
+        notifySave();
+    }
+    public MapFile getCurrentMap(){
+        return controller.getMap();
+    }
+    private void openLoadMap(){
+        JFileChooser fileChooser = new JFileChooser(); // find file
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setSelectedFile(new File("").getAbsoluteFile()); //Set default tileDirectory in fileChooser
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) { //selected
+            File mapDir = new File(fileChooser.getSelectedFile().getAbsolutePath());
+            File[] checkFiles = mapDir.listFiles((d, name) -> name.endsWith(".map"));
+            if(checkFiles.length != 1){
+                JOptionPane.showMessageDialog(this, "Invalid map folder");
+                return;
+            }
+            controller.setMap(loadMap(checkFiles[0]));
+            setTitle(controller.getMap().getName());
+            controller.readMap();
+            setButtonsState(true);
         }
-        return recentsList;
+    }
+    
+    private MapFile loadMap(File mapFile){
+            try(FileInputStream fin = new FileInputStream(mapFile);
+                ObjectInputStream os = new ObjectInputStream(fin);){
+                mapDirectory = mapFile.getParentFile().getAbsolutePath();
+                MapFile map = (MapFile) os.readObject();
+                File tileDir = new File(mapDirectory+"/"+"tile");
+                File[] imgs = tileDir.listFiles();
+                if(map.getUsedImages() == null){
+                    map.setUsedImages(new ArrayList<>());
+                }
+                if(imgs != null){
+                    for(File img : imgs){
+                        map.getUsedImages().add(ImageIO.read(img));
+                    }
+                }
+                return map;
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        return null;
     }
     
     private void setDirLoad(String dir){
-        directory = dir;
-        directoryField.setText(directory);
+        tileDirectory = dir;
+        directoryField.setText(tileDirectory);
         loadTiles();
     }
 
     private void selectDirectory() { //select
         JFileChooser fileChooser = new JFileChooser(); // find file
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setSelectedFile(new File("").getAbsoluteFile()); //Set default tileDirectory in fileChooser
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) { //selected
             setDirLoad(fileChooser.getSelectedFile().getAbsolutePath());
         }
-        
-        for(JMenuItem item : recentList){
-            if(item.getText().equals(directory)){
-                return;
-            }
-        }
-        recentList.add(new JMenuItem(directory));
-        saveRecent(recentList);
     }
 
     private void loadTiles() {
         selectedTile = -1;
-        File dir = new File(directory);
+        File dir = new File(tileDirectory);
         File[] files = dir.listFiles((d, name) -> name.endsWith(".png") || name.endsWith(".jpg")); // show only jpg/png
         if (files != null) {
             tiles = new BufferedImage[files.length];
@@ -192,16 +305,72 @@ public class EditorWindow extends JFrame{
             tileLabels[index].setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         }
     }
-
     private void saveSelectedTile() { // save-comingsoon
-        if (selectedTile != -1) {
-            JOptionPane.showMessageDialog(this, "Selected Tile Index: " + selectedTile);
-        } else {
-            JOptionPane.showMessageDialog(this, "No tile selected!");
-        }
+        controller.changeMode();
+        saveButton.setText(controller.getModeName());
+//        if (selectedTile != -1) {
+//            JOptionPane.showMessageDialog(this, "Selected Tile Index: " + selectedTile);
+//        } else {
+//            JOptionPane.showMessageDialog(this, "No tile selected!");
+//        }
+    }
+    
+    private void openEditMap(){
+        EditMapWindow mapEdit = new EditMapWindow(this);
     }
     
     private void selectDirectoryFromMenu(String dir){
         setDirLoad(dir);
+    }
+
+    public BufferedImage[] getTiles() {
+        return tiles;
+    }
+
+    public int getSelectedTile() {
+        return selectedTile;
+    }
+    @Override
+    public void onWindowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void onWindowClosing(WindowEvent e) {
+        if(!controller.isSaved()){
+            if (JOptionPane.showConfirmDialog(this, "Map file is not saved yet. Do you want to save?", "WARNING",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                saveMap();
+            }
+        }
+        WindowEventManager.getInstance().removeControlable(this);
+        if(e.getSource().equals(this)){
+            dispose();
+        }
+    }
+
+    @Override
+    public void onWindowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void onWindowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void onWindowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void onWindowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void onWindowDeactivated(WindowEvent e) {
+
     }
 }

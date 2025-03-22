@@ -4,18 +4,18 @@
  */
 package Maps;
 
-import Entities.UI.UIText;
+import Entities.CollidableEntity;
+import Physics.Collider;
 import Scenes.Scene;
 
 /**
  *
  * @author GA_IA
  */
-public class TextBox extends UIText{
+public class TileCollider extends CollidableEntity{
 
-    public TextBox(Scene s) {
+    public TileCollider(Scene s) {
         super(s);
-        setSize(20);
     }
 
     @Override
@@ -30,6 +30,21 @@ public class TextBox extends UIText{
 
     @Override
     public void fixedUpdate() {
+
+    }
+
+    @Override
+    public void onColliderEnter(Collider other) {
+
+    }
+
+    @Override
+    public void onColliderStay(Collider other) {
+
+    }
+
+    @Override
+    public void onColliderExit(Collider other) {
 
     }
     

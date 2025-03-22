@@ -11,6 +11,7 @@ import Debugger.Debuggable;
 import Entities.UI.UISlider;
 import Inputs.MouseControlable;
 import Scenes.Scene;
+import Scenes.SceneManager;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
 import java.awt.Point;
@@ -142,10 +143,12 @@ public abstract class Entity implements Debuggable, MouseControlable{
             e.setParent(this);
         }
         childs.add(e);
+        SceneManager.addToRender(e);
         e.onAddedToParent();
     }
     public void removeChild(Entity e){
         e.onRemoveFromParent();
+        SceneManager.removeFromRender(e);
         childs.remove(e);
         e.setParent(null);
     }

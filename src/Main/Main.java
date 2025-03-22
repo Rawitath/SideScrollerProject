@@ -7,6 +7,7 @@ package Main;
 import Debugger.DebugManager;
 import Main.Scenes.Example.ExampleScene;
 import Engine.EngineFrame;
+import Main.ChapterOne.Scenes.ChapterOneScene;
 import Maps.MapBuilder;
 import Physics.Time;
 import Scenes.SceneManager;
@@ -20,9 +21,12 @@ public class Main {
     public static void main(String[] args) {
         //Uncomment to use Debug Mode
 //        DebugManager.useDebug();
-//         MapBuilder.setUseEditor(true);
+        
+        //Uncomment to use MapEditor
+         MapBuilder.setUseEditor(true);
         
         //Scene added here
+        SceneManager.addScene(new ChapterOneScene()); // This Scene will be loaded first
         SceneManager.addScene(new ExampleScene()); // This Scene will be loaded first
         
         EngineFrame window = new EngineFrame("2D Side Scrollbruh", 1280, 720);

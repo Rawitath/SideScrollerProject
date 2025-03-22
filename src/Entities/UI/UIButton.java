@@ -72,11 +72,12 @@ public abstract class UIButton extends UIImage implements MouseControlable{
     public abstract void onButtonReleased();
     @Override
     public void onMouseClicked(MouseEvent e) {
-        
+        super.onMouseClicked(e);
     }
 
     @Override
     public void onMousePressed(MouseEvent e) {
+        super.onMousePressed(e);
         if(isMouseOnButton(e)){
             buttonState = PRESSED;
             onButtonPressed();
@@ -86,6 +87,7 @@ public abstract class UIButton extends UIImage implements MouseControlable{
 
     @Override
     public void onMouseReleased(MouseEvent e) {
+        super.onMouseReleased(e);
         if(isMouseOnButton(e)){
             buttonState = CLICKED;
             onButtonClicked();
@@ -100,11 +102,11 @@ public abstract class UIButton extends UIImage implements MouseControlable{
 
     @Override
     public void onMouseEntered(MouseEvent e) {
-        
+        super.onMouseEntered(e);
     }
 
     @Override
     public void onMouseExited(MouseEvent e) {
-
+        super.onMouseExited(e);
     }
 }

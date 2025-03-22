@@ -4,40 +4,17 @@
  */
 package Maps;
 
-import Entities.UI.UIButton;
+import Entities.Entity;
 import Scenes.Scene;
 
 /**
  *
  * @author GA_IA
  */
-public class ActionButton extends UIButton{
+public class MapContainer extends Entity{
 
-    private TextBox text;
-    
-    public ActionButton(Scene s) {
+    public MapContainer(Scene s) {
         super(s);
-        text = new TextBox(s);
-        addChild(text);
-    }
-
-    public TextBox getText() {
-        return text;
-    }
-    
-    @Override
-    public void onButtonClicked() {
-
-    }
-
-    @Override
-    public void onButtonPressed() {
-
-    }
-
-    @Override
-    public void onButtonReleased() {
-
     }
 
     @Override

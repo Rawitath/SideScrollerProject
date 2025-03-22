@@ -4,8 +4,6 @@
  */
 package Engine;
 
-import Debugger.DebugManager;
-import Debugger.Debuggable;
 import Entities.Camera;
 import Entities.Entity;
 import Entities.UI.UIEntity;
@@ -13,6 +11,7 @@ import Entities.UI.UIView;
 import Physics.Collidable;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -97,26 +96,17 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     private void doStart(Entity e){
         if(e.isActive()){
                 e.start();
-                for(var child : e.getChilds()){
-                    doStart(child);
-                }
             }
     }
     private void doUpdate(Entity e){
         if(e.isActive()){
                 e.update();
                 e.lateUpdate();
-                for(var child : e.getChilds()){
-                    doUpdate(child);
-                }
             }
     }
     private void doFixedUpdate(Entity e){
         if(e.isActive()){
                 e.fixedUpdate();
-                for(var child : e.getChilds()){
-                    doFixedUpdate(child);
-                }
             }
     }
     
@@ -174,31 +164,29 @@ public class RenderingPanel extends JPanel implements EngineLoopable{
     private void doRender(Graphics g, Entity e){
         if(e.isActive()){
                 e.draw(g, currentCamera.getPositionOffset(), currentCamera.getScaleOffset(), currentCamera.getZoom());
-                for(var child : e.getChilds()){
-                    doRender(g, child);
-                }
             }
     }
     private void doUIRender(Graphics g, UIEntity e){
         if(e.isActive()){
                 e.draw(g, currentUIView.getPositionOffset(), currentUIView.getScaleOffset(), currentUIView.getZoom());
-                for(var child : e.getChilds()){
-                    doUIRender(g, (UIEntity) child);
-                }
             }
     }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Queue<UIEntity> uis = new LinkedList<>();
         for (var e : updateEntities){
             if(e.isActive()){
                 if(e instanceof UIEntity){
-                    doUIRender(g, (UIEntity) e);
+                    uis.add((UIEntity) e);
                 }
                 else{
                     doRender(g, e);
                 }
             }
+        }
+        while(!uis.isEmpty()){
+            doUIRender(g, uis.poll());
         }
     }
 

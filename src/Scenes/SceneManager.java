@@ -101,15 +101,27 @@ public class SceneManager {
     }
     public static void addToRender(Entity e){
         assignDebugManager(e);
-        renderingPanel.addEntities(e);
+        addEntity(e);
             assignInputManager(e);
             assignCollidable(e);
     }
     public static void removeFromRender(Entity e){
         removeDebugManager(e);
-            renderingPanel.removeEntities(e);
+            removeEntity(e);
             removeInputManager(e);
             removeCollidable(e);
+    }
+    private static void addEntity(Entity e){
+        renderingPanel.addEntities(e);
+        for(var child : e.getChilds()){
+            addEntity(child);
+        }
+    }
+    private static void removeEntity(Entity e){
+        renderingPanel.removeEntities(e);
+        for(var child : e.getChilds()){
+            removeEntity(child);
+        }
     }
     private static void assignDebugManager(Entity e){
         if(e instanceof Debuggable){

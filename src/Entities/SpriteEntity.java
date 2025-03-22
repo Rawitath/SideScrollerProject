@@ -6,6 +6,7 @@ package Entities;
 
 import Datas.*;
 import Scenes.Scene;
+import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -21,6 +22,7 @@ public abstract class SpriteEntity extends Entity{
     private Vector2Int spriteSize;
     private float pixelRatio;
     private Vector2 anchor;
+    private float alpha;
     private boolean spriteVisibled;
     private Vector2 flip;
 
@@ -30,6 +32,7 @@ public abstract class SpriteEntity extends Entity{
         anchor = new Vector2(0f, 0f);
         pixelRatio = 0.01f;
         spriteVisibled = true;
+        alpha = 1.0f;
         
         flip = Vector2.one();
     }
@@ -49,7 +52,14 @@ public abstract class SpriteEntity extends Entity{
     public void setAnchor(Vector2 anchor) {
         this.anchor = anchor;
     }
-    
+
+    public float getAlpha() {
+        return alpha;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
+    }
 
     public Vector2 getFlip() {
         return flip;
@@ -102,12 +112,16 @@ public abstract class SpriteEntity extends Entity{
         if(spriteVisibled){
             Vector2 pos = getPosition().multiply(Vector2.negativeY()).add(anchor).multiply(zoom).add(posOffset);
             Vector2 scale = getScale().multiply(flip).multiply(scaleOffset).multiply(spriteSize).multiply(pixelRatio);
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+            g2d.setComposite(ac);
             g2d.drawImage(sprite, 
                 Math.round(pos.getX() - (scale.getX() / 2))
                 ,Math.round(pos.getY() - (scale.getY() / 2)),
                 Math.round(scale.getX())
                 , Math.round(scale.getY())
                 , null);
+            ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1);
+            g2d.setComposite(ac);
         }
         super.draw(g, posOffset, scaleOffset, zoom);
     }

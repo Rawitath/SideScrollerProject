@@ -4,22 +4,28 @@
  */
 package Engine;
 
+import Engine.Window.ControllableWindow;
+import Engine.Window.WindowControlable;
+import Engine.Window.WindowEventManager;
 import Inputs.InputManager;
 import Scenes.SceneManager;
 import java.awt.Color;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 
 /**
  *
  * @author GA_IA
  */
-public class EngineFrame extends JFrame{
+public class EngineFrame extends ControllableWindow implements WindowControlable{
     private MainEngine engine;
     private RenderingPanel canvas;
     private InputManager inputManager;
     
     public EngineFrame(String title, int width, int height, Color bg){
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super(0);
+        
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setSize(width, height);
         setTitle(title);
         setResizable(false);   
@@ -36,7 +42,9 @@ public class EngineFrame extends JFrame{
         canvas.addMouseWheelListener(inputManager);
         canvas.setFocusable(true);
         
-        setVisible(true);   
+        setVisible(true);
+        
+        WindowEventManager.getInstance().addControlable(this);
     }
     public EngineFrame(String title, int width, int height){
         this(title, width, height, Color.RED);
@@ -67,6 +75,44 @@ public class EngineFrame extends JFrame{
         engine.start();
         engine.addLoopable(canvas);
         SceneManager.loadScene(0);
+    }
+
+    @Override
+    public void onWindowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void onWindowClosing(WindowEvent e) {
+        if(e.getSource().equals(this)){
+            WindowEventManager.getInstance().removeControlable(this);
+            System.exit(0);
+        }
+    }
+
+    @Override
+    public void onWindowClosed(WindowEvent e) {
+        
+    }
+
+    @Override
+    public void onWindowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void onWindowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void onWindowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void onWindowDeactivated(WindowEvent e) {
+
     }
     
     
