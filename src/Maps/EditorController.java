@@ -40,6 +40,8 @@ public class EditorController{
     private int modeList;
     private int currentMode = 0;
     
+    private Vector2Int currentEditTile = null;
+    
     public EditorController(Scene s){     
         currentScene = s;
         
@@ -60,11 +62,12 @@ public class EditorController{
             selector.setScale(Vector2.one().multiply(getMap().getTileRatio()));
         }
         
-        modeList = 3;
+        modeList = 4;
     }
     
     public void changeMode(){
         currentMode = (currentMode + 1) % modeList;
+        clearSelect();
     }
 
     public int getCurrentMode() {
@@ -82,6 +85,9 @@ public class EditorController{
                 break;
             case 2:
                 name = "Edit";
+                break;
+            case 3:
+                name = "Variable";
                 break;
             default:
                 name = "";
@@ -116,7 +122,8 @@ public class EditorController{
             moveSelectorOnTop();
         }
     }
-    
+//////////////////////////////   Select Mode   /////////////////////////////////
+  
     public void selectTile(Vector2 mousePos){
         if(currentMap != null){
             int column = getMap().worldXToColumn(mousePos.getX());
@@ -149,11 +156,8 @@ public class EditorController{
         }
     }
     
-    public void deselectTile(Vector2 mousePos){
+    public void deselectTile(int column, int row){
         if(currentMap != null){
-            int column = getMap().worldXToColumn(mousePos.getX());
-                int row = getMap().worldYToRow(mousePos.getY());
- 
                 if(!selectedTiles.containsKey(column)){
                     return;
                 }
@@ -172,20 +176,37 @@ public class EditorController{
                 }
         }
     }
+    
+    public void deselectTile(Vector2 mousePos){
+        if(currentMap != null){
+            int column = getMap().worldXToColumn(mousePos.getX());
+                int row = getMap().worldYToRow(mousePos.getY());
+ 
+                deselectTile(column, row);
+        }
+    }
+    
+    public void clearSelect(){
+        for(Integer column : tileGrid.keySet()){
+            for(Integer row : tileGrid.get(column).keySet()){
+                deselectTile(column, row);
+            }
+        }
+    }
 
     public void moveTile(Vector2 direction){
-        Map<Integer, Map<Integer, TileDisplayEntity>> t = tileGrid;
-        Map<Integer, Map<Integer, TileDisplayEntity>> s = selectedTiles;
+        Map<Integer, Map<Integer, TileDisplayEntity>> t = new ConcurrentHashMap<>(tileGrid);
+        Map<Integer, Map<Integer, TileDisplayEntity>> s = new ConcurrentHashMap<>(selectedTiles);
         
         List<Integer> columnList = new ArrayList<>();
-        columnList.addAll(selectedTiles.keySet());
+        columnList.addAll(s.keySet());
         Collections.sort(columnList);
         if(direction.equals(Vector2.right())){
             Collections.reverse(columnList);
         }
         for(Integer ck : columnList){
             List<Integer> rowList = new ArrayList<>();
-            rowList.addAll(selectedTiles.get(ck).keySet());
+            rowList.addAll(s.get(ck).keySet());
             Collections.sort(rowList);
             if(direction.equals(Vector2.up())){
                 Collections.reverse(rowList);
@@ -238,6 +259,8 @@ public class EditorController{
     private void unHighlightTile(TileDisplayEntity tile){
         tile.setAlpha(1f);
     }
+    
+//////////////////////////////   Place Mode   /////////////////////////////////
     
     public boolean placeTile(Vector2 mousePos, boolean overrideTile){
         boolean isReplaced = false;
@@ -353,6 +376,38 @@ public class EditorController{
         }
     }
     
+    ////////////////////////////   Edit Mode   ///////////////////////////////////////
+    public void editTile(Vector2 mousePos){
+        if(currentMap != null && currentEditTile == null){
+            int column = getMap().worldXToColumn(mousePos.getX());
+            int row = getMap().worldYToRow(mousePos.getY());
+            //Check if empty
+                if(!tileGrid.containsKey(column)){
+                    return;
+                }
+                if(!tileGrid.get(column).containsKey(row)){
+                    return;
+                }
+                currentEditTile = new Vector2Int(column, row);
+                EditTileWindow editTileWindow = new EditTileWindow(this, tileGrid.get(column).get(row).getTileFile());
+        }
+    }
+    
+    public void updateTile(TileFile tile){
+        if(currentEditTile != null){
+            if(tile != null){
+                tileGrid.get(currentEditTile.getX()).get(currentEditTile.getY()).setTileFile(tile);
+            }
+            currentEditTile = null;
+            isSaved = false;
+            editor.notifySave();
+            updateScreen();
+        }
+    }
+////////////////////////////   Variable Mode   ///////////////////////////////////
+    
+///////////////////////////   Read and Write   /////////////////////////////////
+    
     public void readMap(){
         if(currentMap != null){
             //Clear the old one
@@ -427,7 +482,27 @@ public class EditorController{
                     rowList.addAll(tileGrid.get(i).keySet());
                     Collections.sort(rowList);
                     for(Integer row : rowList){
-                        tileFiles[i - columnList.getFirst()][row - minRow] = tileGrid.get(i).get(row).getTileFile();
+                        TileFile t = tileGrid.get(i).get(row).getTileFile();
+                        //Update
+                        if(t.getColliderSize() == null){
+                            t.setColliderSize(Vector2.one());
+                        }
+                        if(t.getImageSizeMultiplier() == null){
+                            t.setImageSizeMultiplier(Vector2.one());
+                        }
+                        if(t.getTag() == null){
+                            t.setTag("<<Default>>");
+                        }
+                        if(t.getVariableID() == null){
+                            t.setVariableID(-1);
+                        }
+                        if(t.getAnchor() == null){
+                            t.setAnchor(Vector2Int.zero());
+                        }
+                        if(t.isSolid() == null){
+                            t.setIsSolid(true);
+                        }
+                        tileFiles[i - columnList.getFirst()][row - minRow] = t;
                     }
                 }
                 currentMap.setColumnOffset(columnList.getFirst());
@@ -442,6 +517,8 @@ public class EditorController{
             currentMap.setUsedImages(usedImages);
         }
     }
+    
+///////////////////////////   ETC   /////////////////////////////////
     
     public void setSelectorPosition(Vector2 mousePos){
         if(getMap() != null){

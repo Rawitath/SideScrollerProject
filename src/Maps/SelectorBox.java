@@ -72,6 +72,9 @@ public class SelectorBox extends SpriteEntity implements KeyControlable{
                     );  
                     break;
                 case 2:
+                    controller.editTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)));
+                    break;
+                case 3:
                     break;
                 default:
                     break;
@@ -86,6 +89,9 @@ public class SelectorBox extends SpriteEntity implements KeyControlable{
                     controller.removeTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y))); 
                     break;
                 case 2:
+                    break;
+                case 3:
+                    
                     break;
                 default:
                     break;
@@ -118,6 +124,9 @@ public class SelectorBox extends SpriteEntity implements KeyControlable{
                     break;
                 case 2:
                     break;
+                case 3:
+                    
+                    break;
                 default:
                     break;
             }   
@@ -131,6 +140,9 @@ public class SelectorBox extends SpriteEntity implements KeyControlable{
                     controller.removeTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)));
                     break;
                 case 2:
+                    break;
+                case 3:
+                    
                     break;
                 default:
                     break;

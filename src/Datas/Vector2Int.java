@@ -4,11 +4,15 @@
  */
 package Datas;
 
+import java.io.Serializable;
+
 /**
  *
  * @author GA_IA
  */
-public class Vector2Int {
+public class Vector2Int implements Serializable {
+    private static final long serialVersionUID = 2213284759453738495L;
+    
     private int x, y;
     public Vector2Int(int x, int y){
         this.x = x;
@@ -88,6 +92,9 @@ public class Vector2Int {
     } 
     public static Vector2Int negativeY(){
         return new Vector2Int(1, -1);
+    }
+    public boolean equals(Vector2Int vec) {
+        return this.x == vec.getX() && this.y == vec.getY();
     }
 }
 
