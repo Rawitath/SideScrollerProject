@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -74,12 +75,6 @@ public class MapBuilder {
 
     public static void setDefaultTileTag(String defaultTileTag) {
         MapBuilder.defaultTileTag = defaultTileTag;
-    }
-    
-    private static TileCollider createTileCollider(){
-        TileCollider t = new TileCollider(currentScene);
-        t.setTag(defaultTileTag);
-        return t;
     }
     
     public static void loadMap(String mapPath){
@@ -179,7 +174,7 @@ public class MapBuilder {
         int bl = 1, br = 1, tl = 1, tr = 1;
         for(int i = 0; i <= map.getTiles().length; i+= map.getTiles().length - 1){
             for(int j = 0; j <= map.getTiles()[i].length; j+= map.getTiles()[i].length - 1){
-                if(map.getTiles()[i][j] == null){
+                if(!checkValid(map.getTiles()[i][j])){
                     continue;
                 }
                 placeNew(map, i, j);
@@ -205,25 +200,16 @@ public class MapBuilder {
         for(int i = 1 - bl; i < map.getTiles().length - 1 + br; i++){
             int j = 0;
             if(map.getTiles()[i] != null){
-                if(map.getTiles()[i][j] == null){
+                if(!checkValid(map.getTiles()[i][j])){
                     continue;
                 }
                 if(i != 0){
-                    if(tileColliders[i - 1][j] != null && tileColliders[i - 1][j].getRow() == 1){ //Check Left
-                        pullLeft(map, i, j);
-                        continue;
-                    }
+                    if(checkPullLeft(map, i, j)) continue;
                 }
                 if(i != map.getTiles().length - 1){
-                    if(tileColliders[i + 1][j] != null && tileColliders[i + 1][j].getRow() == 1){ //Check Right
-                        pullRight(map, i, j);
-                        continue;
-                    }
+                    if(checkPullRight(map, i, j)) continue;
                 }
-                if(tileColliders[i][j + 1] != null && tileColliders[i][j + 1].getColumn() == 1){ //Check Up
-                    pullUp(map, i, j);
-                    continue;
-                }
+                if(checkPullUp(map, i, j)) continue;
                 placeNew(map, i, j);
             }
         }
@@ -231,57 +217,36 @@ public class MapBuilder {
         for(int i = 1 - tl; i < map.getTiles().length - 1 + tr; i++){
             if(map.getTiles()[i] != null){
                 int j = map.getTiles()[i].length - 1;
-                if(map.getTiles()[i][j] == null){
+                if(!checkValid(map.getTiles()[i][j])){
                     continue;
                 }
                 if(i != 0){
-                    if(tileColliders[i - 1][j] != null && tileColliders[i - 1][j].getRow() == 1){ //Check Left
-                        pullLeft(map, i, j);
-                        continue;
-                    }
+                    if(checkPullLeft(map, i, j)) continue;
                 }
                 if(i != map.getTiles().length - 1){
-                    if(tileColliders[i + 1][j] != null && tileColliders[i + 1][j].getRow() == 1){ //Check Right
-                        pullRight(map, i, j);
-                        continue;
-                    }
+                    if(checkPullRight(map, i, j)) continue;
                 }
-                if(tileColliders[i][j - 1] != null && tileColliders[i][j - 1].getColumn() == 1){ //Check Down
-                    pullDown(map, i, j);
-                    continue;
-                }
+                if(checkPullDown(map, i, j)) continue;
                 placeNew(map, i, j);
             }
         }
         //left right edge
         for(int i = 0; i <= map.getTiles().length; i+= map.getTiles().length - 1){
             for(int j = 1 - bl; j < map.getTiles()[i].length - 1 + tl; j++){
-                if(map.getTiles()[i][j] == null){
-                        continue;
-                    }
+                if(!checkValid(map.getTiles()[i][j])){
+                    continue;
+                }
                     if(i != 0){
-                        if(tileColliders[i - 1][j] != null && tileColliders[i - 1][j].getRow() == 1){ //Check Left
-                        pullLeft(map, i, j);
-                        continue;
-                        }
+                        if(checkPullLeft(map, i, j)) continue;
                     }
                     if(i != map.getTiles().length - 1){
-                        if(tileColliders[i + 1][j] != null && tileColliders[i + 1][j].getRow() == 1){ //Check Right
-                        pullRight(map, i, j);
-                        continue;
-                        }
+                        if(checkPullRight(map, i, j)) continue;
                     }
                     if(j != 0){
-                        if(tileColliders[i][j - 1] != null && tileColliders[i][j - 1].getColumn() == 1){ //Check Down
-                            pullDown(map, i, j);
-                            continue;
-                        }
+                        if(checkPullDown(map, i, j)) continue;
                     }
                     if(j != map.getTiles()[i].length - 1){
-                        if(tileColliders[i][j + 1] != null && tileColliders[i][j + 1].getColumn() == 1){ //Check Up
-                            pullUp(map, i, j);
-                            continue;
-                        }
+                        if(checkPullUp(map, i, j)) continue;
                     }
                     placeNew(map, i, j);
             }
@@ -290,44 +255,122 @@ public class MapBuilder {
         for(int i = 1; i < map.getTiles().length - 1; i++){
             if(map.getTiles()[i] != null){
             for(int j = 1; j < map.getTiles()[i].length - 1; j++){
-                    if(map.getTiles()[i][j] == null){
+                if(!checkValid(map.getTiles()[i][j])){
+                    continue;
+                }
+                    
+                    if((map.getTiles()[i - 1] != null && map.getTiles()[i - 1][j] != null 
+                            && map.getTiles()[i - 1][j].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())) && //Check Left
+                       (map.getTiles()[i + 1] != null && map.getTiles()[i + 1][j] != null
+                            && map.getTiles()[i + 1][j].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())) && //Check Right
+                       (map.getTiles()[i][j - 1] != null 
+                            && map.getTiles()[i][j - 1].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())) && //Check Down
+                       map.getTiles()[i][j + 1] != null
+                            && map.getTiles()[i][j + 1].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())){ //Check Up
                         continue;
                     }
-                    if((map.getTiles()[i - 1] != null && map.getTiles()[i - 1][j] != null) && //Check Left
-                       (map.getTiles()[i + 1] != null && map.getTiles()[i + 1][j] != null) && //Check Right
-                       map.getTiles()[i][j - 1] != null && //Check Down
-                       map.getTiles()[i][j + 1] != null){ //Check Up
-                        continue;
-                    }
-                    if(tileColliders[i - 1][j] != null && tileColliders[i - 1][j].getRow() == 1){ //Check Left
-                        pullLeft(map, i, j);
-                        continue;
-                    }
-                    if(tileColliders[i + 1][j] != null && tileColliders[i + 1][j].getRow() == 1){ //Check Right
-                        pullRight(map, i, j);
-                        continue;
-                    }
-                    if(tileColliders[i][j - 1] != null && tileColliders[i][j - 1].getColumn() == 1){ //Check Down
-                        pullDown(map, i, j);
-                        continue;
-                    }
-                    if(tileColliders[i][j + 1] != null && tileColliders[i][j + 1].getColumn() == 1){ //Check Up
-                        pullUp(map, i, j);
-                        continue;
-                    }
+                    if(checkPullLeft(map, i, j)) continue;
+                    if(checkPullRight(map, i, j)) continue;
+                    if(checkPullUp(map, i, j)) continue;
+                    if(checkPullDown(map, i, j)) continue;
+                    
                     placeNew(map, i, j);     
            }
             }
         }
     }
     
+    private static boolean checkValid(TileFile tile){
+        if(tile == null){
+            return false;
+        }
+        if(!tile.hasCollider()){
+            return false;
+        }
+        return true;
+    }
+    
+    private static boolean checkPullLeft(MapFile map, int i, int j){
+        if(tileColliders[i - 1][j] != null && tileColliders[i - 1][j].getRow() == 1){ //Check Left
+            if(!(map.getTiles()[i - 1][j].isSolid() ^ map.getTiles()[i][j].isSolid())
+                    &&
+               map.getTiles()[i - 1][j].getTag().equals(map.getTiles()[i][j].getTag())
+                    &&
+               map.getTiles()[i - 1][j].getVariableID().equals(map.getTiles()[i][j].getVariableID())
+                    &&
+               map.getTiles()[i - 1][j].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())){
+                
+                pullLeft(map, i, j);
+                return true;
+            }
+        }     
+        return false;
+    }
+    private static boolean checkPullRight(MapFile map, int i, int j){
+        if(tileColliders[i + 1][j] != null && tileColliders[i + 1][j].getRow() == 1){ //Check Right
+            if(!(map.getTiles()[i + 1][j].isSolid() ^ map.getTiles()[i][j].isSolid())
+                        &&
+                   map.getTiles()[i + 1][j].getTag().equals(map.getTiles()[i][j].getTag())
+                        &&
+                   map.getTiles()[i + 1][j].getVariableID().equals(map.getTiles()[i][j].getVariableID())
+                        &&
+                   map.getTiles()[i + 1][j].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())){
+            pullRight(map, i, j);
+            return true;
+            }
+        }
+        return false;
+    }
+    private static boolean checkPullUp(MapFile map, int i, int j){
+        if(tileColliders[i][j + 1] != null && tileColliders[i][j + 1].getColumn() == 1){ //Check Up
+            if(!(map.getTiles()[i][j + 1].isSolid() ^ map.getTiles()[i][j].isSolid())
+                                &&
+                           map.getTiles()[i][j + 1].getTag().equals(map.getTiles()[i][j].getTag())
+                                &&
+                           map.getTiles()[i][j + 1].getVariableID().equals(map.getTiles()[i][j].getVariableID())
+                                &&
+                           map.getTiles()[i][j + 1].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())){
+            pullUp(map, i, j);
+            return true;
+        }
+        }
+        return false;
+    }
+    private static boolean checkPullDown(MapFile map, int i, int j){
+        if(tileColliders[i][j - 1] != null && tileColliders[i][j - 1].getColumn() == 1){ //Check Down
+            if(!(map.getTiles()[i][j - 1].isSolid() ^ map.getTiles()[i][j].isSolid())
+                    &&
+               map.getTiles()[i][j - 1].getTag().equals(map.getTiles()[i][j].getTag())
+                    &&
+               map.getTiles()[i][j - 1].getVariableID().equals(map.getTiles()[i][j].getVariableID())
+                    &&
+               map.getTiles()[i][j - 1].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())){
+                
+            pullDown(map, i, j);
+            return true;
+            }
+        }
+        return false;
+    }
+    
     private static void placeNew(MapFile map, int i, int j){
-        TileCollider tc = createTileCollider();
+        TileCollider tc = new TileCollider(currentScene);
+        if(!map.getTiles()[i][j].getTag().equals("<<Default>>")){
+            tc.setTag(map.getTiles()[i][j].getTag());
+        }
+        else{
+            tc.setTag(defaultTileTag);
+        }
         tc.setColumn(1);
         tc.setRow(1);
         container.addChild(tc);
-        tc.setScale(tc.getScale().multiply(map.getTileRatio()));
-        tc.setPosition(new Vector2(map.columnToWorldX(i + map.getColumnOffset()), map.rowToWorldY(j + map.getRowOffset())));
+        tc.setScale(tc.getScale().multiply(map.getTileRatio()).multiply(map.getTiles()[i][j].getColliderSize()));
+        tc.setPosition(new Vector2(map.columnToWorldX(i + map.getColumnOffset()), map.rowToWorldY(j + map.getRowOffset()))
+                .add(Vector2.one().multiply(map.getTiles()[i][j].getAnchor()).multiply(tc.getScale().multiply(0.5f)))
+        );
+        if(map.getTiles()[i][j].isSolid()){
+            tc.getCollider().setSolid(true);
+        }
         tileColliders[i][j] = tc;
     }
     
@@ -360,10 +403,12 @@ public class MapBuilder {
         tc.setRow(tc.getRow() + 1);
         tc.setScale(tc.getScale().add(
                 Vector2.up().multiply(map.getTileRatio())
-        ));
+        )
+        );
         tc.setPosition(tc.getPosition().add(
                 Vector2.down().multiply(map.getTileRatio() / 2f)
-        ));
+        )
+        );
         tileColliders[i][j] = tc;
     }
     
