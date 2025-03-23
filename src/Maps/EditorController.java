@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -33,6 +34,7 @@ public class EditorController{
     private Map<Integer, Map<Integer, TileDisplayEntity>> selectedTiles;
     private List<BufferedImage> usedImages;
     private Map<BufferedImage, Integer> imageUsage;
+    private List<TileDisplayEntity> editedTile;
     
     private MapFile currentMap = null;
     private boolean isSaved = true;
@@ -49,6 +51,7 @@ public class EditorController{
         selectedTiles = new ConcurrentHashMap<>();
         imageUsage = new HashMap<>();
         usedImages = new ArrayList<>();
+        editedTile = new CopyOnWriteArrayList<>();
         
         this.editor = new EditorWindow(this);
         this.selector = new SelectorBox(s, this);
@@ -254,10 +257,10 @@ public class EditorController{
     }
     
     private void highlightTile(TileDisplayEntity tile){
-        tile.setAlpha(0.7f);
+        tile.setIsSelected(true);
     }
     private void unHighlightTile(TileDisplayEntity tile){
-        tile.setAlpha(1f);
+        tile.setIsSelected(false);
     }
     
 //////////////////////////////   Place Mode   /////////////////////////////////
@@ -389,6 +392,7 @@ public class EditorController{
                     return;
                 }
                 currentEditTile = new Vector2Int(column, row);
+                addEdit(tileGrid.get(column).get(row));
                 EditTileWindow editTileWindow = new EditTileWindow(this, tileGrid.get(column).get(row).getTileFile());
         }
     }
@@ -403,6 +407,15 @@ public class EditorController{
             editor.notifySave();
             updateScreen();
         }
+    }
+    
+    private void addEdit(TileDisplayEntity t){
+        editedTile.add(t);
+        t.setIsEdited(true);
+    }
+    private void removeEdit(TileDisplayEntity t){
+        t.setIsEdited(false);
+        editedTile.add(t);
     }
 ////////////////////////////   Variable Mode   ///////////////////////////////////
     
@@ -509,6 +522,10 @@ public class EditorController{
                 currentMap.setRowOffset(minRow == null ? 0 : minRow);
                 currentMap.setTiles(tileFiles);
                 currentMap.setUsedImages(usedImages);
+                
+                for(TileDisplayEntity t : editedTile){
+                    removeEdit(t);
+                }
                 return;
             }
             currentMap.setColumnOffset(0);
