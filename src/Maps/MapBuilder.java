@@ -7,6 +7,7 @@ package Maps;
 import Datas.Vector2;
 import Datas.Vector2Int;
 import Entities.Entity;
+import Entities.SpriteEntity;
 import Scenes.Scene;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -15,6 +16,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -35,6 +40,18 @@ public class MapBuilder {
     private static TileCollider[][] tileColliders;
     
     private static String defaultTileTag = "Ground";
+    
+    private static Map<String, Entity> variableMap = new HashMap<>();
+    private static Map<String, Entity> parentMap = new HashMap<>();
+    
+    private static Queue<MapVariable> variableQueue = new LinkedList<>();
+    
+    public static void addVariable(String key, Entity value){
+        variableMap.put(key, value);
+    }
+    public static void serVariableParent(String key, Entity value){
+        parentMap.put(key, value);
+    }
 
     public static boolean isUseEditor() {
         return useEditor;
@@ -144,6 +161,57 @@ public class MapBuilder {
                 if(map.getTiles()[i] != null) {
                     for(int j = 0; j < map.getTiles()[i].length; j++){
                         if(map.getTiles()[i][j] != null){
+                            if(!map.getTiles()[i][j].getVariableName().equals("")){
+                                
+                                TileFile tile = map.getTiles()[i][j];
+                                int tileType = tile.getTile();
+                                String varName = tile.getVariableName();
+                                int varMode = map.getTiles()[i][j].getVariableMode();
+                                
+                                if(!variableMap.containsKey(varName)){
+                                    System.err.print("Variable Key : " + varName + " not found! ");
+                                    if(varMode == 0 || tileType == TileFile.VARIABLE){
+                                        System.err.println("Removing this tile...");
+                                        map.getTiles()[i][j] = null;
+                                        continue;
+                                    }
+                                    else if(varMode == 1){
+                                        System.err.println("Using the same tile...");
+                                    }
+                                }
+                                else{
+                                    if(varMode == 0 || tileType == TileFile.VARIABLE){
+                                        variableQueue.add(new MapVariable(varName, variableMap.get(varName)));
+                                        map.getTiles()[i][j] = null;
+                                        continue;
+                                    }
+                                    else if(varMode == 1){
+                                        Entity e = variableMap.get(varName);
+                                        if(e instanceof SpriteEntity){
+                                            BufferedImage tileImage = map.getUsedImages().get(tile.getTile());
+                                            ((SpriteEntity) e).setSprite(tileImage);
+                                            e.setPosition(new Vector2(
+                                                map.columnToWorldX(i + map.getColumnOffset()) + map.getOffsetX(),
+                                                map.rowToWorldY(j + map.getRowOffset()) + map.getOffsetY()
+                                            ));
+                                            e.setScale(Vector2.one().multiply(map.getTileRatio()));
+                                            ((SpriteEntity) e).setSpriteSize(new Vector2Int(
+                                                    (int)(((SpriteEntity) e).getSprite().getWidth() * map.getImageSizeMultiplier()),
+                                                    (int)(((SpriteEntity) e).getSprite().getHeight() * map.getImageSizeMultiplier())
+                                            ));
+                                            variableQueue.add(new MapVariable(varName, e));
+                                            map.getTiles()[i][j] = null;
+                                            continue;
+                                        }
+                                        else{
+                                            System.err.println("Non SpriteEntity cannot be use in Add mode. Using Replace mode Instead");
+                                            variableQueue.add(new MapVariable(varName, e));
+                                            map.getTiles()[i][j] = null;
+                                            continue;
+                                        }
+                                   }
+                                }
+                            }
                             TileDisplayEntity tile = new TileDisplayEntity(currentScene);
                             tile.setTileFile(map.getTiles()[i][j]);
                             BufferedImage tileImage = map.getUsedImages().get(tile.getTileFile().getTile());
@@ -165,6 +233,7 @@ public class MapBuilder {
         }
         tileColliders = new TileCollider[map.getTiles().length][map.getTiles()[0].length];
         placeCollider(map);
+        placeVariable();
     }
     
     private static void placeCollider(MapFile map){
@@ -278,6 +347,18 @@ public class MapBuilder {
                     
                     placeNew(map, i, j);     
            }
+            }
+        }
+    }
+    
+    private static void placeVariable(){
+        while(!variableQueue.isEmpty()){
+            MapVariable e = variableQueue.poll();
+            if(parentMap.containsKey(e.getKey())){
+                parentMap.get(e.getKey()).addChild(e.getEntity());
+            }
+            else{
+                currentScene.addEntity(e.getEntity());
             }
         }
     }

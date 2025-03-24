@@ -47,6 +47,8 @@ public class EditorController{
     
     private Vector2Int currentEditTile = null;
     
+    private final BufferedImage defaultVariableImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB); 
+    
     public EditorController(Scene s){     
         currentScene = s;
         
@@ -329,6 +331,9 @@ public class EditorController{
 
                 if(tileGrid.containsKey(column)){
                     tileGrid.get(column).put(row, tile);
+                    
+                    isSaved = false;
+                    editor.notifySave();
                     return isReplaced;
                 }
                 tileGrid.put(column, new ConcurrentHashMap<>());
@@ -448,7 +453,7 @@ public class EditorController{
 
             TileDisplayEntity tile = new TileDisplayEntity(currentScene);
             tile.setOnEdit(true);
-            tile.setSprite(FileReader.readImage("res/default/framesquare.png"));
+            tile.setSprite(defaultVariableImage);
 
             tile.setPosition(new Vector2(getMap().columnToWorldX(column), getMap().rowToWorldY(row)));
 
@@ -462,6 +467,8 @@ public class EditorController{
 
             if(tileGrid.containsKey(column)){
                 tileGrid.get(column).put(row, tile);
+                isSaved = false;
+                editor.notifySave();
                 return;
             }
             tileGrid.put(column, new ConcurrentHashMap<>());
@@ -534,7 +541,7 @@ public class EditorController{
                                     imageUsage.put(tileImage, imageUsage.get(tileImage) + 1);
                                 }
                                 else{
-                                    tile.setSprite(FileReader.readImage("res/default/framesquare.png"));
+                                    tile.setSprite(defaultVariableImage);
                                 }
 
                                 currentScene.addEntity(tile);

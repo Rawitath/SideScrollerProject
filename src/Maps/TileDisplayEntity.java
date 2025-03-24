@@ -98,6 +98,10 @@ public class TileDisplayEntity extends SpriteEntity{
                 g.setColor(new Color(1.0f, 0.0f, 0.0f, 0.4f));
                 g.fillRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));
             }
+            if(tileFile.getTile() == TileFile.VARIABLE){
+                g.setColor(Color.BLACK);
+                g.drawRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));
+            }
             if(!variableName.equals("")){
                 if(variableMode == 1){
                     g.setColor(Color.yellow);

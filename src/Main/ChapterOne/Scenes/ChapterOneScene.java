@@ -4,6 +4,7 @@
  */
 package Main.ChapterOne.Scenes;
 import Main.Entities.Example.Lucy;
+import Main.Entities.Example.Mutsuki;
 import Maps.MapBuilder;
 import Maps.MapFile;
 import Scenes.Scene;
@@ -18,6 +19,7 @@ public class ChapterOneScene extends Scene{
     public void load() {
         getCamera().setZoom(20f);
         MapBuilder.useMapBuilder(this);
+//        MapBuilder.addVariable("Lucy", new Lucy(this));
         MapBuilder.loadMap("map/MyMap");
     }
     
