@@ -4,7 +4,6 @@
  */
 package Main.ChapterOne.Scenes;
 import Maps.MapBuilder;
-import Maps.MapFile;
 import Scenes.Scene;
 
 /**

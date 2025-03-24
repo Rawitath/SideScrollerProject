@@ -14,6 +14,9 @@ import Scenes.Scene;
  */
 public class TileCollider extends CollidableEntity{
 
+    private int column;
+    private int row;
+            
     public TileCollider(Scene s) {
         super(s);
     }
@@ -33,6 +36,22 @@ public class TileCollider extends CollidableEntity{
 
     }
 
+    public int getColumn() {
+        return column;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+    
     @Override
     public void onColliderEnter(Collider other) {
 

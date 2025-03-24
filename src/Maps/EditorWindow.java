@@ -71,12 +71,12 @@ public class EditorWindow extends ControllableWindow{
 
         tilePanel.setLayout(new GridLayout(4, 4));
         selectDirButton.addActionListener(e ->selectDirectory());
-//        saveButton.addActionListener(e -> saveSelectedTile());
+        saveButton.addActionListener(e -> saveSelectedTile());
         
         editMapButton.addActionListener(e -> openEditMap());
 
         JPanel bottomPanel = new JPanel();
-//        bottomPanel.add(saveButton);
+        bottomPanel.add(saveButton);
         bottomPanel.add(editMapButton);
         
         setJMenuBar(menubar);
@@ -149,7 +149,7 @@ public class EditorWindow extends ControllableWindow{
             dir = new File(directory +"/"+map.getName()+"/"+"tile");
             dir.mkdir();
         }
-        saveMap(map, dir.getParentFile().getAbsolutePath());
+        saveMap(map, dir.getParentFile().getAbsolutePath(), true);
         
         controller.setMap(map);
         controller.readMap();
@@ -158,7 +158,10 @@ public class EditorWindow extends ControllableWindow{
         controller.updateScreen();
     }
     
-    private void saveMap(MapFile map, String directory){
+    private void saveMap(MapFile map, String directory, boolean isNew){
+        if(controller.getMap() == null && !isNew){
+            return;
+        }
         controller.writeMap();
         File tileDir = new File(directory +"/"+"tile");
         File[] imgs = tileDir.listFiles();
@@ -186,7 +189,7 @@ public class EditorWindow extends ControllableWindow{
     }
     
     public void saveMap(){
-        saveMap(controller.getMap(), mapDirectory);
+        saveMap(controller.getMap(), mapDirectory, false);
         notifySave();
     }
     public void updateMap(MapFile map){
@@ -217,6 +220,7 @@ public class EditorWindow extends ControllableWindow{
     }
     
     private MapFile loadMap(File mapFile){
+        checkSave();
             try(FileInputStream fin = new FileInputStream(mapFile);
                 ObjectInputStream os = new ObjectInputStream(fin);){
                 mapDirectory = mapFile.getParentFile().getAbsolutePath();
@@ -319,6 +323,15 @@ public class EditorWindow extends ControllableWindow{
         EditMapWindow mapEdit = new EditMapWindow(this);
     }
     
+    private void checkSave(){
+        if(!controller.isSaved()){
+            if (JOptionPane.showConfirmDialog(this, "Map file is not saved yet. Do you want to save?", "WARNING",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                saveMap();
+            }
+        }
+    }
+    
     private void selectDirectoryFromMenu(String dir){
         setDirLoad(dir);
     }
@@ -337,12 +350,7 @@ public class EditorWindow extends ControllableWindow{
 
     @Override
     public void onWindowClosing(WindowEvent e) {
-        if(!controller.isSaved()){
-            if (JOptionPane.showConfirmDialog(this, "Map file is not saved yet. Do you want to save?", "WARNING",
-                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                saveMap();
-            }
-        }
+        checkSave();
         WindowEventManager.getInstance().removeControlable(this);
         if(e.getSource().equals(this)){
             dispose();
