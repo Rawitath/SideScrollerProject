@@ -121,8 +121,14 @@ public class EditorController{
                 ));
                 tile.setScale(Vector2.one().multiply(getMap().getTileRatio()));
                 tile.setSpriteSize(new Vector2Int(
-                        (int)(tile.getSprite().getWidth() * getMap().getImageSizeMultiplier()),
-                        (int)(tile.getSprite().getHeight() * getMap().getImageSizeMultiplier())
+                        (int)(
+                                tile.getSprite().getWidth()
+                                        * getMap().getImageSizeMultiplier()
+                                        * tile.getTileFile().getImageSizeMultiplier().getX()),
+                        (int)(
+                                tile.getSprite().getHeight()
+                                        * getMap().getImageSizeMultiplier()
+                                        * tile.getTileFile().getImageSizeMultiplier().getY())
                 ));
             }
         }

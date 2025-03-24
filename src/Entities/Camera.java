@@ -186,7 +186,7 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
 //        }
         if(this.zoom > 0.1f || e.getWheelRotation() < 0){
             zoom -= e.getWheelRotation();
-            debugSpeed += e.getWheelRotation() * 0.2f;
+            debugSpeed += e.getWheelRotation() * 0.1f;
             if(debugSpeed < 0){
                 debugSpeed = 0.5f;
             }

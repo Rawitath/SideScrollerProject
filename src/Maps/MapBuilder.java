@@ -181,7 +181,12 @@ public class MapBuilder {
                                 }
                                 else{
                                     if(varMode == 0 || tileType == TileFile.VARIABLE){
-                                        variableQueue.add(new MapVariable(varName, variableMap.get(varName)));
+                                        Entity e = variableMap.get(varName);
+                                        e.setPosition(new Vector2(
+                                            map.columnToWorldX(i + map.getColumnOffset()) + map.getOffsetX(),
+                                            map.rowToWorldY(j + map.getRowOffset()) + map.getOffsetY()
+                                        ));
+                                        variableQueue.add(new MapVariable(varName, e));
                                         map.getTiles()[i][j] = null;
                                         continue;
                                     }
@@ -196,15 +201,22 @@ public class MapBuilder {
                                             ));
                                             e.setScale(Vector2.one().multiply(map.getTileRatio()));
                                             ((SpriteEntity) e).setSpriteSize(new Vector2Int(
-                                                    (int)(((SpriteEntity) e).getSprite().getWidth() * map.getImageSizeMultiplier()),
-                                                    (int)(((SpriteEntity) e).getSprite().getHeight() * map.getImageSizeMultiplier())
+                                                    (int)(((SpriteEntity) e).getSprite().getWidth() * map.getImageSizeMultiplier()
+                                                            * tile.getImageSizeMultiplier().getX()),
+                                                    (int)(((SpriteEntity) e).getSprite().getHeight() * map.getImageSizeMultiplier()
+                                                            * tile.getImageSizeMultiplier().getY())
                                             ));
+                                            
                                             variableQueue.add(new MapVariable(varName, e));
                                             map.getTiles()[i][j] = null;
                                             continue;
                                         }
                                         else{
                                             System.err.println("Non SpriteEntity cannot be use in Add mode. Using Replace mode Instead");
+                                            e.setPosition(new Vector2(
+                                                map.columnToWorldX(i + map.getColumnOffset()) + map.getOffsetX(),
+                                                map.rowToWorldY(j + map.getRowOffset()) + map.getOffsetY()
+                                            ));
                                             variableQueue.add(new MapVariable(varName, e));
                                             map.getTiles()[i][j] = null;
                                             continue;
@@ -222,9 +234,15 @@ public class MapBuilder {
                             ));
                             tile.setScale(Vector2.one().multiply(map.getTileRatio()));
                             tile.setSpriteSize(new Vector2Int(
-                                    (int)(tile.getSprite().getWidth() * map.getImageSizeMultiplier()),
-                                    (int)(tile.getSprite().getHeight() * map.getImageSizeMultiplier())
-                            ));
+                        (int)(
+                                tile.getSprite().getWidth()
+                                        * map.getImageSizeMultiplier()
+                                        * tile.getTileFile().getImageSizeMultiplier().getX()),
+                        (int)(
+                                tile.getSprite().getHeight()
+                                        * map.getImageSizeMultiplier()
+                                        * tile.getTileFile().getImageSizeMultiplier().getY())
+                ));
                             container.addChild(tile);
                         }
                     }
