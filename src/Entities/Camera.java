@@ -126,11 +126,11 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
                 if(debugSpeed > 0.1f){
                     debugSpeed -= 0.1f;
                 }
-                System.out.println(debugSpeed);
+//                System.out.println(debugSpeed);
             }
             if(keyCode == 222){
                 debugSpeed += 0.1f;
-                System.out.println(debugSpeed);
+//                System.out.println(debugSpeed);
             }
         }   
     }
@@ -186,7 +186,13 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
 //        }
         if(this.zoom > 0.1f || e.getWheelRotation() < 0){
             zoom -= e.getWheelRotation();
-            debugSpeed += e.getWheelRotation() * 0.7f;
+            debugSpeed += e.getWheelRotation() * 0.2f;
+            if(debugSpeed < 0){
+                debugSpeed = 0.5f;
+            }
+            if(debugSpeed > 25){
+                debugSpeed = 25f;
+            }
         }
         else{
             this.zoom = 0.1f;

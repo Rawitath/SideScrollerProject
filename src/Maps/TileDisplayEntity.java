@@ -9,6 +9,7 @@ import Entities.SpriteEntity;
 import Physics.Collider;
 import Scenes.Scene;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 /**
@@ -18,13 +19,20 @@ import java.awt.Graphics;
 public class TileDisplayEntity extends SpriteEntity{
     private TileFile tileFile;
     
+    private boolean onEdit;
     private boolean isSelected;
     private boolean isEdited;
+    
+    private int variableNum;
+    private int variableMode;
             
     public TileDisplayEntity(Scene s) {
         super(s);
+        onEdit = false;
         isSelected = false;
         isEdited = false;
+        variableNum = -1;
+        variableMode = 0;
     }
 
     @Override
@@ -64,22 +72,45 @@ public class TileDisplayEntity extends SpriteEntity{
 
     public void setTileFile(TileFile tileFile) {
         this.tileFile = tileFile;
+        variableNum = tileFile.getVariableID();
+        variableMode = tileFile.getVariableMode();
     }
 
+    public boolean isOnEdit() {
+        return onEdit;
+    }
+
+    public void setOnEdit(boolean onEdit) {
+        this.onEdit = onEdit;
+    }
+    
     @Override
     public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
         super.draw(g, posOffset, scaleOffset, zoom);
-        if(isSelected){
+        if(onEdit){
             Vector2 pos = getPosition().multiply(Vector2.negativeY()).multiply(zoom).add(posOffset);
             Vector2 scale = getScale().multiply(scaleOffset);
-            g.setColor(new Color(1.0f, 0.0f, 0.74f, 0.4f));
-            g.fillRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));
-        }
-        if(isEdited){
-            Vector2 pos = getPosition().multiply(Vector2.negativeY()).multiply(zoom).add(posOffset);
-            Vector2 scale = getScale().multiply(scaleOffset);
-            g.setColor(new Color(1.0f, 0.0f, 0.0f, 0.4f));
-            g.fillRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));
+            if(isSelected){
+                g.setColor(new Color(1.0f, 0.0f, 0.74f, 0.4f));
+                g.fillRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));
+            }
+            if(isEdited){
+                g.setColor(new Color(1.0f, 0.0f, 0.0f, 0.4f));
+                g.fillRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));
+            }
+            if(variableNum != -1){
+                if(variableMode == 1){
+                    g.setColor(Color.yellow);
+                }
+                else{
+                    g.setColor(Color.white);
+                }
+                g.setFont(new Font("Arial", Font.BOLD, 24));
+                
+                String text = String.valueOf(variableNum);
+                pos = pos.add(new Vector2(-g.getFontMetrics().stringWidth(text) / 2, g.getFontMetrics().getHeight() / 3.25f));
+                g.drawString(text,  Math.round(pos.getX()),Math.round(pos.getY()));
+            }
         }
     }
 }

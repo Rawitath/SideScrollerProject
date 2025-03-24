@@ -30,6 +30,7 @@ public class EditTileWindow extends JDialog implements ActionListener, WindowLis
     private JCheckBox hasColliderCheck = new JCheckBox();
     private JCheckBox isSolidCheck = new JCheckBox();
     private JComboBox colliderAnchor = new JComboBox();
+    private JComboBox variableMode = new JComboBox();
     private JTextField colliderSizeXField = new JTextField();
     private JTextField colliderSizeYField = new JTextField();
     private JTextField imageSizeXField = new JTextField();
@@ -52,9 +53,13 @@ public class EditTileWindow extends JDialog implements ActionListener, WindowLis
         setTitle("Edit Tile");
         
         String[] anchors = {"Center", "Top", "Bottom", "Left", "Right", "Top Left", "Top Right", "Bottom Left", "Bottom Right"};
+        String[] mode = {"Replace","Add"};
         
         for(String a : anchors){
             colliderAnchor.addItem(a);
+        }
+        for(String m : mode){
+            variableMode.addItem(m);
         }
         
         hasColliderCheck.setSelected(tile.hasCollider());
@@ -94,11 +99,13 @@ public class EditTileWindow extends JDialog implements ActionListener, WindowLis
             colliderAnchor.setSelectedIndex(8);
         }
         
+        variableMode.setSelectedIndex(tile.getVariableMode());
+        
         variableIDField.setText(String.valueOf(tile.getVariableID()));
         tagField.setText(tile.getTag());
         
         JPanel gridPanel = new JPanel();
-        gridPanel.setLayout(new GridLayout(9, 2));
+        gridPanel.setLayout(new GridLayout(10, 2));
         gridPanel.add(new JLabel("Has Collider : "));
         gridPanel.add(hasColliderCheck);
         gridPanel.add(new JLabel("Is Solid : "));
@@ -115,6 +122,8 @@ public class EditTileWindow extends JDialog implements ActionListener, WindowLis
         gridPanel.add(imageSizeYField);
         gridPanel.add(new JLabel("Variable ID : "));
         gridPanel.add(variableIDField);
+        gridPanel.add(new JLabel("Variable Mode : "));
+        gridPanel.add(variableMode);
         gridPanel.add(new JLabel("Tag : "));
         gridPanel.add(tagField);
         
@@ -145,6 +154,7 @@ public class EditTileWindow extends JDialog implements ActionListener, WindowLis
         );
         tile.setTag(tagField.getText());
         tile.setVariableID(Integer.valueOf(variableIDField.getText()));
+        tile.setVariableMode(variableMode.getSelectedIndex());
         Vector2Int a;
         
         switch(colliderAnchor.getSelectedIndex()){

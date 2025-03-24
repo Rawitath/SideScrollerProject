@@ -59,22 +59,24 @@ public class SelectorBox extends SpriteEntity implements KeyControlable{
     @Override
     public void onMousePressed(MouseEvent e) {
         super.onMousePressed(e); 
+        Vector2 mousePos = getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y));
         setSprite(activeIcon, true);
         if(SwingUtilities.isLeftMouseButton(e)){ //Left Mouse Button
             switch (controller.getCurrentMode()) {
                 case 0:
-                    controller.selectTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)));
+                    controller.selectTile(mousePos);
                     break;
                 case 1:
                     isReplaced = controller.placeTile(
-                            getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)),
+                            mousePos,
                             true
                     );  
                     break;
                 case 2:
-                    controller.editTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)));
+                    controller.editTile(mousePos);
                     break;
                 case 3:
+                    controller.placeVariable(mousePos);
                     break;
                 default:
                     break;
@@ -83,10 +85,10 @@ public class SelectorBox extends SpriteEntity implements KeyControlable{
         if(SwingUtilities.isRightMouseButton(e)){ //Right Mouse Button
             switch (controller.getCurrentMode()) {
                 case 0:
-                    controller.deselectTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)));
+                    controller.deselectTile(mousePos);
                     break;
                 case 1:
-                    controller.removeTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y))); 
+                    controller.removeTile(mousePos); 
                     break;
                 case 2:
                     break;
@@ -110,15 +112,17 @@ public class SelectorBox extends SpriteEntity implements KeyControlable{
     @Override
     public void onMouseDragged(MouseEvent e) {
         super.onMouseDragged(e);
+        
+        Vector2 mousePos = getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y));
         setSelectorPosition(e);
         if(SwingUtilities.isLeftMouseButton(e)){ //Left Mouse Button
             switch(controller.getCurrentMode()){
                 case 0:
-                    controller.selectTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)));
+                    controller.selectTile(mousePos);
                     break;
                 case 1:
                     controller.placeTile(
-                        getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)),
+                        mousePos,
                         isReplaced
                     );
                     break;
@@ -134,10 +138,10 @@ public class SelectorBox extends SpriteEntity implements KeyControlable{
         if(SwingUtilities.isRightMouseButton(e)){ //Right Mouse Button
             switch(controller.getCurrentMode()){
                 case 0:
-                    controller.deselectTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)));
+                    controller.deselectTile(mousePos);
                     break;
                 case 1:
-                    controller.removeTile(getScene().getCamera().screenToWorldSpace(new Vector2(e.getPoint().x, e.getPoint().y)));
+                    controller.removeTile(mousePos);
                     break;
                 case 2:
                     break;

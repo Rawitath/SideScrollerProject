@@ -7,6 +7,7 @@ package Maps;
 import Datas.Vector2;
 import Datas.Vector2Int;
 import Scenes.Scene;
+import Utilities.FileReader;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import javax.imageio.ImageIO;
 
 
 /**
@@ -311,6 +313,7 @@ public class EditorController{
                 tileFile.setTileSheet(tileID);
 
                 TileDisplayEntity tile = new TileDisplayEntity(currentScene);
+                tile.setOnEdit(true);
                 tile.setSprite(editor.getTiles()[editor.getSelectedTile()]);
                 currentScene.addEntity(tile);
 
@@ -418,7 +421,51 @@ public class EditorController{
         editedTile.add(t);
     }
 ////////////////////////////   Variable Mode   ///////////////////////////////////
-    
+    public void placeVariable(Vector2 mousePos){
+        if(currentMap != null){
+            int column = getMap().worldXToColumn(mousePos.getX());
+            int row = getMap().worldYToRow(mousePos.getY());
+
+            int tileID = -1;
+            
+            //Check if already placed
+            if(tileGrid.containsKey(column) && tileGrid.get(column).containsKey(row)){
+                if(tileGrid.get(column).get(row).getTileFile().getTile() == tileID){
+                    return;
+                }
+            }
+            //Placing Tile
+            TileFile tileFile = new TileFile();
+            tileFile.setTileSheet(tileID);
+            tileFile.setHasCollider(false);
+            tileFile.setIsSolid(false);
+            tileFile.setVariableID(0);
+            tileFile.setVariableMode(0);
+
+            TileDisplayEntity tile = new TileDisplayEntity(currentScene);
+            tile.setOnEdit(true);
+            tile.setSprite(FileReader.readImage("res/default/framesquare.png"));
+
+            tile.setPosition(new Vector2(getMap().columnToWorldX(column), getMap().rowToWorldY(row)));
+
+            tile.setScale(Vector2.one().multiply(getMap().getTileRatio()));
+            tile.setSpriteSize(new Vector2Int(
+                    (int)(tile.getSprite().getWidth() * getMap().getImageSizeMultiplier()),
+                    (int)(tile.getSprite().getHeight() * getMap().getImageSizeMultiplier())
+            ));
+            tile.setTileFile(tileFile);
+
+            if(tileGrid.containsKey(column)){
+                tileGrid.get(column).put(row, tile);
+                return;
+            }
+            tileGrid.put(column, new ConcurrentHashMap<>());
+            tileGrid.get(column).put(row, tile);
+            
+            isSaved = false;
+            editor.notifySave();
+        }
+    }
 ///////////////////////////   Read and Write   /////////////////////////////////
     
     public void readMap(){
@@ -442,6 +489,7 @@ public class EditorController{
                         for(int j = 0; j < currentMap.getTiles()[i].length; j++){
                             if(currentMap.getTiles()[i][j] != null){
                                 TileDisplayEntity tile = new TileDisplayEntity(currentScene);
+                                tile.setOnEdit(true);
                                 tile.setTileFile(currentMap.getTiles()[i][j]);
                                 BufferedImage tileImage = usedImages.get(tile.getTileFile().getTile());
                                 tile.setSprite(tileImage);
@@ -514,6 +562,9 @@ public class EditorController{
                         }
                         if(t.isSolid() == null){
                             t.setIsSolid(true);
+                        }
+                        if(t.getVariableMode() == null){
+                            t.setVariableMode(0);
                         }
                         tileFiles[i - columnList.getFirst()][row - minRow] = t;
                     }

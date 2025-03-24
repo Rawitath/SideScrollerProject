@@ -24,6 +24,7 @@ public class TileFile implements Serializable{
     private Vector2 imageSizeMultiplier;
     private Vector2Int anchor;
     private String tag;
+    private Integer variableMode;
     
     public TileFile(){
         variableID = -1;
@@ -34,6 +35,7 @@ public class TileFile implements Serializable{
         colliderSize = Vector2.one();
         imageSizeMultiplier = Vector2.one();
         anchor = Vector2Int.zero();
+        variableMode = 0;
     }
 
     public boolean hasCollider() {
@@ -106,6 +108,14 @@ public class TileFile implements Serializable{
 
     public void setImageSizeMultiplier(Vector2 imageSizeMultiplier) {
         this.imageSizeMultiplier = imageSizeMultiplier;
+    }
+
+    public Integer getVariableMode() {
+        return variableMode;
+    }
+
+    public void setVariableMode(Integer variableMode) {
+        this.variableMode = variableMode;
     }
     
 }
