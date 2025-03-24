@@ -23,7 +23,7 @@ public class TileDisplayEntity extends SpriteEntity{
     private boolean isSelected;
     private boolean isEdited;
     
-    private int variableNum;
+    private String variableName;
     private int variableMode;
             
     public TileDisplayEntity(Scene s) {
@@ -31,7 +31,7 @@ public class TileDisplayEntity extends SpriteEntity{
         onEdit = false;
         isSelected = false;
         isEdited = false;
-        variableNum = -1;
+        variableName = "";
         variableMode = 0;
     }
 
@@ -72,7 +72,7 @@ public class TileDisplayEntity extends SpriteEntity{
 
     public void setTileFile(TileFile tileFile) {
         this.tileFile = tileFile;
-        variableNum = tileFile.getVariableID();
+        variableName = tileFile.getVariableName();
         variableMode = tileFile.getVariableMode();
     }
 
@@ -98,16 +98,16 @@ public class TileDisplayEntity extends SpriteEntity{
                 g.setColor(new Color(1.0f, 0.0f, 0.0f, 0.4f));
                 g.fillRect(Math.round(pos.getX() - scale.getX() / 2), Math.round(pos.getY() - scale.getY() / 2), Math.round(scale.getX()), Math.round(scale.getY()));
             }
-            if(variableNum != -1){
+            if(!variableName.equals("")){
                 if(variableMode == 1){
                     g.setColor(Color.yellow);
                 }
                 else{
                     g.setColor(Color.white);
                 }
-                g.setFont(new Font("Arial", Font.BOLD, 24));
+                g.setFont(new Font("Arial", Font.BOLD, 14));
                 
-                String text = String.valueOf(variableNum);
+                String text = String.valueOf(variableName);
                 pos = pos.add(new Vector2(-g.getFontMetrics().stringWidth(text) / 2, g.getFontMetrics().getHeight() / 3.25f));
                 g.drawString(text,  Math.round(pos.getX()),Math.round(pos.getY()));
             }

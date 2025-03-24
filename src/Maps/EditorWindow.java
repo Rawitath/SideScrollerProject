@@ -159,6 +159,9 @@ public class EditorWindow extends ControllableWindow{
     }
     
     private void saveMap(MapFile map, String directory){
+        if(controller.getMap() == null){
+            return;
+        }
         controller.writeMap();
         File tileDir = new File(directory +"/"+"tile");
         File[] imgs = tileDir.listFiles();

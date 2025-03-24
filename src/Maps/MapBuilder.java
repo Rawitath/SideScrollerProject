@@ -15,8 +15,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -296,7 +294,7 @@ public class MapBuilder {
                     &&
                map.getTiles()[i - 1][j].getTag().equals(map.getTiles()[i][j].getTag())
                     &&
-               map.getTiles()[i - 1][j].getVariableID().equals(map.getTiles()[i][j].getVariableID())
+               map.getTiles()[i - 1][j].getVariableName().equals(map.getTiles()[i][j].getVariableName())
                     &&
                map.getTiles()[i - 1][j].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())){
                 
@@ -312,7 +310,7 @@ public class MapBuilder {
                         &&
                    map.getTiles()[i + 1][j].getTag().equals(map.getTiles()[i][j].getTag())
                         &&
-                   map.getTiles()[i + 1][j].getVariableID().equals(map.getTiles()[i][j].getVariableID())
+                   map.getTiles()[i + 1][j].getVariableName().equals(map.getTiles()[i][j].getVariableName())
                         &&
                    map.getTiles()[i + 1][j].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())){
             pullRight(map, i, j);
@@ -327,7 +325,7 @@ public class MapBuilder {
                                 &&
                            map.getTiles()[i][j + 1].getTag().equals(map.getTiles()[i][j].getTag())
                                 &&
-                           map.getTiles()[i][j + 1].getVariableID().equals(map.getTiles()[i][j].getVariableID())
+                           map.getTiles()[i][j + 1].getVariableName().equals(map.getTiles()[i][j].getVariableName())
                                 &&
                            map.getTiles()[i][j + 1].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())){
             pullUp(map, i, j);
@@ -342,7 +340,7 @@ public class MapBuilder {
                     &&
                map.getTiles()[i][j - 1].getTag().equals(map.getTiles()[i][j].getTag())
                     &&
-               map.getTiles()[i][j - 1].getVariableID().equals(map.getTiles()[i][j].getVariableID())
+               map.getTiles()[i][j - 1].getVariableName().equals(map.getTiles()[i][j].getVariableName())
                     &&
                map.getTiles()[i][j - 1].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())){
                 

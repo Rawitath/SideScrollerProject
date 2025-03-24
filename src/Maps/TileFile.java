@@ -15,8 +15,10 @@ import java.io.Serializable;
 public class TileFile implements Serializable{
     private static final long serialVersionUID = 8669086114808669427L;
     
+    public static final int VARIABLE = 789514;
+    
     private int tile;
-    private Integer variableID;
+    private String variableName;
     private int tileCutSize;
     private boolean hasCollider;
     private Boolean isSolid;
@@ -27,7 +29,7 @@ public class TileFile implements Serializable{
     private Integer variableMode;
     
     public TileFile(){
-        variableID = -1;
+        variableName = "";
         hasCollider = true;
         isSolid = true;
         tag = "<<Default>>";
@@ -78,14 +80,14 @@ public class TileFile implements Serializable{
         this.tileCutSize = tileCutSize;
     }
 
-    public Integer getVariableID() {
-        return variableID;
+    public String getVariableName() {
+        return variableName;
     }
 
-    public void setVariableID(Integer variableID) {
-        this.variableID = variableID;
+    public void setVariableName(String variableName) {
+        this.variableName = variableName;
     }
-
+    
     public Vector2 getColliderSize() {
         return colliderSize;
     }

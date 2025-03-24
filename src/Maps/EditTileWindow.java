@@ -101,7 +101,7 @@ public class EditTileWindow extends JDialog implements ActionListener, WindowLis
         
         variableMode.setSelectedIndex(tile.getVariableMode());
         
-        variableIDField.setText(String.valueOf(tile.getVariableID()));
+        variableIDField.setText(tile.getVariableName());
         tagField.setText(tile.getTag());
         
         JPanel gridPanel = new JPanel();
@@ -120,7 +120,7 @@ public class EditTileWindow extends JDialog implements ActionListener, WindowLis
         gridPanel.add(imageSizeXField);
         gridPanel.add(new JLabel("Image Size Multiplier Y : "));
         gridPanel.add(imageSizeYField);
-        gridPanel.add(new JLabel("Variable ID : "));
+        gridPanel.add(new JLabel("Variable Name : "));
         gridPanel.add(variableIDField);
         gridPanel.add(new JLabel("Variable Mode : "));
         gridPanel.add(variableMode);
@@ -153,7 +153,7 @@ public class EditTileWindow extends JDialog implements ActionListener, WindowLis
                 Float.parseFloat(imageSizeYField.getText()))
         );
         tile.setTag(tagField.getText());
-        tile.setVariableID(Integer.valueOf(variableIDField.getText()));
+        tile.setVariableName(variableIDField.getText());
         tile.setVariableMode(variableMode.getSelectedIndex());
         Vector2Int a;
         

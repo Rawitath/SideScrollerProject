@@ -77,6 +77,9 @@ public class SelectorBox extends SpriteEntity implements KeyControlable{
                     break;
                 case 3:
                     controller.placeVariable(mousePos);
+                    controller.moveSelectorOnTop();
+                    isReplaced = false;
+                    setSprite(defaultIcon, true);
                     break;
                 default:
                     break;
@@ -93,7 +96,7 @@ public class SelectorBox extends SpriteEntity implements KeyControlable{
                 case 2:
                     break;
                 case 3:
-                    
+                    controller.removeVariable(mousePos);
                     break;
                 default:
                     break;
