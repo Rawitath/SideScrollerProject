@@ -258,13 +258,17 @@ public class MapBuilder {
                 }
                     
                     if((map.getTiles()[i - 1] != null && map.getTiles()[i - 1][j] != null 
-                            && map.getTiles()[i - 1][j].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())) && //Check Left
+                            && map.getTiles()[i - 1][j].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())
+                            && map.getTiles()[i - 1][j].hasCollider() != false) && //Check Left
                        (map.getTiles()[i + 1] != null && map.getTiles()[i + 1][j] != null
-                            && map.getTiles()[i + 1][j].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())) && //Check Right
+                            && map.getTiles()[i + 1][j].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())
+                            && map.getTiles()[i + 1][j].hasCollider() != false) && //Check Right
                        (map.getTiles()[i][j - 1] != null 
-                            && map.getTiles()[i][j - 1].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())) && //Check Down
-                       map.getTiles()[i][j + 1] != null
-                            && map.getTiles()[i][j + 1].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())){ //Check Up
+                            && map.getTiles()[i][j - 1].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())
+                            && map.getTiles()[i][j - 1].hasCollider() != false) && //Check Down
+                       (map.getTiles()[i][j + 1] != null
+                            && map.getTiles()[i][j + 1].getColliderSize().equals(map.getTiles()[i][j].getColliderSize())
+                            && map.getTiles()[i][j + 1].hasCollider() != false)){ //Check Up
                         continue;
                     }
                     if(checkPullLeft(map, i, j)) continue;

@@ -149,7 +149,7 @@ public class EditorWindow extends ControllableWindow{
             dir = new File(directory +"/"+map.getName()+"/"+"tile");
             dir.mkdir();
         }
-        saveMap(map, dir.getParentFile().getAbsolutePath());
+        saveMap(map, dir.getParentFile().getAbsolutePath(), true);
         
         controller.setMap(map);
         controller.readMap();
@@ -158,8 +158,8 @@ public class EditorWindow extends ControllableWindow{
         controller.updateScreen();
     }
     
-    private void saveMap(MapFile map, String directory){
-        if(controller.getMap() == null){
+    private void saveMap(MapFile map, String directory, boolean isNew){
+        if(controller.getMap() == null && !isNew){
             return;
         }
         controller.writeMap();
@@ -189,7 +189,7 @@ public class EditorWindow extends ControllableWindow{
     }
     
     public void saveMap(){
-        saveMap(controller.getMap(), mapDirectory);
+        saveMap(controller.getMap(), mapDirectory, false);
         notifySave();
     }
     public void updateMap(MapFile map){
