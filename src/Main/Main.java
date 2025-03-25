@@ -19,7 +19,7 @@ import Utilities.FileReader;
 public class Main {
     public static void main(String[] args) {
         //Uncomment to use Debug Mode
-//        DebugManager.useDebug();
+        DebugManager.useDebug();
 //         MapBuilder.setUseEditor(true);
         
         //Scene added here

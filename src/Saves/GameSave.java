@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
  * @author GA_IA
  */
 public class GameSave implements Serializable{
+    private static final long serialVersionUID = 4557871351230625486L;
+    
     public LocalDateTime saveCreated;
     public long playTime;
     public int saveNumber;

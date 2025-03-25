@@ -25,6 +25,8 @@ public class CutsceneOne extends CollidableEntity{
         this.setSprite(new BufferedImage(1,1 ,BufferedImage.TYPE_INT_ARGB));
         this.getCollider().setSolid(false);
         this.bd1 = new BoxDialogueTest1(s);
+        bd1.setActive(false);
+        getScene().addEntity(bd1);
     }
 
     @Override
@@ -44,7 +46,9 @@ public class CutsceneOne extends CollidableEntity{
 
     @Override
     public void onColliderEnter(Collider other) {
-        
+        if(other.getEntity().getName().equals("Lucy")){
+            bd1.setActive(true);
+        }
     }
 
     @Override

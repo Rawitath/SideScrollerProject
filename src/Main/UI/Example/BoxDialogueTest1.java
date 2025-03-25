@@ -12,6 +12,7 @@ import Entities.UI.UIImage;
 import Scenes.Scene;
 import Datas.Vector2;
 import Saves.GameSave;
+import Saves.SaveManager;
 
 public class BoxDialogueTest1 extends UIImage{
     private ScriptDialogueTest1 sd1;
@@ -22,6 +23,8 @@ public class BoxDialogueTest1 extends UIImage{
         sd1 = new ScriptDialogueTest1(s);
         this.addChild(this.sd1);
         this.setPosition(new Vector2(0 , 0));
+        
+        gs = SaveManager.getInstance().getCurrentSave();
     }
 
     @Override
@@ -31,7 +34,9 @@ public class BoxDialogueTest1 extends UIImage{
 
     @Override
     public void update() {
-        gs.cutscene[0] = true;
+        if(!gs.cutscene[0]){
+            gs.cutscene[0] = true;
+        }
     }
 
     @Override
