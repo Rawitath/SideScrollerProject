@@ -17,7 +17,7 @@ import java.awt.event.KeyEvent;
 public class Lucy extends PhysicableEntity implements KeyControlable{
     
     private float speed = 18.0f;
-    private float jumpForce = 50f;
+    private float jumpForce = 27f;
     
     public Lucy(Scene s) {
         super(s);

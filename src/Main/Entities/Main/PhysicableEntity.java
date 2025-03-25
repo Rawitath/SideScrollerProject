@@ -77,27 +77,32 @@ public abstract class PhysicableEntity extends CollidableEntity{
 
     @Override
     public void onColliderEnter(Collider other) {
-        if(other.isSolid()){
+        if(getCollider().isSolid() && other.isSolid()){
             if(!grounded){
                 //Check the bottom is colliding with top of other
                 if((getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBoundScale().getY() / 2
                         <=
-                    other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBoundScale().getY() / 2
-                    
+                    (other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBoundScale().getY() / 2)
                         &&
                         getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBoundScale().getY() / 2
                         >
-                    (other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBoundScale().getY() / 2) - 0.15f)){
-                    onGroundTouch(other);
+                    (other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBoundScale().getY() / 2) - minimumStep)){
+                    if((getPosition().getX() + getCollider().getCenter().getX() - getCollider().getBoundScale().getX() / 2) -
+                        (other.getEntity().getPosition().getX() + other.getCenter().getX() + other.getBoundScale().getX() / 2) < minimumStep * 2 &&
+                            (getPosition().getX() + getCollider().getCenter().getX() + getCollider().getBoundScale().getX() / 2) -
+                        (other.getEntity().getPosition().getX() + other.getCenter().getX() - other.getBoundScale().getX() / 2) > minimumStep * 2){
+                        onGroundTouch(other);
+                    }
+                    
                 }
                 //Check the top is colliding with bottom of other
                 if(getPosition().getY() + getCollider().getCenter().getY() + getCollider().getBoundScale().getY() / 2
                         >=
-                    other.getEntity().getPosition().getY() + other.getCenter().getY() - other.getBoundScale().getY() / 2
+                        other.getEntity().getPosition().getY() + other.getCenter().getY() - other.getBoundScale().getY() / 2
                         &&
                         getPosition().getY() + getCollider().getCenter().getY() + getCollider().getBoundScale().getY() / 2
                         <
-                    (other.getEntity().getPosition().getY() + other.getCenter().getY() - other.getBoundScale().getY() / 2) + 0.15f){
+                    (other.getEntity().getPosition().getY() + other.getCenter().getY() - other.getBoundScale().getY() / 2) + minimumStep){
                     velocity = velocity.multiply(Vector2.right());
                 }
             }
@@ -106,7 +111,21 @@ public abstract class PhysicableEntity extends CollidableEntity{
 
     @Override
     public void onColliderStay(Collider other) {
-        if(other.isSolid()){
+        if(getCollider().isSolid() && other.isSolid()){
+            //For being on multiple tile
+            if(!grounded){
+                //Check the bottom is colliding with top of other
+                if((getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBoundScale().getY() / 2
+                        <=
+                    (other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBoundScale().getY() / 2)
+                        &&
+                        getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBoundScale().getY() / 2
+                        >
+                    (other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBoundScale().getY() / 2) - minimumStep)){
+                    onGroundTouch(other);
+                }
+            }
+            
             //Check if standing on top of solid object
             if(groundObject == other){
                 if (!groundPosition.equals(other.getEntity().getPosition())){
@@ -143,7 +162,7 @@ public abstract class PhysicableEntity extends CollidableEntity{
 
     @Override
     public void onColliderExit(Collider other) {
-        if(other.isSolid()){
+        if(getCollider().isSolid() && other.isSolid()){
             if(groundObject == other){
                 onGroundExit();
             }
