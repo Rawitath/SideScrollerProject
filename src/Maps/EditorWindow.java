@@ -16,6 +16,10 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -227,15 +231,30 @@ public class EditorWindow extends ControllableWindow{
                 MapFile map = (MapFile) os.readObject();
                 File tileDir = new File(mapDirectory+"/"+"tile");
                 File[] imgs = tileDir.listFiles();
+                
                 if(map.getUsedImages() == null){
                     map.setUsedImages(new ArrayList<>());
                 }
+                
                 if(imgs != null){
+                    
+                    Map<Integer, BufferedImage> imgMap = new HashMap<>();
                     for(File img : imgs){
-                        map.getUsedImages().add(ImageIO.read(img));
+                        String n = img.getName().replace(".png", "");
+                        imgMap.put(Integer.valueOf(n), ImageIO.read(img));
+                    }
+                    
+                    List<Integer> sortKeys = new ArrayList<>();
+                    sortKeys.addAll(imgMap.keySet());
+                    Collections.sort(sortKeys);
+                    
+                    for(Integer i : sortKeys){
+                        map.getUsedImages().add(imgMap.get(i));
                     }
                 }
+                
                 return map;
+                
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
