@@ -16,4 +16,5 @@ public class GameSave implements Serializable{
     public long playTime;
     public int saveNumber;
     public int currentChapter;
+    public boolean[] cutscene = {false , false , false , false};
 }
