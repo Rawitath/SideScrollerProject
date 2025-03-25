@@ -7,17 +7,14 @@ package Maps;
 import Datas.Vector2;
 import Datas.Vector2Int;
 import Scenes.Scene;
-import Utilities.FileReader;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 
