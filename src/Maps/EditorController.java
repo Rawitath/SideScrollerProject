@@ -34,7 +34,6 @@ public class EditorController{
     private Map<Integer, Map<Integer, TileDisplayEntity>> tileGrid;
     private Map<Integer, Map<Integer, TileDisplayEntity>> selectedTiles;
     private List<BufferedImage> usedImages;
-    private Map<String, Integer> filePaths;
     private Map<BufferedImage, Integer> imageUsage;
     private List<TileDisplayEntity> editedTile;
     
@@ -56,7 +55,6 @@ public class EditorController{
         imageUsage = new HashMap<>();
         usedImages = new ArrayList<>();
         editedTile = new CopyOnWriteArrayList<>();
-        filePaths = new ConcurrentHashMap<>();
         
         this.editor = new EditorWindow(this);
         this.selector = new SelectorBox(s, this);
@@ -287,10 +285,6 @@ public class EditorController{
                 for(int i = 0; i < usedImages.size() + 1; i++){
                     if(i < usedImages.size()){
                         if(!usedImages.get(i).equals(editor.getTiles()[editor.getSelectedTile()])){
-                            if(filePaths.containsKey(editor.getTileFiles()[editor.getSelectedTile()].getPath())){
-                                tileID = filePaths.get(editor.getTileFiles()[editor.getSelectedTile()].getPath());
-                                break;
-                            }
                             continue;
                         }
                         else{
@@ -302,7 +296,6 @@ public class EditorController{
                     usedImages.add(editor.getTiles()[editor.getSelectedTile()]);
                     imageUsage.put(usedImages.get(i), 0);
                     tileID = usedImages.size() - 1;
-                    filePaths.put(editor.getTileFiles()[editor.getSelectedTile()].getPath(), tileID);
                     break;
                 }
                 //Check if already placed
@@ -324,11 +317,6 @@ public class EditorController{
                 //Placing Tile
                 TileFile tileFile = new TileFile();
                 tileFile.setTileSheet(tileID);
-                for(String s : filePaths.keySet()){
-                    if(filePaths.get(s).equals(tileID)){
-                        tileFile.setOriginalPath(s);
-                    }
-                }
 
                 TileDisplayEntity tile = new TileDisplayEntity(currentScene);
                 tile.setOnEdit(true);
@@ -390,11 +378,6 @@ public class EditorController{
                 if(imageUsage.get(image) <= 0){
                     imageUsage.remove(image);
                     usedImages.remove(imageIndex);
-                    for(String s : filePaths.keySet()){
-                        if(filePaths.get(s).equals(imageIndex)){
-                            filePaths.remove(s);
-                        }
-                    }
                     for(Integer ck : tileGrid.keySet()){
                         for(Integer rk : tileGrid.get(ck).keySet()){
                             TileDisplayEntity t = tileGrid.get(ck).get(rk);
@@ -542,7 +525,6 @@ public class EditorController{
             imageUsage = new HashMap<>();
             usedImages = new ArrayList<>();
             editedTile = new CopyOnWriteArrayList<>();
-            filePaths = new ConcurrentHashMap<>();
             
             if(currentMap.getTiles() != null){
                 usedImages = currentMap.getUsedImages();
@@ -556,9 +538,6 @@ public class EditorController{
                                 if(tile.getTileFile().getTile() != TileFile.VARIABLE){
                                     BufferedImage tileImage = usedImages.get(tile.getTileFile().getTile());
                                     tile.setSprite(tileImage);
-                                    if(!filePaths.containsKey(currentMap.getTiles()[i][j].getOriginalPath())){
-                                        filePaths.put(currentMap.getTiles()[i][j].getOriginalPath(), currentMap.getTiles()[i][j].getTile());
-                                    }
                                     if(!imageUsage.containsKey(tileImage)){
                                         imageUsage.put(tileImage, 0);
                                     }
@@ -642,7 +621,6 @@ public class EditorController{
                 currentMap.setRowOffset(minRow == null ? 0 : minRow);
                 currentMap.setTiles(tileFiles);
                 currentMap.setUsedImages(usedImages);
-                currentMap.setFilePaths(filePaths);
                 
                 for(TileDisplayEntity t : editedTile){
                     removeEdit(t);
