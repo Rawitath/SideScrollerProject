@@ -27,12 +27,15 @@ public class TileFile implements Serializable{
     private Vector2Int anchor;
     private String tag;
     private Integer variableMode;
+    private String originalPath;
     
     public TileFile(){
         variableName = "";
         hasCollider = true;
         isSolid = true;
         tag = "<<Default>>";
+        
+        originalPath = null;
         
         colliderSize = Vector2.one();
         imageSizeMultiplier = Vector2.one();
@@ -119,5 +122,14 @@ public class TileFile implements Serializable{
     public void setVariableMode(Integer variableMode) {
         this.variableMode = variableMode;
     }
+
+    public String getOriginalPath() {
+        return originalPath;
+    }
+
+    public void setOriginalPath(String originalPath) {
+        this.originalPath = originalPath;
+    }
+    
     
 }
