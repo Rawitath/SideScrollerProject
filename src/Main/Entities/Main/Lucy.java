@@ -6,11 +6,8 @@ package Main.Entities.Main;
 
 import Datas.Vector2;
 import Inputs.KeyControlable;
-import Main.GameSystem.Inventory.Inventory;
-import Main.GameSystem.Inventory.InventoryItem;
+import Physics.Collider;
 import Scenes.Scene;
-import Scenes.SceneManager;
-import Utilities.FileReader;
 import java.awt.event.KeyEvent;
 
 /**
@@ -19,9 +16,25 @@ import java.awt.event.KeyEvent;
  */
 public class Lucy extends PhysicableEntity implements KeyControlable{
     
+    private float speed = 18.0f;
+    private float jumpForce = 50f;
+    
     public Lucy(Scene s) {
         super(s);
-        setSprite(FileReader.readImage("res/game/lucypixel.png"));
+        setName("Lucy");
+        setTag("Player");
+    }
+
+    @Override
+    public void start() {
+        super.start();
+        getScene().getCamera().setZoom(60f);
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        getScene().getCamera().setPosition(getPosition().multiply(Vector2.negativeY()));
     }
     
     @Override
@@ -31,7 +44,7 @@ public class Lucy extends PhysicableEntity implements KeyControlable{
                 setVelocity(Vector2.zero());
             }
             else{
-                setVelocity(Vector2.right());
+                setVelocity(Vector2.right(), speed);
                 setFlip(Vector2.negativeX());
             }
         }
@@ -40,13 +53,13 @@ public class Lucy extends PhysicableEntity implements KeyControlable{
                 setVelocity(Vector2.zero());
             }
             else{
-                setVelocity(Vector2.left());
+                setVelocity(Vector2.left(), speed);
                 setFlip(Vector2.one());
             }
         }
         if(keyCode == KeyEvent.VK_SPACE){
             if(isGrounded()){
-                addVelocity(Vector2.up(), -80);
+                addVelocity(Vector2.up(), jumpForce);
             }
         }
     }
@@ -55,11 +68,11 @@ public class Lucy extends PhysicableEntity implements KeyControlable{
     public void onKeyReleased(KeyEvent e, int keyCode) {
         if(getVelocity().getX() == 0){
             if(keyCode == KeyEvent.VK_D){
-                setVelocity(Vector2.left());
+                setVelocity(Vector2.left(), speed);
                 setFlip(Vector2.one());
             }
             else if(keyCode == KeyEvent.VK_A){
-                setVelocity(Vector2.right());
+                setVelocity(Vector2.right(), speed);
                 setFlip(Vector2.negativeX());
             }
             return;
@@ -73,4 +86,10 @@ public class Lucy extends PhysicableEntity implements KeyControlable{
     public void onKeyTyped(KeyEvent e, int keyCode) {
         
     }
+
+    @Override
+    public void onColliderEnter(Collider other) {
+        super.onColliderEnter(other);
+    }
+    
 }

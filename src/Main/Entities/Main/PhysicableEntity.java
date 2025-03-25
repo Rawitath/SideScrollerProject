@@ -24,11 +24,15 @@ public abstract class PhysicableEntity extends CollidableEntity{
     private boolean grounded = false;
     private Collider groundObject = null;
     private Vector2 groundPosition = null;
+    
+    private float minimumStep;
 
     public PhysicableEntity(Scene s) {
         super(s);
         velocity = Vector2.zero();
         lockDirection = Vector2.zero();
+        getCollider().setSolid(true);
+        minimumStep = 0.15f;
     }
 
     @Override
@@ -43,14 +47,14 @@ public abstract class PhysicableEntity extends CollidableEntity{
 
     @Override
     public void fixedUpdate() {
-        setPosition(getPosition().translate(velocity.add(lockDirection.multiply(velocity).negative()), Time.fixedDeltaTime()));
+        setPosition(getPosition().translate(velocity.add(lockDirection.multiply(Math.abs(velocity.getX())).negative()), Time.fixedDeltaTime()));
         if(!grounded){
             addVelocity(Vector2.down(), Constants.gravityValue);
         }
     }
     
     private void onGroundTouch(Collider other){
-        if(velocity.getY() >= 0f){
+        if(velocity.getY() < 0f){
             velocity = velocity.multiply(Vector2.right());
             grounded = true;
             groundObject = other;
@@ -63,29 +67,37 @@ public abstract class PhysicableEntity extends CollidableEntity{
         groundPosition = null;
     }
 
+    public float getMinimumStep() {
+        return minimumStep;
+    }
+
+    public void setMinimumStep(float minimumStep) {
+        this.minimumStep = minimumStep;
+    }
+
     @Override
     public void onColliderEnter(Collider other) {
         if(other.isSolid()){
             if(!grounded){
                 //Check the bottom is colliding with top of other
-                if((getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
+                if((getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBoundScale().getY() / 2
                         <=
-                    other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2
+                    other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBoundScale().getY() / 2
                     
                         &&
-                        getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBound().getY() / 2
+                        getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBoundScale().getY() / 2
                         >
-                    (other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBound().getY() / 2) - 0.15f)){
+                    (other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBoundScale().getY() / 2) - 0.15f)){
                     onGroundTouch(other);
                 }
                 //Check the top is colliding with bottom of other
-                if(getPosition().getY() + getCollider().getCenter().getY() + getCollider().getBound().getY() / 2
+                if(getPosition().getY() + getCollider().getCenter().getY() + getCollider().getBoundScale().getY() / 2
                         >=
-                    other.getEntity().getPosition().getY() + other.getCenter().getY() - other.getBound().getY() / 2
+                    other.getEntity().getPosition().getY() + other.getCenter().getY() - other.getBoundScale().getY() / 2
                         &&
-                        getPosition().getY() + getCollider().getCenter().getY() + getCollider().getBound().getY() / 2
+                        getPosition().getY() + getCollider().getCenter().getY() + getCollider().getBoundScale().getY() / 2
                         <
-                    (other.getEntity().getPosition().getY() + other.getCenter().getY() - other.getBound().getY() / 2) + 0.15f){
+                    (other.getEntity().getPosition().getY() + other.getCenter().getY() - other.getBoundScale().getY() / 2) + 0.15f){
                     velocity = velocity.multiply(Vector2.right());
                 }
             }
@@ -108,7 +120,9 @@ public abstract class PhysicableEntity extends CollidableEntity{
             }
             //Check if approch right or left of other, lockDirection will lock if approch is true
             if(groundObject != other){
-                if(getPosition().getX() + getCollider().getCenter().getX() > other.getEntity().getPosition().getX() + other.getCenter().getX()){
+                if(groundObject == null || Math.abs((other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBoundScale().getY() / 2) - 
+                    (groundObject.getEntity().getPosition().getY() + groundObject.getCenter().getY() + groundObject.getBoundScale().getY() / 2)) > minimumStep){
+                    if(getPosition().getX() + getCollider().getCenter().getX() > other.getEntity().getPosition().getX() + other.getCenter().getX()){
                     lockDirection = Vector2.left();
                     lockObject = other;
                     if(other.getEntity().getTag().equals("Pushable")){
@@ -121,6 +135,7 @@ public abstract class PhysicableEntity extends CollidableEntity{
                     if(other.getEntity().getTag().equals("Pushable")){
                         other.getEntity().setPosition(other.getEntity().getPosition().translate(velocity.multiply(Vector2.right()), Time.fixedDeltaTime()));
                     }
+                }
                 }
            }                      
         }
@@ -137,9 +152,6 @@ public abstract class PhysicableEntity extends CollidableEntity{
                 lockObject = null;
             }
         }
-        if(other.getEntity().getTag().equals("Enemy")){
-            
-        }
     }
 
     public Vector2 getVelocity() {
@@ -148,6 +160,10 @@ public abstract class PhysicableEntity extends CollidableEntity{
     
     public void addVelocity(Vector2 direction, float magnitude) {
         this.velocity = velocity.add(direction.multiply(magnitude));
+    }
+    
+    public void setVelocity(Vector2 direction, float magnitude) {
+        this.velocity = direction.multiply(magnitude);
     }
 
     public void setVelocity(Vector2 velocity) {
