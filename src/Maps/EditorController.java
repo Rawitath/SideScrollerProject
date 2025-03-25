@@ -285,7 +285,7 @@ public class EditorController{
                 
                 int tileID = -1;
                 for(int i = 0; i < usedImages.size() + 1; i++){
-                    if(i < imageUsage.size()){
+                    if(i < usedImages.size()){
                         if(!usedImages.get(i).equals(editor.getTiles()[editor.getSelectedTile()])){
                             continue;
                         }
@@ -297,10 +297,9 @@ public class EditorController{
                     //Not in list
                     usedImages.add(editor.getTiles()[editor.getSelectedTile()]);
                     imageUsage.put(usedImages.get(i), 0);
-                    tileID = imageUsage.size() - 1;
+                    tileID = usedImages.size() - 1;
                     break;
                 }
-
                 //Check if already placed
                 if(tileGrid.containsKey(column) && tileGrid.get(column).containsKey(row)){
                     if(tileGrid.get(column).get(row).getTileFile().getTile() == tileID){
