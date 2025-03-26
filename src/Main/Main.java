@@ -5,6 +5,7 @@
 package Main;
 
 import Debugger.DebugManager;
+import Engine.DisplayManager; // DisplayManager
 import Main.Scenes.Example.ExampleScene;
 import Engine.EngineFrame;
 import Main.ChapterOne.Scenes.ChapterOneScene;
@@ -30,6 +31,9 @@ public class Main {
         SceneManager.addScene(new ExampleScene()); // This Scene will be loaded first
         
         EngineFrame window = new EngineFrame("2D Side Scrollbruh", 1280, 720);
+        DisplayManager display = DisplayManager.getInstance(window);
+        display.setFullScreen(false); // Toggle fullscreen
+        display.setResolution(1280, 720); // Change resolution (only works in windowed mode)
         Time.setEngine(window.getEngine());
         SceneManager.setRenderingPanel(window.getRenderingPanel());
         SceneManager.setInputManager(window.getInputManager());

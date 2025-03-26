@@ -10,6 +10,8 @@ import Engine.Window.WindowEventManager;
 import Inputs.InputManager;
 import Scenes.SceneManager;
 import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 
@@ -21,6 +23,7 @@ public class EngineFrame extends ControllableWindow implements WindowControlable
     private MainEngine engine;
     private RenderingPanel canvas;
     private InputManager inputManager;
+    private DisplayManager displayManager;
     
     public EngineFrame(String title, int width, int height, Color bg){
         super(0);
@@ -41,6 +44,18 @@ public class EngineFrame extends ControllableWindow implements WindowControlable
         canvas.addMouseMotionListener(inputManager);
         canvas.addMouseWheelListener(inputManager);
         canvas.setFocusable(true);
+        
+        displayManager = DisplayManager.getInstance(this);
+
+        // fullscreen toggle
+        canvas.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_F11) { 
+                    displayManager.setFullScreen(!displayManager.isFullScreen());
+                }
+            }
+        });
         
         setVisible(true);
         
