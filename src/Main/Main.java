@@ -21,7 +21,7 @@ public class Main {
     public static void main(String[] args) {
         //Uncomment to use Debug Mode
 //        DebugManager.useDebug();
-        
+
         //Uncomment to use MapEditor
         MapBuilder.setUseEditor(true);
         
