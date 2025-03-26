@@ -18,7 +18,8 @@ public class ScriptDialogueTest1 extends UIText{
 //        try{
             this.setText("Hello World!!");
             this.setLocalPosition(UIText.CENTER);
-            //this.wait(3000);
+//            sleep(3000);
+            this.setText("New message.");
 //        }
 //        catch(InterruptedException ie){
 //            ie.getStackTrace();
