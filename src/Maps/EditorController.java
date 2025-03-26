@@ -382,6 +382,9 @@ public class EditorController{
                         for(Integer rk : tileGrid.get(ck).keySet()){
                             TileDisplayEntity t = tileGrid.get(ck).get(rk);
                             if(t.getTileFile().getTile() >= imageIndex){
+                                if(t.getTileFile().getTile() == TileFile.VARIABLE){
+                                    continue;
+                                }
                                 t.getTileFile().setTileSheet(t.getTileFile().getTile() - 1);
                                 t.setSprite(usedImages.get(t.getTileFile().getTile()));
                             }
@@ -535,6 +538,9 @@ public class EditorController{
                                 TileDisplayEntity tile = new TileDisplayEntity(currentScene);
                                 tile.setOnEdit(true);
                                 tile.setTileFile(currentMap.getTiles()[i][j]);
+                                if(tile.getTileFile().getTile() > 789000){
+                                    tile.getTileFile().setTileSheet(TileFile.VARIABLE);
+                                }
                                 if(tile.getTileFile().getTile() != TileFile.VARIABLE){
                                     BufferedImage tileImage = usedImages.get(tile.getTileFile().getTile());
                                     tile.setSprite(tileImage);
