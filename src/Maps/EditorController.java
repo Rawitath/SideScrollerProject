@@ -538,6 +538,9 @@ public class EditorController{
                                 TileDisplayEntity tile = new TileDisplayEntity(currentScene);
                                 tile.setOnEdit(true);
                                 tile.setTileFile(currentMap.getTiles()[i][j]);
+                                if(tile.getTileFile().getTile() > 789000){
+                                    tile.getTileFile().setTileSheet(TileFile.VARIABLE);
+                                }
                                 if(tile.getTileFile().getTile() != TileFile.VARIABLE){
                                     BufferedImage tileImage = usedImages.get(tile.getTileFile().getTile());
                                     tile.setSprite(tileImage);
