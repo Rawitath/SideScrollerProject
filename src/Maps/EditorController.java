@@ -382,6 +382,9 @@ public class EditorController{
                         for(Integer rk : tileGrid.get(ck).keySet()){
                             TileDisplayEntity t = tileGrid.get(ck).get(rk);
                             if(t.getTileFile().getTile() >= imageIndex){
+                                if(t.getTileFile().getTile() == TileFile.VARIABLE){
+                                    continue;
+                                }
                                 t.getTileFile().setTileSheet(t.getTileFile().getTile() - 1);
                                 t.setSprite(usedImages.get(t.getTileFile().getTile()));
                             }
