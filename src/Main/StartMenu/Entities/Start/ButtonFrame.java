@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.StartMenu.Entities;
+package Main.StartMenu.Entities.Start;
 
 import Datas.Vector2;
 import Entities.UI.UIImage;
+import Main.StartMenu.Entities.Fadable;
 import Scenes.Scene;
 import Utilities.FileReader;
 
@@ -13,7 +14,7 @@ import Utilities.FileReader;
  *
  * @author GA_IA
  */
-public class ButtonFrame extends UIImage implements InButtonGroup{
+public class ButtonFrame extends UIImage implements Fadable{
     
     public ButtonFrame(Scene s) {
         super(s);
@@ -21,9 +22,9 @@ public class ButtonFrame extends UIImage implements InButtonGroup{
         setScale(new Vector2(getImage().getWidth() + 12, getImage().getHeight() + 5));
         setScale(getScale().multiply(1.29f));
         
-        setAnchor(new Vector2(-20, 20));
+        setAnchor(new Vector2(-15, 20));
         
-        setScreenAnchor(TOP_LEFT);
+        //setScreenAnchor(TOP_LEFT);
     }
 
     @Override
@@ -42,12 +43,7 @@ public class ButtonFrame extends UIImage implements InButtonGroup{
     }
 
     @Override
-    public void fadeIn(float alpha) {
-        setAlpha(alpha);
-    }
-
-    @Override
-    public void fadeOut(float alpha) {
+    public void fade(float alpha) {
         setAlpha(alpha);
     }
     

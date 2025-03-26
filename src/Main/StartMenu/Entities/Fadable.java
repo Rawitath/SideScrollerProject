@@ -8,7 +8,6 @@ package Main.StartMenu.Entities;
  *
  * @author GA_IA
  */
-public interface InButtonGroup {
-    public abstract void fadeIn(float alpha);
-    public abstract void fadeOut(float alpha);
+public interface Fadable {
+    public abstract void fade(float alpha);
 }

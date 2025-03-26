@@ -2,11 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.StartMenu.Entities;
+package Main.StartMenu.Entities.Start;
 
 import Datas.Vector2;
 import Entities.UI.UIButton;
 import Entities.UI.UIText;
+import Main.StartMenu.Entities.Fadable;
+import Main.StartMenu.Entities.MenuController;
+import Main.StartMenu.Entities.TextButton;
 import Scenes.Scene;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -15,7 +18,7 @@ import java.awt.image.BufferedImage;
  *
  * @author GA_IA
  */
-public class MenuButton extends UIButton implements InButtonGroup{
+public class MenuButton extends UIButton implements Fadable{
 
     protected UIText buttonText;
     private MenuController controller;
@@ -28,7 +31,7 @@ public class MenuButton extends UIButton implements InButtonGroup{
         setHoverImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
         setPressedImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
         setScale(new Vector2(300, 100));
-        setPosition(new Vector2(305, 0));
+//        setPosition(new Vector2(305, 0));
         
         buttonText = new TextButton(s);
         addChild(buttonText);
@@ -52,7 +55,7 @@ public class MenuButton extends UIButton implements InButtonGroup{
 
     @Override
     public void onButtonPressed() {
-        controller.getGroup().setIsOpaque(false);
+        
     }
 
     @Override
@@ -83,15 +86,9 @@ public class MenuButton extends UIButton implements InButtonGroup{
     }
 
     @Override
-    public void fadeIn(float alpha) {
+    public void fade(float alpha) {
         setAlpha(alpha);
         buttonText.setColor(new Color(buttonText.getColor().getRed() / 255f, buttonText.getColor().getGreen() / 255f, buttonText.getColor().getBlue() / 255f, alpha));
     }
 
-    @Override
-    public void fadeOut(float alpha) {
-        setAlpha(alpha);
-        buttonText.setColor(new Color(buttonText.getColor().getRed() / 255f, buttonText.getColor().getGreen() / 255f, buttonText.getColor().getBlue() / 255f, alpha));
-    }
-    
 }

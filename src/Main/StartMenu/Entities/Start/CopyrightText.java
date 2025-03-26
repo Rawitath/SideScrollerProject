@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.StartMenu.Entities;
+package Main.StartMenu.Entities.Start;
 
 import Datas.Vector2;
 import Entities.UI.UIText;
+
 import Scenes.Scene;
 import java.awt.Color;
 import java.awt.Font;
@@ -14,7 +15,7 @@ import java.awt.Font;
  *
  * @author GA_IA
  */
-public class CopyrightText extends UIText implements InButtonGroup{
+public class CopyrightText extends UIText{
 
     public CopyrightText(Scene s) {
         super(s);
@@ -42,14 +43,14 @@ public class CopyrightText extends UIText implements InButtonGroup{
 
     }
 
-    @Override
-    public void fadeIn(float alpha) {
-        setColor(new Color(getColor().getRed() / 255f, getColor().getGreen() / 255f, getColor().getBlue() / 255f, alpha));
-    }
-
-    @Override
-    public void fadeOut(float alpha) {
-        setColor(new Color(getColor().getRed() / 255f, getColor().getGreen() / 255f, getColor().getBlue() / 255f, alpha));
-    }
-    
+//    @Override
+//    public void fadeIn(float alpha) {
+//        setColor(new Color(getColor().getRed() / 255f, getColor().getGreen() / 255f, getColor().getBlue() / 255f, alpha));
+//    }
+//
+//    @Override
+//    public void fadeOut(float alpha) {
+//        setColor(new Color(getColor().getRed() / 255f, getColor().getGreen() / 255f, getColor().getBlue() / 255f, alpha));
+//    }
+//    
 }

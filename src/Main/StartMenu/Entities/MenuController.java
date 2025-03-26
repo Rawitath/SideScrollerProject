@@ -4,9 +4,11 @@
  */
 package Main.StartMenu.Entities;
 
+import Main.StartMenu.Entities.Start.MenuButton;
 import Entities.UI.UIEntity;
 import Entities.UI.UIImage;
 import Inputs.KeyControlable;
+import Main.StartMenu.Entities.Option.OptionController;
 import Scenes.Scene;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -21,19 +23,39 @@ public class MenuController extends UIEntity implements KeyControlable{
     private List<MenuButton> allButtons;
     private UIImage buttonFrame;
     private int selectedButton;
-    private ButtonGroup group;
+    private OptionController option;
+    private int currentPage;
     
     public MenuController(Scene s) {
         super(s);
         allButtons = new ArrayList<>();
+        currentPage = 0;
     }
 
-    public ButtonGroup getGroup() {
-        return group;
+    public void setOption(OptionController option) {
+        this.option = option;
+    }
+    
+    public void goToPage(int num){
+        switch(num){
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+        }
+        currentPage = num;
     }
 
-    public void setGroup(ButtonGroup group) {
-        this.group = group;
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
     }
     
     public void setButtonFrame(UIImage buttonFrame) {
@@ -59,9 +81,7 @@ public class MenuController extends UIEntity implements KeyControlable{
 
     @Override
     public void update() {
-        if(!allButtons.isEmpty()){
-            buttonFrame.setPosition(allButtons.get(selectedButton).getPosition());
-        }
+        
     }
 
     public int getSelectedButton() {
@@ -89,6 +109,9 @@ public class MenuController extends UIEntity implements KeyControlable{
         }
         if(keyCode == KeyEvent.VK_S){
             selectedButton = (selectedButton + 1) % allButtons.size();
+        }
+        if(keyCode == KeyEvent.VK_SPACE){
+            allButtons.get(selectedButton).onButtonPressed();
         }
     }
 
