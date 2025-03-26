@@ -27,6 +27,13 @@ public abstract class UIText extends UIEntity{
     private int size;
     private Color color;
     
+    public static final float LEFT = 0f;
+    public static final float CENTER = 0.5f;
+    public static final float RIGHT = 1f;
+    
+    private float horizontalAlignment;
+    private float verticalAlignment;
+    
     public UIText(Scene s) {
         super(s);
         text = "Lorem Ipsum";
@@ -34,8 +41,17 @@ public abstract class UIText extends UIEntity{
         size = 14;
         font = new Font("Arial", style, size);
         color = Color.BLACK;
+        horizontalAlignment = LEFT;
     }
 
+    public float getHorizontalAlignment() {
+        return horizontalAlignment;
+    }
+
+    public void setHorizontalAlignment(float horizontalAlignment) {
+        this.horizontalAlignment = horizontalAlignment;
+    }
+    
     public String getText() {
         return text;
     }
@@ -96,7 +112,7 @@ public abstract class UIText extends UIEntity{
         g.setColor(color);
         Vector2 pos = getPosition().add(getScreenAnchor()).multiply(Vector2.negativeY())
                 .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()))
-                .add(posOffset).add(new Vector2(-g.getFontMetrics().stringWidth(text) / 2, g.getFontMetrics().getHeight() / 3.25f));
+                .add(posOffset).add(new Vector2(-g.getFontMetrics().stringWidth(text) * horizontalAlignment, g.getFontMetrics().getHeight() / 3.25f));
         g.drawString(text, Math.round(pos.getX()),Math.round(pos.getY()) );
     }
     

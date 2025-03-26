@@ -8,10 +8,12 @@ import Debugger.DebugManager;
 import Main.Scenes.Example.ExampleScene;
 import Engine.EngineFrame;
 import Main.ChapterOne.Scenes.ChapterOneScene;
+import Main.StartMenu.Scene.StartMenuScene;
 import Maps.MapBuilder;
 import Physics.Time;
 import Scenes.SceneManager;
 import Utilities.FileReader;
+import java.awt.Color;
 
 /**
  *
@@ -23,13 +25,14 @@ public class Main {
 //        DebugManager.useDebug();
         
         //Uncomment to use MapEditor
-        MapBuilder.setUseEditor(true);
+//        MapBuilder.setUseEditor(true);
         
         //Scene added here
-        SceneManager.addScene(new ChapterOneScene()); // This Scene will be loaded first
-        SceneManager.addScene(new ExampleScene()); // This Scene will be loaded first
+        SceneManager.addScene(new StartMenuScene()); // This Scene will be loaded first
+        SceneManager.addScene(new ChapterOneScene()); // This Scene will be loaded second
+        SceneManager.addScene(new ExampleScene()); // This Scene will be loaded third
         
-        EngineFrame window = new EngineFrame("2D Side Scrollbruh", 1280, 720);
+        EngineFrame window = new EngineFrame("2D Side Scrollbruh", 1280, 720, Color.BLACK);
         Time.setEngine(window.getEngine());
         SceneManager.setRenderingPanel(window.getRenderingPanel());
         SceneManager.setInputManager(window.getInputManager());
