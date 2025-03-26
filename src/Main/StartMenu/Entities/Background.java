@@ -6,6 +6,7 @@ package Main.StartMenu.Entities;
 
 import Datas.Vector2;
 import Entities.UI.UIImage;
+import Physics.Time;
 import Scenes.Scene;
 import Utilities.FileReader;
 
@@ -19,6 +20,7 @@ public class Background extends UIImage{
         super(s);
         setImage(FileReader.readImage("res/game/startmenu/BGExtended.png"));
         setScale(new Vector2(1920, 1080));
+        setAlpha(0.0f);
     }
 
     @Override
@@ -28,8 +30,16 @@ public class Background extends UIImage{
 
     @Override
     public void update() {
+        if(getAlpha() < 1){
+            if(getAlpha() + Time.deltaTime() < 1){
+            setAlpha(getAlpha() + 0.8f * Time.deltaTime());
+            }
+            else{
 
-    }
+                setAlpha(1f);
+            }
+        }
+    }   
 
     @Override
     public void fixedUpdate() {

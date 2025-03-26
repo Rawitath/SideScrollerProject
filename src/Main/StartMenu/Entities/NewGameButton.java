@@ -13,10 +13,10 @@ import Scenes.Scene;
  */
 public class NewGameButton extends MenuButton {
     
-    public NewGameButton(Scene s) {
-        super(s);
+    public NewGameButton(Scene s, MenuController controller) {
+        super(s, controller);
         setScreenAnchor(TOP_LEFT);
-        setPosition(new Vector2(180, -480));
+        setPosition(new Vector2(getPosition().getX(), -480));
         buttonText.setText("NEW GAME");
     }
     

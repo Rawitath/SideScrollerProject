@@ -13,10 +13,10 @@ import Scenes.Scene;
  */
 public class OptionButton extends MenuButton{
     
-    public OptionButton(Scene s) {
-        super(s);
+    public OptionButton(Scene s, MenuController controller) {
+        super(s, controller);
         setScreenAnchor(TOP_LEFT);
-        setPosition(new Vector2(180, -780));
+        setPosition(new Vector2(getPosition().getX(), -780));
         buttonText.setText("OPTION");
     }
     

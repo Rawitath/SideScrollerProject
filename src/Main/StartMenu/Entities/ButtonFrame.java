@@ -13,14 +13,17 @@ import Utilities.FileReader;
  *
  * @author GA_IA
  */
-public class Logo extends UIImage implements InButtonGroup{
-
-    public Logo(Scene s) {
+public class ButtonFrame extends UIImage implements InButtonGroup{
+    
+    public ButtonFrame(Scene s) {
         super(s);
-        setImage(FileReader.readImage("res/game/startmenu/Logo.png"));
-        setScale(new Vector2(getImage().getWidth(), getImage().getHeight()));
+        setImage(FileReader.readImage("res/game/startmenu/Button_Border.png"));
+        setScale(new Vector2(getImage().getWidth() + 12, getImage().getHeight() + 5));
+        setScale(getScale().multiply(1.29f));
+        
+        setAnchor(new Vector2(-20, 20));
+        
         setScreenAnchor(TOP_LEFT);
-        setPosition(new Vector2(400, -150));
     }
 
     @Override

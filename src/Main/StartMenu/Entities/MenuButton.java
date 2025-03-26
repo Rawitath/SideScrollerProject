@@ -8,28 +8,43 @@ import Datas.Vector2;
 import Entities.UI.UIButton;
 import Entities.UI.UIText;
 import Scenes.Scene;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 /**
  *
  * @author GA_IA
  */
-public class MenuButton extends UIButton{
+public class MenuButton extends UIButton implements InButtonGroup{
 
     protected UIText buttonText;
-    public MenuButton(Scene s) {
+    private MenuController controller;
+    private int buttonIndex;
+    
+    public MenuButton(Scene s, MenuController controller) {
         super(s);
+        this.controller = controller;
+        setReleasedImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+        setHoverImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+        setPressedImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+        setScale(new Vector2(300, 100));
+        setPosition(new Vector2(305, 0));
+        
         buttonText = new TextButton(s);
         addChild(buttonText);
-        setReleasedImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
         
         buttonText.setSize(82);
+        buttonText.setHorizontalAlignment(UIText.LEFT);
         buttonText.setScreenAnchor(LEFT);
-        buttonText.setLocalPosition(new Vector2(0, 0));
         
-        setScale(new Vector2(200, 100));
+        controller.addButton(this);
+        buttonIndex = controller.getAllButtons().size() - 1;
     }
 
+    public MenuController getController() {
+        return controller;
+    }
+    
     @Override
     public void onButtonClicked() {
         
@@ -37,7 +52,7 @@ public class MenuButton extends UIButton{
 
     @Override
     public void onButtonPressed() {
-
+        controller.getGroup().setIsOpaque(false);
     }
 
     @Override
@@ -52,12 +67,31 @@ public class MenuButton extends UIButton{
 
     @Override
     public void update() {
-
+        
     }
 
     @Override
     public void fixedUpdate() {
 
+    }
+
+    @Override
+    public void onButtonHovered() {
+        if(controller.getSelectedButton() != buttonIndex){
+            controller.setSelectedButton(buttonIndex);
+        }
+    }
+
+    @Override
+    public void fadeIn(float alpha) {
+        setAlpha(alpha);
+        buttonText.setColor(new Color(buttonText.getColor().getRed() / 255f, buttonText.getColor().getGreen() / 255f, buttonText.getColor().getBlue() / 255f, alpha));
+    }
+
+    @Override
+    public void fadeOut(float alpha) {
+        setAlpha(alpha);
+        buttonText.setColor(new Color(buttonText.getColor().getRed() / 255f, buttonText.getColor().getGreen() / 255f, buttonText.getColor().getBlue() / 255f, alpha));
     }
     
 }

@@ -13,10 +13,10 @@ import Scenes.Scene;
  */
 public class StartButton extends MenuButton {
     
-    public StartButton(Scene s) {
-        super(s);
+    public StartButton(Scene s, MenuController controller) {
+        super(s, controller);
         setScreenAnchor(TOP_LEFT);
-        setPosition(new Vector2(180, -330));
+        setPosition(new Vector2(getPosition().getX(), -330));
         buttonText.setText("START");
     }
     
