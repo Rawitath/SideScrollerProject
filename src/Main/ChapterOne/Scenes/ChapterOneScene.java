@@ -16,7 +16,7 @@ public class ChapterOneScene extends Scene{
     public void load() {
         getCamera().setZoom(20f);
         MapBuilder.useMapBuilder(this);
-        MapBuilder.loadMap("map/MyMap");
+        MapBuilder.loadMap("map/Chapter2");
     }
     
 }
