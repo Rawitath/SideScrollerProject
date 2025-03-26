@@ -15,10 +15,14 @@ import java.awt.image.BufferedImage;
 import Entities.CollidableEntity;
 import Physics.Collider;
 import Main.UI.Example.BoxDialogueTest1;
+import Saves.SaveManager;
+import Saves.GameSave;
+import Saves.SaveSerializer;
 import Utilities.FileReader;
 
 public class CutsceneOne extends CollidableEntity{
     private BoxDialogueTest1 bd1;
+    private GameSave gs;
     
     public CutsceneOne(Scene s){
         super(s);
@@ -27,6 +31,8 @@ public class CutsceneOne extends CollidableEntity{
         this.bd1 = new BoxDialogueTest1(s);
         bd1.setActive(false);
         getScene().addEntity(bd1);
+        
+        gs = SaveManager.getInstance().getCurrentSave();
     }
 
     @Override
@@ -48,6 +54,8 @@ public class CutsceneOne extends CollidableEntity{
     public void onColliderEnter(Collider other) {
         if(other.getEntity().getName().equals("Lucy")){
             bd1.setActive(true);
+//            this.gs.cutscene[0] = true;
+            SaveSerializer.save(this.gs);
         }
     }
 
@@ -58,7 +66,9 @@ public class CutsceneOne extends CollidableEntity{
 
     @Override
     public void onColliderExit(Collider other) {
-        
+        if (other.getEntity().getName().equals("Lucy")){
+            this.bd1.setActive(false);
+        }
     }
     
 }
