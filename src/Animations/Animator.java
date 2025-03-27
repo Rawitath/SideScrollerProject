@@ -37,9 +37,9 @@ public class Animator {
 //    }
     public void setAnimation(Animation animation, boolean resetAnimation) {
         if(this.animation == null || (this.animation.getClass() != animation.getClass() || resetAnimation)){
+            time = 0f;
+            frame = 0;
             this.animation = animation;
-        time = 0f;
-        frame = 0;
         }
     }
     public void setAnimation(Animation animation) {

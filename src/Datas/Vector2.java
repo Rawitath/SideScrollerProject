@@ -4,11 +4,15 @@
  */
 package Datas;
 
+import java.io.Serializable;
+
 /**
  *
  * @author GA_IA
  */
-public class Vector2 {
+public class Vector2 implements Serializable{
+    private static final long serialVersionUID = 34077758518434542L;
+    
     private float x, y;
     public Vector2(float x, float y){
         this.x = x;

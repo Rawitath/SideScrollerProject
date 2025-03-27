@@ -8,6 +8,7 @@ import Datas.Vector2;
 import Debugger.DebugManager;
 import Inputs.KeyControlable;
 import Inputs.MouseControlable;
+import Maps.MapBuilder;
 import Scenes.Scene;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
@@ -57,6 +58,13 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
         return output.add(zoom);
     }
     
+    public Vector2 screenToWorldSpace(Vector2 vec){
+        return vec
+                .add(getScene().getCamera().getPositionOffset().negative())
+                .multiply(getScene().getCamera().getZoom() != 0 ? 1 / getScene().getCamera().getZoom() : 1f)
+                .multiply(Vector2.negativeY()
+                );
+    }
     
     @Override
     public void start() {
@@ -80,7 +88,7 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
 
     @Override
     public void onKeyPressed(KeyEvent e, int keyCode) {
-        if(DebugManager.isDebug()){
+        if(DebugManager.isDebug() || MapBuilder.isUseEditor()){
             if(keyCode == KeyEvent.VK_DOWN){
             setPosition(getPosition().translate(Vector2.up(), debugSpeed));
             }
@@ -118,11 +126,11 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
                 if(debugSpeed > 0.1f){
                     debugSpeed -= 0.1f;
                 }
-                System.out.println(debugSpeed);
+//                System.out.println(debugSpeed);
             }
             if(keyCode == 222){
                 debugSpeed += 0.1f;
-                System.out.println(debugSpeed);
+//                System.out.println(debugSpeed);
             }
         }   
     }
@@ -164,7 +172,8 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
 
     @Override
     public void onMouseWheelMoved(MouseWheelEvent e) {
-        if (this.zoom > 699f){
+        if(DebugManager.isDebug() || MapBuilder.isUseEditor()){
+            if (this.zoom > 699f){
             this.zoom = 700f;
 //            System.out.println("You can't zoom in anymore.");
         }
@@ -177,10 +186,18 @@ public class Camera extends Entity implements KeyControlable, MouseControlable{
 //        }
         if(this.zoom > 0.1f || e.getWheelRotation() < 0){
             zoom -= e.getWheelRotation();
-            debugSpeed += e.getWheelRotation() * 0.7f;
+            debugSpeed += e.getWheelRotation() * 0.1f;
+            if(debugSpeed < 0){
+                debugSpeed = 0.5f;
+            }
+            if(debugSpeed > 25){
+                debugSpeed = 25f;
+            }
         }
         else{
             this.zoom = 0.1f;
         }
+        }
+        
     }
 }
