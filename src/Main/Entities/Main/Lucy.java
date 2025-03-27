@@ -11,6 +11,7 @@ import Main.Entities.Main.Animation.LucyBreath;
 import Main.Entities.Main.Animation.LucyFall;
 import Main.Entities.Main.Animation.LucyJump;
 import Main.Entities.Main.Animation.LucyRun;
+import Main.GameSystem.Cutscene.CutsceneControllable;
 import Physics.Collider;
 import Physics.Time;
 import Scenes.Scene;
@@ -20,15 +21,17 @@ import java.awt.event.KeyEvent;
  *
  * @author GA_IA
  */
-public class Lucy extends PhysicableEntity implements KeyControlable{
+public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneControllable{
     
-    private float speed = 9.0f;
+    private float speed = 7.5f;
     private float jumpForce = 16f;
     
     private Animator animator;
     
     private int maxJump = 2;
     private int currentJump = 0;
+    
+    private boolean breakControl;
     
     public Lucy(Scene s) {
         super(s);
@@ -37,13 +40,14 @@ public class Lucy extends PhysicableEntity implements KeyControlable{
         
         animator = new Animator();
         animator.setAnimation(new LucyBreath());
+        
+        breakControl = false;
     }
 
     @Override
     public void start() {
         super.start();
         setPosition(getPosition().add(new Vector2(0, 1f)));
-        getScene().getCamera().setZoom(60f);
         setAnchor(new Vector2(0, 0.18f));
         setSpriteSize(getSpriteSize().multiply(1.65f));
         
@@ -54,7 +58,6 @@ public class Lucy extends PhysicableEntity implements KeyControlable{
     @Override
     public void update() {
         super.update();
-        getScene().getCamera().setPosition(getPosition().multiply(Vector2.negativeY()));
         
         if(!isGrounded()){
             if(getVelocity().getY() > 0){
@@ -75,50 +78,66 @@ public class Lucy extends PhysicableEntity implements KeyControlable{
 
         setSprite(animator.getFrame(Time.deltaTime()), true);
     }
+
+    public boolean isBreakControl() {
+        return breakControl;
+    }
+
+    public void setBreakControl(boolean breakControl) {
+        if(breakControl == this.breakControl){
+            return;
+        }
+        this.breakControl = breakControl;
+        setVelocity(new Vector2(0, getVelocity().getY()));
+    }
     
     @Override
     public void onKeyPressed(KeyEvent e, int keyCode) {
-        if(keyCode == KeyEvent.VK_D){
-            if(getVelocity().getX() < 0){
-                setVelocity(new Vector2(0, getVelocity().getY()));
+        if(!breakControl){
+            if(keyCode == KeyEvent.VK_D){
+                if(getVelocity().getX() < 0){
+                    setVelocity(new Vector2(0, getVelocity().getY()));
+                }
+                else{
+                    setVelocity(new Vector2(speed, getVelocity().getY()));
+                    setFlip(Vector2.negativeX());
+                }
             }
-            else{
-                setVelocity(new Vector2(speed, getVelocity().getY()));
-                setFlip(Vector2.negativeX());
+            if(keyCode == KeyEvent.VK_A){
+                if(getVelocity().getX() > 0){
+                    setVelocity(new Vector2(0, getVelocity().getY()));
+                }
+                else{
+                    setVelocity(new Vector2(-speed, getVelocity().getY()));
+                    setFlip(Vector2.one());
+                }
             }
-        }
-        if(keyCode == KeyEvent.VK_A){
-            if(getVelocity().getX() > 0){
-                setVelocity(new Vector2(0, getVelocity().getY()));
-            }
-            else{
-                setVelocity(new Vector2(-speed, getVelocity().getY()));
-                setFlip(Vector2.one());
-            }
-        }
-        if(keyCode == KeyEvent.VK_SPACE){
-            if(currentJump < maxJump){
-                setVelocity(new Vector2(getVelocity().getX(), jumpForce));
-                currentJump++;
+            if(keyCode == KeyEvent.VK_SPACE){
+                if(currentJump < maxJump){
+                    setVelocity(new Vector2(getVelocity().getX(), jumpForce));
+                    currentJump++;
+                }
             }
         }
     }
     
     @Override
     public void onKeyReleased(KeyEvent e, int keyCode) {
-        if(getVelocity().getX() == 0){
-            if(keyCode == KeyEvent.VK_D){
-                setVelocity(new Vector2(-speed, getVelocity().getY()));
-                setFlip(Vector2.one());
+        if(!breakControl){
+            if(getVelocity().getX() == 0){
+                if(keyCode == KeyEvent.VK_D){
+                    setVelocity(new Vector2(-speed, getVelocity().getY()));
+                    setFlip(Vector2.one());
+                }
+                else if(keyCode == KeyEvent.VK_A){
+                    setVelocity(new Vector2(speed, getVelocity().getY()));
+                    setFlip(Vector2.negativeX());
+                }
+                return;
             }
-            else if(keyCode == KeyEvent.VK_A){
-                setVelocity(new Vector2(speed, getVelocity().getY()));
-                setFlip(Vector2.negativeX());
+            if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_A){
+                setVelocity(new Vector2(0, getVelocity().getY()));
             }
-            return;
-        }
-        if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_A){
-            setVelocity(new Vector2(0, getVelocity().getY()));
         }
     }
 
@@ -140,6 +159,36 @@ public class Lucy extends PhysicableEntity implements KeyControlable{
     @Override
     public void onGroundExit(Collider ground) {
         
+    }
+    
+    @Override
+    public void moveLeft() {
+        setVelocity(new Vector2(-speed, getVelocity().getY()));
+    }
+
+    @Override
+    public void moveRight() {
+        setVelocity(new Vector2(speed, getVelocity().getY()));
+    }
+
+    @Override
+    public void moveUp() {
+
+    }
+
+    @Override
+    public void moveDown() {
+        
+    }
+
+    @Override
+    public void stop() {
+        setVelocity(new Vector2(0, getVelocity().getY()));
+    }
+
+    @Override
+    public Vector2 currentPosition() {
+        return getPosition();
     }
     
 }

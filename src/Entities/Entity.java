@@ -76,6 +76,9 @@ public abstract class Entity implements Debuggable, MouseControlable{
         
     }
     
+    public void onSetActive(){}
+    public void onSetInactive(){}
+    
     public String getTag() {
         return tag;
     }
@@ -101,11 +104,29 @@ public abstract class Entity implements Debuggable, MouseControlable{
     }
     
     public boolean isActive() {
-        return active;
+        if(parent == null){
+            return active;
+        }
+        return active && parent.isActive();
     }
 
     public void setActive(boolean active) {
+        if(active == this.active){
+            return;
+        }
         this.active = active;
+        if(active){
+            onSetActive();
+            for(Entity e : childs){
+                e.onSetActive();
+            }
+        }
+        else{
+            onSetInactive();
+            for(Entity e : childs){
+                e.onSetInactive();
+            }
+        }
     }
     
     public int getId() {

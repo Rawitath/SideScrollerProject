@@ -4,8 +4,13 @@
  */
 package Main.ChapterFive.Scenes;
 
+import Datas.Vector2;
+import Main.ChapterFive.Cutscenes.BossCutscene;
+import Main.ChapterFive.Entities.BossWall;
+import Main.ChapterFive.Entities.ChapterFiveManager;
 import Main.ChapterFive.Entities.SheepBoss;
 import Main.Entities.Main.Lucy;
+import Main.GameSystem.Cutscene.CutsceneTrigger;
 import Maps.MapBuilder;
 import Scenes.Scene;
 
@@ -15,13 +20,44 @@ import Scenes.Scene;
  */
 public class ChapterFiveScene extends Scene {
 
+    private BossCutscene bossCutscene;
+    private Lucy lucy;
+    private SheepBoss sheep;
+    private CutsceneTrigger trigger;
+    private ChapterFiveManager manager;
+    
+    private BossWall bosswall;
+    
     @Override
     public void load() {
         getCamera().setZoom(20f);
+        
+        lucy = new Lucy(this);
+        manager = new ChapterFiveManager(this, lucy);
+        addEntity(manager);
+        
+        bossCutscene = new BossCutscene(this);
+        sheep = new SheepBoss(this);
+        bossCutscene.addControlledEntities("Lucy", lucy);
+        bossCutscene.addControlledEntities("Boss", sheep);
+        
+        trigger = new CutsceneTrigger(this, bossCutscene);
+        trigger.setTriggerTag("Player");
+        trigger.getCollider().setBound(new Vector2(1, 100));
+        
+        bosswall = new BossWall(this);
+        
+        addEntity(bossCutscene);
+        
         MapBuilder.useMapBuilder(this);
-        MapBuilder.addVariable("debugBoss", new Lucy(this));
-        MapBuilder.addVariable("last boss", new SheepBoss(this));
+        MapBuilder.addVariable("debugBoss", lucy);
+        MapBuilder.addVariable("last boss", sheep);
+        MapBuilder.addVariable("BossCutsceneTrigger", trigger);
+        MapBuilder.addVariable("Bosswall", bosswall);
         MapBuilder.loadMap("map/Chapter5");
+        
+        
+        manager.setCutscene(bossCutscene);
     }
     
 }
