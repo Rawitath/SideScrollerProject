@@ -53,15 +53,20 @@ public abstract class PhysicableEntity extends CollidableEntity{
         }
     }
     
-    private void onGroundTouch(Collider other){
+    public abstract void onGroundTouch(Collider ground);
+    public abstract void onGroundExit(Collider ground);
+    
+    private void checkGroundTouch(Collider other){
         if(velocity.getY() < 0f){
             velocity = velocity.multiply(Vector2.right());
             grounded = true;
             groundObject = other;
             groundPosition = other.getEntity().getPosition();
+            onGroundTouch(other);
         }
     }
-    private void onGroundExit(){
+    private void checkGroundExit(){
+        onGroundExit(groundObject);
         groundObject = null;
         grounded = false;
         groundPosition = null;
@@ -91,7 +96,7 @@ public abstract class PhysicableEntity extends CollidableEntity{
                         (other.getEntity().getPosition().getX() + other.getCenter().getX() + other.getBoundScale().getX() / 2) < minimumStep * 2 &&
                             (getPosition().getX() + getCollider().getCenter().getX() + getCollider().getBoundScale().getX() / 2) -
                         (other.getEntity().getPosition().getX() + other.getCenter().getX() - other.getBoundScale().getX() / 2) > minimumStep * 2){
-                        onGroundTouch(other);
+                        checkGroundTouch(other);
                     }
                     
                 }
@@ -122,7 +127,7 @@ public abstract class PhysicableEntity extends CollidableEntity{
                         getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBoundScale().getY() / 2
                         >
                     (other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBoundScale().getY() / 2) - minimumStep)){
-                    onGroundTouch(other);
+                    checkGroundTouch(other);
                 }
             }
             
@@ -138,23 +143,24 @@ public abstract class PhysicableEntity extends CollidableEntity{
                 groundPosition = other.getEntity().getPosition();
             }
             //Check if approch right or left of other, lockDirection will lock if approch is true
-            if(groundObject != other){
+            if(groundObject != other && lockObject != other){
                 if(groundObject == null || Math.abs((other.getEntity().getPosition().getY() + other.getCenter().getY() + other.getBoundScale().getY() / 2) - 
                     (groundObject.getEntity().getPosition().getY() + groundObject.getCenter().getY() + groundObject.getBoundScale().getY() / 2)) > minimumStep){
                     if(getPosition().getX() + getCollider().getCenter().getX() > other.getEntity().getPosition().getX() + other.getCenter().getX()){
-                    lockDirection = Vector2.left();
-                    lockObject = other;
-                    if(other.getEntity().getTag().equals("Pushable")){
-                        other.getEntity().setPosition(other.getEntity().getPosition().translate(velocity.multiply(Vector2.right()), Time.fixedDeltaTime()));
+                        lockDirection = Vector2.left();
+                        lockObject = other;
+
+                        if(other.getEntity().getTag().equals("Pushable")){
+                            other.getEntity().setPosition(other.getEntity().getPosition().translate(velocity.multiply(Vector2.right()), Time.fixedDeltaTime()));
+                        }
                     }
-                }
-                else if(getPosition().getX() + getCollider().getCenter().getX() < other.getEntity().getPosition().getX() + other.getCenter().getX()){
-                    lockDirection = Vector2.right();
-                    lockObject = other;
-                    if(other.getEntity().getTag().equals("Pushable")){
-                        other.getEntity().setPosition(other.getEntity().getPosition().translate(velocity.multiply(Vector2.right()), Time.fixedDeltaTime()));
+                    else if(getPosition().getX() + getCollider().getCenter().getX() < other.getEntity().getPosition().getX() + other.getCenter().getX()){
+                        lockDirection = Vector2.right();
+                        lockObject = other;
+                        if(other.getEntity().getTag().equals("Pushable")){
+                            other.getEntity().setPosition(other.getEntity().getPosition().translate(velocity.multiply(Vector2.right()), Time.fixedDeltaTime()));
+                        }
                     }
-                }
                 }
            }                      
         }
@@ -164,7 +170,7 @@ public abstract class PhysicableEntity extends CollidableEntity{
     public void onColliderExit(Collider other) {
         if(getCollider().isSolid() && other.isSolid()){
             if(groundObject == other){
-                onGroundExit();
+                checkGroundExit();
             }
             if(lockObject == other){
                 lockDirection = Vector2.zero();
