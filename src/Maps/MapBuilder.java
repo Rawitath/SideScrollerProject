@@ -229,6 +229,7 @@ public class MapBuilder {
                                    }
                                 }
                             }
+                            
                             TileDisplayEntity tile = new TileDisplayEntity(currentScene);
                             tile.setTileFile(map.getTiles()[i][j]);
                             BufferedImage tileImage = map.getUsedImages().get(tile.getTileFile().getTile());
