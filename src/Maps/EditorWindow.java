@@ -16,6 +16,11 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -28,6 +33,7 @@ public class EditorWindow extends ControllableWindow{
     private JPanel tilePanel = new JPanel();
     private String mapDirectory;
     private String tileDirectory;
+    private File[] tileFiles;
     private BufferedImage[] tiles;
     private JLabel[] tileLabels;
     private JMenu fileMenu;
@@ -227,15 +233,20 @@ public class EditorWindow extends ControllableWindow{
                 MapFile map = (MapFile) os.readObject();
                 File tileDir = new File(mapDirectory+"/"+"tile");
                 File[] imgs = tileDir.listFiles();
-                if(map.getUsedImages() == null){
+                if(imgs != null){
+                    BufferedImage[] usedImages = new BufferedImage[imgs.length];
+                    for (File img : imgs) {
+                        String n = img.getName().replace(".png", "");
+                        usedImages[Integer.parseInt(n)] = ImageIO.read(img);
+                    }
+                    map.setUsedImages(new ArrayList<>());
+                    map.getUsedImages().addAll(Arrays.asList(usedImages));
+                }
+                else{
                     map.setUsedImages(new ArrayList<>());
                 }
-                if(imgs != null){
-                    for(File img : imgs){
-                        map.getUsedImages().add(ImageIO.read(img));
-                    }
-                }
                 return map;
+                
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(EditorWindow.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -267,6 +278,7 @@ public class EditorWindow extends ControllableWindow{
         selectedTile = -1;
         File dir = new File(tileDirectory);
         File[] files = dir.listFiles((d, name) -> name.endsWith(".png") || name.endsWith(".jpg")); // show only jpg/png
+        tileFiles = files;
         if (files != null) {
             tiles = new BufferedImage[files.length];
             tileLabels = new JLabel[files.length];
@@ -338,6 +350,10 @@ public class EditorWindow extends ControllableWindow{
 
     public BufferedImage[] getTiles() {
         return tiles;
+    }
+
+    public File[] getTileFiles() {
+        return tileFiles;
     }
 
     public int getSelectedTile() {

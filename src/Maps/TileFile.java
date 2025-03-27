@@ -119,5 +119,4 @@ public class TileFile implements Serializable{
     public void setVariableMode(Integer variableMode) {
         this.variableMode = variableMode;
     }
-    
 }
