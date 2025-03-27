@@ -4,6 +4,7 @@
  */
 package Main.ChapterTwo.Scenes;
 
+import Main.Entities.Main.Lucy;
 import Maps.MapBuilder;
 import Scenes.Scene;
 
@@ -17,6 +18,7 @@ public class ChapterTwoScene extends Scene{
     public void load() {
         getCamera().setZoom(20f);
         MapBuilder.useMapBuilder(this);
+        MapBuilder.addVariable("GoTo1", new Lucy(this));
         MapBuilder.loadMap("map/Chapter2");
     }
     

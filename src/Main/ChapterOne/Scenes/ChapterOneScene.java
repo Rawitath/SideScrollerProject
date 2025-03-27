@@ -17,6 +17,7 @@ public class ChapterOneScene extends Scene{
     public void load() {
         getCamera().setZoom(20f);
         MapBuilder.useMapBuilder(this);
+        MapBuilder.addVariable("Spawn", new Lucy(this));
         MapBuilder.loadMap("map/Chapter1");
     }
     

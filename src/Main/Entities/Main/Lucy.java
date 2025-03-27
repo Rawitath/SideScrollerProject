@@ -44,11 +44,11 @@ public class Lucy extends PhysicableEntity implements KeyControlable{
         super.start();
         setPosition(getPosition().add(new Vector2(0, 1f)));
         getScene().getCamera().setZoom(60f);
-        //setAnchor(new Vector2(0, -0.05f));
+        setAnchor(new Vector2(0, 0.18f));
         setSpriteSize(getSpriteSize().multiply(1.65f));
         
-        getCollider().setBound(getCollider().getBound().multiply(new Vector2(0.8f, 1.2f)));
-        getCollider().setCenter(new Vector2(0f, -0.05f));
+        getCollider().setBound(getCollider().getBound().multiply(new Vector2(0.8f, 0.8f)));
+        getCollider().setCenter(new Vector2(0f, -0.16f));
     }
 
     @Override
@@ -83,7 +83,7 @@ public class Lucy extends PhysicableEntity implements KeyControlable{
                 setVelocity(new Vector2(0, getVelocity().getY()));
             }
             else{
-                setVelocity(getVelocity().add(Vector2.right().multiply(speed)));
+                setVelocity(new Vector2(speed, getVelocity().getY()));
                 setFlip(Vector2.negativeX());
             }
         }
@@ -92,12 +92,12 @@ public class Lucy extends PhysicableEntity implements KeyControlable{
                 setVelocity(new Vector2(0, getVelocity().getY()));
             }
             else{
-                setVelocity(getVelocity().add(Vector2.right().multiply(-speed)));
+                setVelocity(new Vector2(-speed, getVelocity().getY()));
                 setFlip(Vector2.one());
             }
         }
         if(keyCode == KeyEvent.VK_SPACE){
-            if(currentJump <= maxJump){
+            if(currentJump < maxJump){
                 setVelocity(new Vector2(getVelocity().getX(), jumpForce));
                 currentJump++;
             }
@@ -108,11 +108,11 @@ public class Lucy extends PhysicableEntity implements KeyControlable{
     public void onKeyReleased(KeyEvent e, int keyCode) {
         if(getVelocity().getX() == 0){
             if(keyCode == KeyEvent.VK_D){
-                setVelocity(getVelocity().add(Vector2.right().multiply(-speed)));
+                setVelocity(new Vector2(-speed, getVelocity().getY()));
                 setFlip(Vector2.one());
             }
             else if(keyCode == KeyEvent.VK_A){
-                setVelocity(getVelocity().add(Vector2.right().multiply(speed)));
+                setVelocity(new Vector2(speed, getVelocity().getY()));
                 setFlip(Vector2.negativeX());
             }
             return;

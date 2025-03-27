@@ -158,6 +158,8 @@ public class MapBuilder {
         for (Entity child : container.getChilds()) {
             container.removeChild(container);
         }
+        variableMap.clear();
+        parentMap.clear();
     }
     
     private static void buildMap(MapFile map){
