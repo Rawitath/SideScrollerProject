@@ -22,6 +22,7 @@ import Utilities.FileReader;
 
 public class CutsceneOne extends CollidableEntity{
     private BoxDialogueTest1 bd1;
+    private Boss b;
     private GameSave gs;
     
     public CutsceneOne(Scene s){
@@ -31,6 +32,9 @@ public class CutsceneOne extends CollidableEntity{
         this.bd1 = new BoxDialogueTest1(s);
         bd1.setActive(false);
         getScene().addEntity(bd1);
+        this.b = new Boss(s);
+        this.b.setActive(false);
+        this.getScene().addEntity(this.b);
         
         gs = SaveManager.getInstance().getCurrentSave();
     }
@@ -53,9 +57,9 @@ public class CutsceneOne extends CollidableEntity{
     @Override
     public void onColliderEnter(Collider other) {
         if(other.getEntity().getName().equals("Lucy")){
-            bd1.setActive(true);
-//            this.gs.cutscene[0] = true;
-            SaveSerializer.save(this.gs);
+            this.bd1.setActive(true);
+//            bd1.setActive(true);
+            this.b.setActive(true);
         }
     }
 
@@ -68,7 +72,8 @@ public class CutsceneOne extends CollidableEntity{
     public void onColliderExit(Collider other) {
         if (other.getEntity().getName().equals("Lucy")){
             this.bd1.setActive(false);
+//            this.gs.cutscene[0] = true;
+            SaveSerializer.save(this.gs);
         }
     }
-    
 }
