@@ -19,14 +19,13 @@ public class BoxDialogueTest1 extends UIImage{
         super(s);
         sd1 = new ScriptDialogueTest1(s);
         this.addChild(this.sd1);
-        this.setPosition(new Vector2(0 , 0));
+        this.setPosition(new Vector2(0,100));
     }
 
     @Override
     public void start() {
-        
     }
-
+    
     @Override
     public void update() {
     }
