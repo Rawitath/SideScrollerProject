@@ -21,7 +21,7 @@ import java.awt.event.KeyEvent;
  *
  * @author GA_IA
  */
-public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneControllable{
+public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneControllable, Damagable{
     
     private float speed = 7.5f;
     private float jumpForce = 16f;
@@ -189,6 +189,11 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
     @Override
     public Vector2 currentPosition() {
         return getPosition();
+    }
+
+    @Override
+    public void damageTaken(int damage) {
+        System.out.println("Damege : " + damage);
     }
     
 }

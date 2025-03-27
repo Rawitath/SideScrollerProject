@@ -37,7 +37,7 @@ public class ChapterFiveScene extends Scene {
         addEntity(manager);
         
         bossCutscene = new BossCutscene(this);
-        sheep = new SheepBoss(this);
+        sheep = new SheepBoss(this, lucy);
         bossCutscene.addControlledEntities("Lucy", lucy);
         bossCutscene.addControlledEntities("Boss", sheep);
         
