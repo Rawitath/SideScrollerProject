@@ -7,17 +7,15 @@ package Maps;
 import Datas.Vector2;
 import Datas.Vector2Int;
 import Scenes.Scene;
-import Utilities.FileReader;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 
@@ -285,7 +283,7 @@ public class EditorController{
                 
                 int tileID = -1;
                 for(int i = 0; i < usedImages.size() + 1; i++){
-                    if(i < imageUsage.size()){
+                    if(i < usedImages.size()){
                         if(!usedImages.get(i).equals(editor.getTiles()[editor.getSelectedTile()])){
                             continue;
                         }
@@ -297,10 +295,9 @@ public class EditorController{
                     //Not in list
                     usedImages.add(editor.getTiles()[editor.getSelectedTile()]);
                     imageUsage.put(usedImages.get(i), 0);
-                    tileID = imageUsage.size() - 1;
+                    tileID = usedImages.size() - 1;
                     break;
                 }
-
                 //Check if already placed
                 if(tileGrid.containsKey(column) && tileGrid.get(column).containsKey(row)){
                     if(tileGrid.get(column).get(row).getTileFile().getTile() == tileID){
@@ -385,6 +382,9 @@ public class EditorController{
                         for(Integer rk : tileGrid.get(ck).keySet()){
                             TileDisplayEntity t = tileGrid.get(ck).get(rk);
                             if(t.getTileFile().getTile() >= imageIndex){
+                                if(t.getTileFile().getTile() == TileFile.VARIABLE){
+                                    continue;
+                                }
                                 t.getTileFile().setTileSheet(t.getTileFile().getTile() - 1);
                                 t.setSprite(usedImages.get(t.getTileFile().getTile()));
                             }
@@ -527,6 +527,7 @@ public class EditorController{
             tileGrid = new ConcurrentHashMap<>();
             imageUsage = new HashMap<>();
             usedImages = new ArrayList<>();
+            editedTile = new CopyOnWriteArrayList<>();
             
             if(currentMap.getTiles() != null){
                 usedImages = currentMap.getUsedImages();
@@ -537,10 +538,12 @@ public class EditorController{
                                 TileDisplayEntity tile = new TileDisplayEntity(currentScene);
                                 tile.setOnEdit(true);
                                 tile.setTileFile(currentMap.getTiles()[i][j]);
+                                if(tile.getTileFile().getTile() > 789000){
+                                    tile.getTileFile().setTileSheet(TileFile.VARIABLE);
+                                }
                                 if(tile.getTileFile().getTile() != TileFile.VARIABLE){
                                     BufferedImage tileImage = usedImages.get(tile.getTileFile().getTile());
                                     tile.setSprite(tileImage);
-
                                     if(!imageUsage.containsKey(tileImage)){
                                         imageUsage.put(tileImage, 0);
                                     }

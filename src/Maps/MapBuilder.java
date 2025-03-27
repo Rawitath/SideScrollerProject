@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -123,13 +124,17 @@ public class MapBuilder {
                 }
                 
                 File[] imgs = tileDir.listFiles();
-                if(map.getUsedImages() == null){
-                    map.setUsedImages(new ArrayList<>());
-                }
                 if(imgs != null){
-                    for(File img : imgs){
-                        map.getUsedImages().add(ImageIO.read(img));
+                    BufferedImage[] usedImages = new BufferedImage[imgs.length];
+                    for (File img : imgs) {
+                        String n = img.getName().replace(".png", "");
+                        usedImages[Integer.parseInt(n)] = ImageIO.read(img);
                     }
+                    map.setUsedImages(new ArrayList<>());
+                    map.getUsedImages().addAll(Arrays.asList(usedImages));
+                }
+                else{
+                    map.setUsedImages(new ArrayList<>());
                 }
                 buildMap(map);
             } catch (FileNotFoundException ex) {

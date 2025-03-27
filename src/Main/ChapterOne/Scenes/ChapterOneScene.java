@@ -16,9 +16,9 @@ public class ChapterOneScene extends Scene{
     @Override
     public void load() {
         getCamera().setZoom(20f);
-        MapBuilder.useMapBuilder(this);
-        MapBuilder.addVariable("Lucy", new Lucy(this));
-        MapBuilder.loadMap("map/MyMap");
+//         MapBuilder.useMapBuilder(this);
+//         MapBuilder.addVariable("Lucy", new Lucy(this));
+//         MapBuilder.loadMap("map/MyMap");
     }
     
 }
