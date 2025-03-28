@@ -26,6 +26,7 @@ public abstract class UIText extends UIEntity{
     private int style;
     private int size;
     private Color color;
+    private float alpha;
     
     public static final float LEFT = 0f;
     public static final float CENTER = 0.5f;
@@ -42,6 +43,7 @@ public abstract class UIText extends UIEntity{
         font = new Font("Arial", style, size);
         color = Color.BLACK;
         horizontalAlignment = LEFT;
+        alpha = 1f;
     }
 
     public float getHorizontalAlignment() {
@@ -99,6 +101,14 @@ public abstract class UIText extends UIEntity{
 
     public void setColor(Color color) {
         this.color = color;
+    }
+    
+    public float getAlpha() {
+        return alpha;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
     }
 
     @Override
