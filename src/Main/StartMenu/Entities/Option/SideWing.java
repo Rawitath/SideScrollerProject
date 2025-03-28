@@ -4,17 +4,22 @@
  */
 package Main.StartMenu.Entities.Option;
 
+import Datas.Vector2;
 import Entities.UI.UIImage;
+import Main.StartMenu.Entities.Fadable;
 import Scenes.Scene;
+import Utilities.FileReader;
 
 /**
  *
  * @author GA_IA
  */
-public class SideWing extends UIImage{
+public class SideWing extends UIImage implements Fadable{
 
     public SideWing(Scene s) {
         super(s);
+        this.setImage(FileReader.readImage("res/game/settingsmenu/Wingy_Thing.png"));
+        setScale(new Vector2(getImage().getWidth(), getImage().getHeight()));
     }
     
     @Override
@@ -30,6 +35,11 @@ public class SideWing extends UIImage{
     @Override
     public void fixedUpdate() {
 
+    }
+
+    @Override
+    public void fade(float alpha) {
+        setAlpha(alpha);
     }
     
 }
