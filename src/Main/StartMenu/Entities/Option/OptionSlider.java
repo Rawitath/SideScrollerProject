@@ -4,8 +4,11 @@
  */
 package Main.StartMenu.Entities.Option;
 
+import Datas.Vector2;
 import Entities.UI.UISlider;
 import Scenes.Scene;
+import Utilities.FileReader;
+import java.awt.Color;
 
 /**
  *
@@ -15,6 +18,10 @@ public class OptionSlider extends UISlider{
 
     public OptionSlider(Scene s) {
         super(s);
+        this.getBar().setScale(new Vector2(50,1));
+//        this.getBar().setColor(new Color(1.0f, 0.93f, 0.55f, 1.0f)); I can't do this.
+        this.getHandle().setReleasedImage(FileReader.readImage("res/game/settingsmenu/huajai.png"));
+        this.getHandle().setScale(new Vector2(5,10));
     }
     
     @Override
