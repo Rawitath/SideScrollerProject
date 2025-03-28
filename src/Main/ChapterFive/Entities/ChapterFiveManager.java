@@ -58,7 +58,7 @@ public class ChapterFiveManager extends Entity{
 
     @Override
     public void update() {
-        if(!isBoss && !cutscene.isCutscenePlaying()){
+        if(!isBoss && (cutscene == null || !cutscene.isCutscenePlaying())){
             getScene().getCamera().setPosition(lucy.getPosition().multiply(Vector2.negativeY()));
         }
         else{

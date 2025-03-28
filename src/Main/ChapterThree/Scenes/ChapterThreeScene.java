@@ -4,6 +4,8 @@
  */
 package Main.ChapterThree.Scenes;
 
+
+import Main.ChapterThree.Entities.ChapterThreeManager;
 import Main.Entities.Main.Lucy;
 import Maps.MapBuilder;
 import Scenes.Scene;
@@ -14,10 +16,17 @@ import Scenes.Scene;
  */
 public class ChapterThreeScene extends Scene{
 
+    private Lucy lucy;
+    private ChapterThreeManager manager;
+    
     @Override
     public void load() {
+        lucy = new Lucy(this);
+        manager = new ChapterThreeManager(this, lucy);
+        addEntity(manager);
+        
         MapBuilder.useMapBuilder(this);
-        MapBuilder.addVariable("spaw for 2", new Lucy(this));
+        MapBuilder.addVariable("spaw for 2", lucy);
         MapBuilder.loadMap("map/Chapter3");
     }
     

@@ -17,11 +17,31 @@ public abstract class StageBackground extends SpriteEntity{
     
     private Vector2 initialScale;
     private float factor = 1f;
+    private float horizontalShiftMultiplier = 1f;
+    private float verticalShiftMultiplier = 1f;
     
     public StageBackground(Scene s) {
         super(s);
     }
 
+    public float getHorizontalShiftMultiplier() {
+        return horizontalShiftMultiplier;
+    }
+
+    public void setHorizontalShiftMultiplier(float horizontalShiftMultiplier) {
+        this.horizontalShiftMultiplier = horizontalShiftMultiplier;
+    }
+
+    public float getVerticalShiftMultiplier() {
+        return verticalShiftMultiplier;
+    }
+
+    public void setVerticalShiftMultiplier(float verticalShiftMultiplier) {
+        this.verticalShiftMultiplier = verticalShiftMultiplier;
+    }
+
+    
+    
     @Override
     public void start() {
         initialScale = getScale();
@@ -32,6 +52,7 @@ public abstract class StageBackground extends SpriteEntity{
     @Override
     public void update() {
         setPosition(getScene().getCamera().getPosition().multiply(Vector2Int.negativeY()));
+        setPosition(getPosition().multiply(new Vector2(horizontalShiftMultiplier, verticalShiftMultiplier)));
         setScale(initialScale.multiply(factor / getScene().getCamera().getZoom()));
     }
 

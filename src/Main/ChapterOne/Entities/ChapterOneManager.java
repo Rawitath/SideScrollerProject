@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.ChapterTwo.Entities;
+package Main.ChapterOne.Entities;
 
 import Datas.Vector2;
 import Entities.Entity;
@@ -14,17 +14,16 @@ import Scenes.Scene;
  *
  * @author GA_IA
  */
-public class ChapterTwoManager extends Entity{
-
+public class ChapterOneManager extends Entity{
     private boolean isBoss;
     private Lucy lucy;
     private Cutscene cutscene;
 
-    public ChapterTwoManager(Scene s, Lucy lucy) {
+    public ChapterOneManager(Scene s, Lucy lucy) {
         super(s);
         isBoss = false;
         this.lucy = lucy;
-        setName("Manager2");
+        setName("Manager1");
     }
 
     public Cutscene getCutscene() {
@@ -71,5 +70,4 @@ public class ChapterTwoManager extends Entity{
     public void fixedUpdate() {
         
     }
-    
 }

@@ -12,6 +12,7 @@ import Main.ChapterFour.Scenes.ChapterFourScene;
 import Main.ChapterOne.Scenes.ChapterOneScene;
 import Main.ChapterThree.Scenes.ChapterThreeScene;
 import Main.ChapterTwo.Scenes.ChapterTwoScene;
+import Maps.EditorScene;
 import Maps.MapBuilder;
 import Physics.Time;
 import Scenes.SceneManager;
@@ -33,8 +34,9 @@ public class Main {
 //        MapBuilder.setUseEditor(true);
         
         //Scene added here
+//        SceneManager.addScene(new EditorScene()); // This Scene will be loaded first
 //        SceneManager.addScene(new ChapterOneScene()); // This Scene will be loaded first
-        SceneManager.addScene(new ChapterTwoScene()); // This Scene will be loaded first
+//        SceneManager.addScene(new ChapterTwoScene()); // This Scene will be loaded first
 //        SceneManager.addScene(new ChapterThreeScene()); // This Scene will be loaded first
 //        SceneManager.addScene(new ChapterFourScene()); // This Scene will be loaded first
         SceneManager.addScene(new ChapterFiveScene()); // This Scene will be loaded first

@@ -172,15 +172,28 @@ public abstract class PhysicableEntity extends CollidableEntity{
                         lockDirection = Vector2.left();
                         lockObject = other;
 
-                        if(other.getEntity().getTag().equals("Pushable")){
-                            other.getEntity().setPosition(other.getEntity().getPosition().translate(velocity.multiply(Vector2.right()), Time.fixedDeltaTime()));
+                        if(this instanceof Pushable){
+                            if(other.getEntity() instanceof PhysicableEntity){
+                                PhysicableEntity p = (PhysicableEntity) other.getEntity();
+                                if(!p.getVelocity().equals(Vector2.zero())){
+                                    setVelocity(p.getVelocity().multiply(Vector2.right()));
+                                }
+                            }
+//                            other.getEntity().setPosition(other.getEntity().getPosition().translate(velocity.multiply(Vector2.right()), Time.fixedDeltaTime()));
                         }
                     }
                     else if(getPosition().getX() + getCollider().getCenter().getX() < other.getEntity().getPosition().getX() + other.getCenter().getX()){
                         lockDirection = Vector2.right();
                         lockObject = other;
-                        if(other.getEntity().getTag().equals("Pushable")){
-                            other.getEntity().setPosition(other.getEntity().getPosition().translate(velocity.multiply(Vector2.right()), Time.fixedDeltaTime()));
+                        
+                        if(this instanceof Pushable){
+                            if(other.getEntity() instanceof PhysicableEntity){
+                                PhysicableEntity p = (PhysicableEntity) other.getEntity();
+                                if(!p.getVelocity().equals(Vector2.zero())){
+                                    setVelocity(p.getVelocity().multiply(Vector2.right()));
+                                }
+                            }
+//                            other.getEntity().setPosition(other.getEntity().getPosition().translate(velocity.multiply(Vector2.right()), Time.fixedDeltaTime()));
                         }
                     }
                 

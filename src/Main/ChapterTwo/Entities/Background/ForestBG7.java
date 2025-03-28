@@ -18,6 +18,7 @@ public class ForestBG7  extends StageBackground{
         super(s);
         setSprite(FileReader.readImage("res/game/forestbg/Forest07.png"));
         setSpriteSize(getSpriteSize().multiply(1.56f));
+        setHorizontalShiftMultiplier(0.91f);
     }
     
 }
