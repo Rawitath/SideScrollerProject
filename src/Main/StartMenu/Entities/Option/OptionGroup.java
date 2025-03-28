@@ -22,6 +22,7 @@ public class OptionGroup extends UIEntity{
     private HeaderFrame headerFrame;
     private BodyFrame bodyFrame;
     private BackButton backButton;
+    private SideWing sidewing;
     
     private MenuController controller;
     
@@ -50,6 +51,10 @@ public class OptionGroup extends UIEntity{
         backButton = new BackButton(s);
         addChild(backButton);
         backButton.setLocalPosition(new Vector2(-750, 520));
+        
+        sidewing = new SideWing(s);
+        addChild(sidewing);
+        sidewing.setLocalPosition(new Vector2(0,0));
     }
 
     public float getFadeTime() {
