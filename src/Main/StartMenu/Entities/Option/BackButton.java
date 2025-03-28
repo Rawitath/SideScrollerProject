@@ -50,7 +50,6 @@ public class BackButton extends UIButton implements Fadable{
 
     @Override
     public void onButtonPressed() {
-
     }
 
     @Override
