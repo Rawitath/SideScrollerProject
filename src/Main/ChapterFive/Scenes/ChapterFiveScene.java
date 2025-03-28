@@ -53,6 +53,8 @@ public class ChapterFiveScene extends Scene {
         MapBuilder.addVariable("last boss", sheep);
         MapBuilder.addVariable("BossCutsceneTrigger", trigger);
         MapBuilder.addVariable("Bosswall", bosswall);
+        MapBuilder.setVariableClone("Bosswall", true);
+        
         MapBuilder.loadMap("map/Chapter5");
         
         

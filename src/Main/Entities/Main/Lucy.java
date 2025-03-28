@@ -240,5 +240,4 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
             System.out.println("Damege : " + damage);
         }
     }
-    
 }

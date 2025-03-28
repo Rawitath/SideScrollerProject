@@ -7,6 +7,7 @@ package Scenes;
 import Entities.Camera;
 import Entities.Entity;
 import Entities.UI.UIView;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -68,6 +69,15 @@ public abstract class Scene {
 
     public List<Entity> getEntities() {
         return entities;
+    }
+    public List<Entity> getEntities(String name) {
+        List<Entity> e = new ArrayList<>();
+        for(Entity en : entities){
+            if(en.getName() == name){
+                e.add(en);
+            }
+        }
+        return e;
     }
     public <T extends Entity> T getEntity(String name){
         for(var e : entities){

@@ -6,7 +6,9 @@ package Maps;
 
 import Datas.Vector2;
 import Datas.Vector2Int;
+import Entities.Copyable;
 import Entities.Entity;
+import Entities.NotCopyableException;
 import Entities.SpriteEntity;
 import Scenes.Scene;
 import java.awt.image.BufferedImage;
@@ -44,14 +46,18 @@ public class MapBuilder {
     
     private static Map<String, Entity> variableMap = new HashMap<>();
     private static Map<String, Entity> parentMap = new HashMap<>();
+    private static Map<String, Boolean> cloneMap = new HashMap<>();
     
     private static Queue<MapVariable> variableQueue = new LinkedList<>();
     
     public static void addVariable(String key, Entity value){
         variableMap.put(key, value);
     }
-    public static void serVariableParent(String key, Entity value){
+    public static void setVariableParent(String key, Entity value){
         parentMap.put(key, value);
+    }
+    public static void setVariableClone(String key, Boolean value){
+        cloneMap.put(key, value);
     }
 
     public static boolean isUseEditor() {
@@ -189,6 +195,14 @@ public class MapBuilder {
                                 else{
                                     if(varMode == 0 || tileType == TileFile.VARIABLE){
                                         Entity e = variableMap.get(varName);
+                                        if(cloneMap.containsKey(varName) && cloneMap.get(varName).equals(true)){
+                                            if(e instanceof Copyable){
+                                                e = ((Copyable) e).copyOf();
+                                            }
+                                            else{
+                                                throw new NotCopyableException();
+                                            }
+                                        }
                                         e.setPosition(new Vector2(
                                             map.columnToWorldX(i + map.getColumnOffset()) + map.getOffsetX(),
                                             map.rowToWorldY(j + map.getRowOffset()) + map.getOffsetY()
@@ -199,6 +213,14 @@ public class MapBuilder {
                                     }
                                     else if(varMode == 1){
                                         Entity e = variableMap.get(varName);
+                                        if(cloneMap.containsKey(varName) && cloneMap.get(varName).equals(true)){
+                                            if(e instanceof Copyable){
+                                                e = ((Copyable) e).copyOf();
+                                            }
+                                            else{
+                                                throw new NotCopyableException();
+                                            }
+                                        }
                                         if(e instanceof SpriteEntity){
                                             BufferedImage tileImage = map.getUsedImages().get(tile.getTile());
                                             ((SpriteEntity) e).setSprite(tileImage);

@@ -9,6 +9,8 @@ import Entities.Entity;
 import Main.Entities.Main.Lucy;
 import Main.GameSystem.Cutscene.Cutscene;
 import Scenes.Scene;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,11 +21,13 @@ public class ChapterFiveManager extends Entity{
     private boolean isBoss;
     private Lucy lucy;
     private Cutscene cutscene;
+    private List<Entity> bosswalls;
 
     public ChapterFiveManager(Scene s, Lucy lucy) {
         super(s);
         isBoss = false;
         this.lucy = lucy;
+        bosswalls = new ArrayList<>();
         setName("Manager5");
     }
 
@@ -40,11 +44,16 @@ public class ChapterFiveManager extends Entity{
     }
     public void setIsBoss(boolean isBoss){
         this.isBoss = isBoss;
+        for(Entity e : bosswalls){
+            BossWall b = (BossWall) e; 
+            b.setIsActivated(isBoss);
+        }
     }
     
     @Override
     public void start() {
         getScene().getCamera().setZoom(85f);
+        bosswalls = getScene().getEntities("BossWall");
     }
 
     @Override
