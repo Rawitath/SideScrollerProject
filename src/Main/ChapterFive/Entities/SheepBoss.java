@@ -33,6 +33,8 @@ public class SheepBoss extends PhysicableEntity implements CutsceneControllable{
     
     private int health = 20;
     
+    private float attacDuration = 1f;
+    
     public SheepBoss(Scene s, Lucy lucy) {
         super(s);
         
@@ -53,7 +55,7 @@ public class SheepBoss extends PhysicableEntity implements CutsceneControllable{
     @Override
     public void update() {
         super.update();
-        if(manager.isBoss()){
+        if(manager.isBoss() && lucy.getHealth() > 0){
             Vector2 lucyDistance = lucy.getPosition();
             Vector2 selfDistance = this.getPosition();
 
@@ -73,9 +75,12 @@ public class SheepBoss extends PhysicableEntity implements CutsceneControllable{
             if(previous == 0){
                 previous = Time.time();
             }
-            if(Time.time() - previous > 1.5f){
+            if(Time.time() - previous > attacDuration){
                 int attack = new Random().nextInt();
-                if(attack % 2 == 0){
+                if(attack % 11 == 0){
+                    attackRed();
+                }
+                else if(attack % 2 == 0){
                     attackOrange(side);
                 }
                 else if(attack % 2 != 0){
@@ -91,13 +96,31 @@ public class SheepBoss extends PhysicableEntity implements CutsceneControllable{
     
     private void attackOrange(int side){
         AttackShard shard = new OrangeAttackShard(getScene(), Vector2.right().multiply(side), 8);
+        shard.setDamage(1);
         shard.setPosition(getPosition().add(new Vector2(2 * side, 0)));
         getScene().addEntity(shard);
     }
     private void attackBlue(int side){
         AttackShard shard = new BlueAttackShard(getScene(), Vector2.right().multiply(side), 8);
+        shard.setDamage(1);
         shard.setPosition(getPosition().add(new Vector2(2 * side, 0)));
         getScene().addEntity(shard);
+    }
+    private void attackRed(){
+        AttackShard shard1 = new RedAttackShard(getScene(), Vector2.right(), 8);
+        shard1.setDamage(1);
+        shard1.setPosition(getPosition().add(new Vector2(2, 0)));
+        getScene().addEntity(shard1);
+        
+        AttackShard shard2 = new RedAttackShard(getScene(), Vector2.left(), 8);
+        shard2.setDamage(1);
+        shard2.setPosition(getPosition().add(new Vector2(-2, 0)));
+        getScene().addEntity(shard2);
+        
+        AttackShard shard3 = new RedAttackShard(getScene(), Vector2.up(), 8);
+        shard3.setDamage(1);
+        shard3.setPosition(getPosition().add(new Vector2(0, 2)));
+        getScene().addEntity(shard3);
     }
     
     @Override

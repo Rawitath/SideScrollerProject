@@ -8,6 +8,7 @@ import Animations.Animator;
 import Datas.Vector2;
 import Inputs.KeyControlable;
 import Main.Entities.Main.Animation.LucyBreath;
+import Main.Entities.Main.Animation.LucyDead;
 import Main.Entities.Main.Animation.LucyFall;
 import Main.Entities.Main.Animation.LucyJump;
 import Main.Entities.Main.Animation.LucyRun;
@@ -15,6 +16,7 @@ import Main.GameSystem.Cutscene.CutsceneControllable;
 import Physics.Collider;
 import Physics.Time;
 import Scenes.Scene;
+import Utilities.FileReader;
 import java.awt.event.KeyEvent;
 
 /**
@@ -26,12 +28,20 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
     private float speed = 7.5f;
     private float jumpForce = 16f;
     
+    private int health = 5;
+    
     private Animator animator;
     
     private int maxJump = 2;
     private int currentJump = 0;
     
     private boolean breakControl;
+    private float damageCountdown = 0.3f;
+    private float countdownLeft = 0f;
+    
+    private boolean both = false;
+    
+    private boolean isDamageTaken = false;
     
     public Lucy(Scene s) {
         super(s);
@@ -44,6 +54,14 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
         breakControl = false;
     }
 
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+    
     @Override
     public void start() {
         super.start();
@@ -59,24 +77,33 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
     public void update() {
         super.update();
         
-        if(!isGrounded()){
-            if(getVelocity().getY() > 0){
-                animator.setAnimation(new LucyJump());
+        if(health > 0){
+            if(!isGrounded()){
+                if(getVelocity().getY() > 0){
+                    animator.setAnimation(new LucyJump());
+                }
+                else{
+                    animator.setAnimation(new LucyFall());
+                }
             }
             else{
-                animator.setAnimation(new LucyFall());
+                if(Math.abs(getVelocity().getX()) > 0.01f){
+                    animator.setAnimation(new LucyRun());
+                }
+                else{
+                    animator.setAnimation(new LucyBreath());
+                }
             }
+        }
+        
+        if(!isDamageTaken){
+            setSprite(animator.getFrame(Time.deltaTime()), true);
         }
         else{
-            if(Math.abs(getVelocity().getX()) > 0.001f){
-                animator.setAnimation(new LucyRun());
-            }
-            else{
-                animator.setAnimation(new LucyBreath());
+            if(Time.time() - countdownLeft >= damageCountdown){
+                isDamageTaken = false;
             }
         }
-
-        setSprite(animator.getFrame(Time.deltaTime()), true);
     }
 
     public boolean isBreakControl() {
@@ -97,6 +124,7 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
             if(keyCode == KeyEvent.VK_D){
                 if(getVelocity().getX() < 0){
                     setVelocity(new Vector2(0, getVelocity().getY()));
+                    both = true;
                 }
                 else{
                     setVelocity(new Vector2(speed, getVelocity().getY()));
@@ -106,6 +134,7 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
             if(keyCode == KeyEvent.VK_A){
                 if(getVelocity().getX() > 0){
                     setVelocity(new Vector2(0, getVelocity().getY()));
+                    both = true;
                 }
                 else{
                     setVelocity(new Vector2(-speed, getVelocity().getY()));
@@ -124,14 +153,16 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
     @Override
     public void onKeyReleased(KeyEvent e, int keyCode) {
         if(!breakControl){
-            if(getVelocity().getX() == 0){
+            if(getVelocity().getX() == 0 && both){
                 if(keyCode == KeyEvent.VK_D){
                     setVelocity(new Vector2(-speed, getVelocity().getY()));
                     setFlip(Vector2.one());
+                    both = false;
                 }
                 else if(keyCode == KeyEvent.VK_A){
                     setVelocity(new Vector2(speed, getVelocity().getY()));
                     setFlip(Vector2.negativeX());
+                    both = false;
                 }
                 return;
             }
@@ -193,7 +224,21 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
 
     @Override
     public void damageTaken(int damage) {
-        System.out.println("Damege : " + damage);
+        if(breakControl || isDamageTaken){
+            return;
+        }
+        health -= damage;
+        if(health < 1){
+            breakControl = true;
+            stop();
+            animator.setAnimation(new LucyDead());
+        }
+        else{
+            isDamageTaken = true;
+            countdownLeft = Time.time();
+            setSprite(FileReader.readImage("res/game/animation/lucy/hurt.png"), true);
+            System.out.println("Damege : " + damage);
+        }
     }
     
 }

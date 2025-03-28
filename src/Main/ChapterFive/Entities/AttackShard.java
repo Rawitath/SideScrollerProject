@@ -16,7 +16,7 @@ import Scenes.Scene;
  */
 public abstract class AttackShard extends CollidableEntity{
     
-    private byte damage;
+    private int damage;
     
     private Vector2 direction;
     private float speed;
@@ -67,11 +67,11 @@ public abstract class AttackShard extends CollidableEntity{
 
     }
 
-    public byte getDamage() {
+    public int getDamage() {
         return damage;
     }
 
-    public void setDamage(byte damage) {
+    public void setDamage(int damage) {
         this.damage = damage;
     }
 }

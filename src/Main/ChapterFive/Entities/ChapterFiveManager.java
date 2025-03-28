@@ -41,7 +41,7 @@ public class ChapterFiveManager extends Entity{
     public void setIsBoss(boolean isBoss){
         this.isBoss = isBoss;
     }
-
+    
     @Override
     public void start() {
         getScene().getCamera().setZoom(85f);
@@ -57,7 +57,9 @@ public class ChapterFiveManager extends Entity{
                 lucy.setBreakControl(true);
             }
             else{
-                lucy.setBreakControl(false);
+                if(lucy.getHealth() > 0){
+                    lucy.setBreakControl(false);
+                }
             }
         }
     }
