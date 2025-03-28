@@ -31,7 +31,7 @@ public class Main {
         
         //Scene added here
 //        SceneManager.addScene(new ChapterOneScene()); // This Scene will be loaded first
-//        SceneManager.addScene(new ChapterTwoScene()); // This Scene will be loaded first
+        SceneManager.addScene(new ChapterTwoScene()); // This Scene will be loaded first
 //        SceneManager.addScene(new ChapterThreeScene()); // This Scene will be loaded first
 //        SceneManager.addScene(new ChapterFourScene()); // This Scene will be loaded first
         SceneManager.addScene(new ChapterFiveScene()); // This Scene will be loaded first

@@ -30,7 +30,6 @@ public class ChapterFiveScene extends Scene {
     
     @Override
     public void load() {
-        getCamera().setZoom(20f);
         
         lucy = new Lucy(this);
         manager = new ChapterFiveManager(this, lucy);

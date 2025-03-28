@@ -16,7 +16,6 @@ public class ChapterThreeScene extends Scene{
 
     @Override
     public void load() {
-        getCamera().setZoom(20f);
         MapBuilder.useMapBuilder(this);
         MapBuilder.addVariable("spaw for 2", new Lucy(this));
         MapBuilder.loadMap("map/Chapter3");
