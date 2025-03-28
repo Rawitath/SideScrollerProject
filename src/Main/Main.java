@@ -23,6 +23,9 @@ import Utilities.FileReader;
  */
 public class Main {
     public static void main(String[] args) {
+        //Enable hardware acceleration 
+        System.setProperty("sun.java2d.opengl", "true");
+        
         //Uncomment to use Debug Mode
         DebugManager.useDebug();
 
@@ -31,7 +34,7 @@ public class Main {
         
         //Scene added here
 //        SceneManager.addScene(new ChapterOneScene()); // This Scene will be loaded first
-//        SceneManager.addScene(new ChapterTwoScene()); // This Scene will be loaded first
+        SceneManager.addScene(new ChapterTwoScene()); // This Scene will be loaded first
 //        SceneManager.addScene(new ChapterThreeScene()); // This Scene will be loaded first
 //        SceneManager.addScene(new ChapterFourScene()); // This Scene will be loaded first
         SceneManager.addScene(new ChapterFiveScene()); // This Scene will be loaded first
