@@ -25,6 +25,7 @@ public class GameSave implements Serializable{
     private Integer currentChapter = null;
     private Integer[] items = null;
     private Integer maxHP = 5;
+    private Integer maxJump = 1;
     private Boolean prolouge = false;
     private Boolean epilogue = false;
     private Boolean wandAchived = false;
@@ -115,6 +116,14 @@ public class GameSave implements Serializable{
         this.maxHP = maxHP;
     }
 
+    public Integer getMaxJump() {
+        return maxJump;
+    }
+
+    public void setMaxJump(Integer maxJump) {
+        this.maxJump = maxJump;
+    }
+    
     public Boolean getProlouge() {
         return prolouge;
     }

@@ -35,7 +35,7 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
     private int inventorySize = 6;
     
     //Wing
-    private int maxJump = 2;
+    private int maxJump = 1;
     private int currentJump = 0;
     
     //ETC.
@@ -59,7 +59,6 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
         inventory = new Inventory(inventorySize);
         
         animator = new Animator();
-        animator.setAnimation(new LucyBreath());
         
         breakControl = false;
     }
