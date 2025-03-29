@@ -9,8 +9,6 @@ package Main.GameSystem.Inventory;
  * @author user
  */
 
-import java.awt.event.MouseWheelEvent;
-import java.util.Arrays;
 
 public class Inventory {
     private InventoryItem[] slots;

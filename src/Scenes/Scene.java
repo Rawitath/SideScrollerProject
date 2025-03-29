@@ -58,13 +58,21 @@ public abstract class Scene {
     }
     
     public void addEntity(Entity e){
+        e.setIsAddedToScene(true);
         entities.add(e);
+        for(Entity c : e.getChilds()){
+            c.setIsAddedToScene(true);
+        }
         SceneManager.addToRender(e);
     }
     
     public void removeEntity(Entity e){
         SceneManager.removeFromRender(e);
+        for(Entity c : e.getChilds()){
+            c.setIsAddedToScene(false);
+        }
         entities.remove(e);
+        e.setIsAddedToScene(false);
     }
 
     public List<Entity> getEntities() {
@@ -73,7 +81,7 @@ public abstract class Scene {
     public List<Entity> getEntities(String name) {
         List<Entity> e = new ArrayList<>();
         for(Entity en : entities){
-            if(en.getName() == name){
+            if(en.getName().equals(name)){
                 e.add(en);
             }
         }

@@ -11,6 +11,7 @@ import Main.ChapterFive.Entities.ChapterFiveManager;
 import Main.ChapterFive.Entities.SheepBoss;
 import Main.Entities.Main.Lucy;
 import Main.GameSystem.Cutscene.CutsceneTrigger;
+import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
 import Scenes.Scene;
 
@@ -25,6 +26,7 @@ public class ChapterFiveScene extends Scene {
     private SheepBoss sheep;
     private CutsceneTrigger trigger;
     private ChapterFiveManager manager;
+    private LucyUISet ui;
     
     private BossWall bosswall;
     
@@ -32,8 +34,10 @@ public class ChapterFiveScene extends Scene {
     public void load() {
         
         lucy = new Lucy(this);
-        manager = new ChapterFiveManager(this, lucy);
+        ui = new LucyUISet(this);
+        manager = new ChapterFiveManager(this, lucy, ui);
         addEntity(manager);
+        addEntity(ui);
         
         bossCutscene = new BossCutscene(this);
         sheep = new SheepBoss(this, lucy);

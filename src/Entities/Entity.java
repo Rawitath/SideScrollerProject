@@ -35,6 +35,7 @@ public abstract class Entity implements Debuggable, MouseControlable{
     private String tag;
     private Entity parent = null;
     private List<Entity> childs;
+    private boolean isAddedToScene;
             
     private Vector2 position;
     private double rotation;
@@ -57,6 +58,7 @@ public abstract class Entity implements Debuggable, MouseControlable{
         childs = new CopyOnWriteArrayList<>();
         name = this.getClass().getTypeName();
         tag = "Default";
+        isAddedToScene = false;
         
         setPosition(new Vector2());
         setRotation(0.0f);
@@ -76,6 +78,14 @@ public abstract class Entity implements Debuggable, MouseControlable{
     }
     public void onRemoveFromParent(){
         
+    }
+
+    public boolean isAddedToScene() {
+        return isAddedToScene;
+    }
+
+    public void setIsAddedToScene(boolean isAddedToScene) {
+        this.isAddedToScene = isAddedToScene;
     }
     
     public void onSetActive(){}
@@ -166,12 +176,18 @@ public abstract class Entity implements Debuggable, MouseControlable{
             e.setParent(this);
         }
         childs.add(e);
-        SceneManager.addToRender(e);
+        if(isAddedToScene){
+            e.setIsAddedToScene(true);
+            SceneManager.addToRender(e);
+        }
         e.onAddedToParent();
     }
     public void removeChild(Entity e){
         e.onRemoveFromParent();
-        SceneManager.removeFromRender(e);
+        if(isAddedToScene){
+            e.setIsAddedToScene(false);
+            SceneManager.removeFromRender(e);
+        }
         childs.remove(e);
         e.setParent(null);
     }

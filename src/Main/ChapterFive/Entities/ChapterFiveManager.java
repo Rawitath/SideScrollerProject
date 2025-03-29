@@ -8,6 +8,7 @@ import Datas.Vector2;
 import Entities.Entity;
 import Main.Entities.Main.Lucy;
 import Main.GameSystem.Cutscene.Cutscene;
+import Main.UI.Main.LucyUISet;
 import Scenes.Scene;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +23,13 @@ public class ChapterFiveManager extends Entity{
     private Lucy lucy;
     private Cutscene cutscene;
     private List<Entity> bosswalls;
+    private LucyUISet ui;
 
-    public ChapterFiveManager(Scene s, Lucy lucy) {
+    public ChapterFiveManager(Scene s, Lucy lucy,LucyUISet ui) {
         super(s);
         isBoss = false;
         this.lucy = lucy;
+        this.ui = ui;
         bosswalls = new ArrayList<>();
         setName("Manager5");
     }
@@ -58,16 +61,23 @@ public class ChapterFiveManager extends Entity{
 
     @Override
     public void update() {
+        ui.getHeartFrame().setCurrrentHeart(lucy.getHealth());
         if(!isBoss && (cutscene == null || !cutscene.isCutscenePlaying())){
+            ui.setActive(true);
             getScene().getCamera().setPosition(lucy.getPosition().multiply(Vector2.negativeY()));
         }
         else{
             if(cutscene.isCutscenePlaying()){
+                ui.setActive(false);
                 lucy.setBreakControl(true);
             }
             else{
                 if(lucy.getHealth() > 0){
+                    ui.setActive(true);
                     lucy.setBreakControl(false);
+                }
+                else{
+                    ui.setActive(false);
                 }
             }
         }
