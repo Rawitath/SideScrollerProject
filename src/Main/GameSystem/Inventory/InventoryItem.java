@@ -11,9 +11,11 @@ package Main.GameSystem.Inventory;
 import java.awt.image.BufferedImage;
 
 public class InventoryItem {
+    private int itemID;
     private String name;
     private int quantity;
     private BufferedImage icon;
+    
 
     public InventoryItem(String name, int quantity, BufferedImage icon) {
         this.name = name;
@@ -21,6 +23,15 @@ public class InventoryItem {
         this.icon = icon;
     }
 
+    public int getItemID() {
+        return itemID;
+    }
+
+    protected void setItemID(int itemID) {
+        this.itemID = itemID;
+    }
+    
+    
     public String getName() { return name; }
     public int getQuantity() { return quantity; }
     public BufferedImage getIcon() { return icon; }

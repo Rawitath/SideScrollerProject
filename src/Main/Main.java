@@ -28,7 +28,7 @@ public class Main {
         System.setProperty("sun.java2d.opengl", "true");
         
         //Uncomment to use Debug Mode
-//        DebugManager.useDebug();
+        DebugManager.useDebug();
 
         //Uncomment to use MapEditor
 //        MapBuilder.setUseEditor(true);
