@@ -6,6 +6,7 @@ package Main.ChapterFive.Scenes;
 
 import Datas.Vector2;
 import Main.ChapterFive.Cutscenes.BossCutscene;
+import Main.ChapterFive.Entities.Background.*;
 import Main.ChapterFive.Entities.BossWall;
 import Main.ChapterFive.Entities.ChapterFiveManager;
 import Main.ChapterFive.Entities.SheepBoss;
@@ -32,6 +33,16 @@ public class ChapterFiveScene extends Scene {
     
     @Override
     public void load() {
+        
+        addEntity(new CastleBG0(this));
+        addEntity(new CastleBG1(this));
+        addEntity(new CastleBG2(this));
+        addEntity(new CastleBG3(this));
+        addEntity(new CastleBG4(this));
+        addEntity(new CastleBG5(this));
+        addEntity(new CastleBG6(this));
+        addEntity(new CastleBG7(this));
+        addEntity(new CastleBG8(this));
         
         lucy = new Lucy(this);
         ui = new LucyUISet(this, lucy.getInventory());

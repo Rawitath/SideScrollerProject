@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Main.ChapterOne.Scenes;
+import Main.ChapterOne.Entities.Background.*;
 import Main.ChapterOne.Entities.ChapterOneManager;
 import Main.ChapterOne.Entities.Lava;
 import Main.ChapterOne.Entities.PushBox;
@@ -20,6 +21,14 @@ public class ChapterOneScene extends Scene{
     private ChapterOneManager manager;
     @Override
     public void load() {
+        addEntity(new HellBG1(this));
+        addEntity(new HellBG2(this));
+        addEntity(new HellBG3(this));
+        addEntity(new HellBG4(this));
+        addEntity(new HellBG5(this));
+        addEntity(new HellBG6(this));
+        addEntity(new HellBG7(this));
+        
         lucy = new Lucy(this);
         manager = new ChapterOneManager(this, lucy);
         

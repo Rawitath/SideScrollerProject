@@ -5,6 +5,7 @@
 package Main.ChapterThree.Scenes;
 
 
+import Main.ChapterThree.Entities.Background.CaveBG0;
 import Main.ChapterThree.Entities.ChapterThreeManager;
 import Main.Entities.Main.Lucy;
 import Maps.MapBuilder;
@@ -21,6 +22,9 @@ public class ChapterThreeScene extends Scene{
     
     @Override
     public void load() {
+        
+        addEntity(new CaveBG0(this));
+        
         lucy = new Lucy(this);
         manager = new ChapterThreeManager(this, lucy);
         addEntity(manager);
