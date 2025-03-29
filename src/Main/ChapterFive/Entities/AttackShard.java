@@ -42,14 +42,15 @@ public abstract class AttackShard extends CollidableEntity{
 
     @Override
     public void update() {
-        if(Time.time() - previous > duration){
-            getScene().removeEntity(this);
-        }
+        
     }
 
     @Override
     public void fixedUpdate() {
         setPosition(getPosition().translate(direction, speed * Time.fixedDeltaTime()));
+        if(Time.time() - previous > duration){
+            getScene().removeEntity(this);
+        }
     }
 
     @Override
@@ -74,4 +75,5 @@ public abstract class AttackShard extends CollidableEntity{
     public void setDamage(int damage) {
         this.damage = damage;
     }
+    
 }

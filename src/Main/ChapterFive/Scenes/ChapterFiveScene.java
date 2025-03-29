@@ -34,7 +34,7 @@ public class ChapterFiveScene extends Scene {
     public void load() {
         
         lucy = new Lucy(this);
-        ui = new LucyUISet(this);
+        ui = new LucyUISet(this, lucy.getInventory());
         manager = new ChapterFiveManager(this, lucy, ui);
         addEntity(manager);
         addEntity(ui);

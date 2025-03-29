@@ -13,6 +13,8 @@ import Main.Entities.Main.Animation.LucyFall;
 import Main.Entities.Main.Animation.LucyJump;
 import Main.Entities.Main.Animation.LucyRun;
 import Main.GameSystem.Cutscene.CutsceneControllable;
+import Main.GameSystem.Inventory.Inventory;
+import Main.GameSystem.Inventory.InventoryItem;
 import Physics.Collider;
 import Physics.Time;
 import Scenes.Scene;
@@ -25,16 +27,18 @@ import java.awt.event.KeyEvent;
  */
 public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneControllable, Damagable{
     
+    //Fundamental
     private float speed = 7.5f;
     private float jumpForce = 16f;
     
     private int health = 5;
+    private int inventorySize = 6;
     
-    private Animator animator;
-    
+    //Wing
     private int maxJump = 2;
     private int currentJump = 0;
     
+    //ETC.
     private boolean breakControl;
     private float damageCountdown = 0.3f;
     private float countdownLeft = 0f;
@@ -43,10 +47,16 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
     
     private boolean isDamageTaken = false;
     
+    //Gameplay System
+    private Inventory inventory;
+    private Animator animator;
+    
     public Lucy(Scene s) {
         super(s);
         setName("Lucy");
         setTag("Player");
+        
+        inventory = new Inventory(inventorySize);
         
         animator = new Animator();
         animator.setAnimation(new LucyBreath());
@@ -240,4 +250,9 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
             System.out.println("Damege : " + damage);
         }
     }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+    
 }

@@ -6,6 +6,7 @@ package Main.UI.Main;
 
 import Datas.Vector2;
 import Entities.UI.UIEntity;
+import Main.GameSystem.Inventory.Inventory;
 import Scenes.Scene;
 
 /**
@@ -15,8 +16,9 @@ import Scenes.Scene;
 public class LucyUISet extends UIEntity{
 
     private HeartFrame heartFrame;
+    private InventoryDisplay inventory;
     
-    public LucyUISet(Scene s) {
+    public LucyUISet(Scene s, Inventory inv) {
         super(s);
         setScale(Vector2.one().multiply(s.getUIView().getReferenceResolution()));
         
@@ -24,17 +26,23 @@ public class LucyUISet extends UIEntity{
         addChild(heartFrame);
         heartFrame.setScale(new Vector2(1, 1));
         heartFrame.setLocalPosition(new Vector2(100, -80));
+        heartFrame.setScreenAnchor(TOP_LEFT);
         
+        inventory = new InventoryDisplay(s, inv);
+        addChild(inventory);
+        inventory.setScreenAnchor(BOTTOM_LEFT);
+        inventory.setScale(new Vector2(1, 1));
+        inventory.setLocalPosition(new Vector2(670, 80));
     }
 
     @Override
     public void start() {
-        heartFrame.setScreenAnchor(TOP_LEFT);
+        
     }
 
     @Override
     public void update() {
-
+        
     }
 
     @Override
@@ -48,6 +56,14 @@ public class LucyUISet extends UIEntity{
 
     public void setHeartFrame(HeartFrame heartFrame) {
         this.heartFrame = heartFrame;
+    }
+
+    public InventoryDisplay getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(InventoryDisplay inventory) {
+        this.inventory = inventory;
     }
     
 }

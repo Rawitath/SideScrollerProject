@@ -6,10 +6,13 @@ package Main.ChapterFive.Entities;
 
 import Datas.Vector2;
 import Entities.Entity;
+import Inputs.KeyControlable;
 import Main.Entities.Main.Lucy;
 import Main.GameSystem.Cutscene.Cutscene;
 import Main.UI.Main.LucyUISet;
+import Physics.Time;
 import Scenes.Scene;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +20,7 @@ import java.util.List;
  *
  * @author GA_IA
  */
-public class ChapterFiveManager extends Entity{
+public class ChapterFiveManager extends Entity implements KeyControlable{
     
     private boolean isBoss;
     private Lucy lucy;
@@ -32,6 +35,7 @@ public class ChapterFiveManager extends Entity{
         this.ui = ui;
         bosswalls = new ArrayList<>();
         setName("Manager5");
+        
     }
 
     public Cutscene getCutscene() {
@@ -87,4 +91,20 @@ public class ChapterFiveManager extends Entity{
     public void fixedUpdate() {
         
     }
+    
+    @Override
+    public void onKeyPressed(KeyEvent e, int keyCode) {
+        
+    }
+
+    @Override
+    public void onKeyReleased(KeyEvent e, int keyCode) {
+
+    }
+
+    @Override
+    public void onKeyTyped(KeyEvent e, int keyCode) {
+
+    }
+    
 }
