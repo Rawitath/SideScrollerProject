@@ -22,8 +22,8 @@ public class ChapterFourScene extends Scene {
     public void load() {
         
         addEntity(new CastleBG0(this));
-        addEntity(new CastleBG1(this));
         addEntity(new CastleBG2(this));
+        addEntity(new CastleBG1(this));
         addEntity(new CastleBG3(this));
         addEntity(new CastleBG4(this));
         addEntity(new CastleBG5(this));

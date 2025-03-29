@@ -18,7 +18,7 @@ public class CastleBG8 extends StageBackground{
         super(s);
         setSprite(FileReader.readImage("res/game/castlebg/Castle08.png"));
         setSpriteSize(getSpriteSize().multiply(1.56f));
-        setHorizontalShiftMultiplier(0.99f);
+        setHorizontalShiftMultiplier(0.985f);
     }
     
 }

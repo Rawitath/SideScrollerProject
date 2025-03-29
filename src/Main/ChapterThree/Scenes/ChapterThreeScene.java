@@ -5,6 +5,7 @@
 package Main.ChapterThree.Scenes;
 
 
+import Main.ChapterOne.Entities.Background.*;
 import Main.ChapterThree.Entities.Background.CaveBG0;
 import Main.ChapterThree.Entities.ChapterThreeManager;
 import Main.Entities.Main.Lucy;
@@ -24,6 +25,10 @@ public class ChapterThreeScene extends Scene{
     public void load() {
         
         addEntity(new CaveBG0(this));
+        addEntity(new HellBG2(this));
+        addEntity(new HellBG3(this));
+        addEntity(new HellBG5(this));
+        addEntity(new HellBG6(this));
         
         lucy = new Lucy(this);
         manager = new ChapterThreeManager(this, lucy);
