@@ -23,6 +23,10 @@ public abstract class Scene {
     private UIView mainUIView = null;
     
     public Scene(){
+        resetScene();
+    }
+    
+    private void resetScene(){
         entities = new CopyOnWriteArrayList<>();
         name = this.getClass().getTypeName();
         mainCamera = new Camera(this);
@@ -43,6 +47,7 @@ public abstract class Scene {
         for(var e : entities){
             removeEntity(e);
         }
+        resetScene();
     }
     
     public int getId() {
