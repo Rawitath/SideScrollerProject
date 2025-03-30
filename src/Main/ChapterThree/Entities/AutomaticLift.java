@@ -25,6 +25,8 @@ public class AutomaticLift extends Lift{
     @Override
     public void start() {
         super.start();
+        setBottomPosition(getPosition().getY());
+        setTopPosition(getPosition().getY() + 12);
         isWorking = true;
     }
     
@@ -32,8 +34,8 @@ public class AutomaticLift extends Lift{
     public void fixedUpdate() {
         super.fixedUpdate();
         if(isWorking){
-            if(!isUp){
-            if(distanceBetweenBottom() > 0){
+            if(isUp){
+            if(getPosition().getY() < getTopPosition()){
                 setPosition(getPosition().translate(Vector2.up(), 2 * Time.fixedDeltaTime()));
             }
             else{
@@ -41,7 +43,7 @@ public class AutomaticLift extends Lift{
             }
         }
         else{
-            if(distanceBetweenTop() > 0){
+            if(getPosition().getY() > getBottomPosition()){
                 setPosition(getPosition().translate(Vector2.down(), 2 * Time.fixedDeltaTime()));
             }
             else{

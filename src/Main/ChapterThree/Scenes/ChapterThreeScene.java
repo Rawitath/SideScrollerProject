@@ -61,9 +61,6 @@ public class ChapterThreeScene extends Scene{
         MapBuilder.setVariableClone("Spike", true);
         MapBuilder.setVariableClone("fire ball UD", true);
         MapBuilder.loadMap("map/Chapter3");
-        
-        lift.setBottomPosition(lift.getPosition());
-        lift.setTopPosition(lift.getPosition().add(new Vector2(0f, 20f)));
     }
     
 }

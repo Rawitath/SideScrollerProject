@@ -155,7 +155,7 @@ public abstract class PhysicableEntity extends CollidableEntity{
                     if(!lockDirection.equals(Vector2.zero())){
                         drift = drift.multiply(Vector2.up());
                     }
-                    setPosition(drift);
+                    setPosition(new Vector2(getPosition().getX(), drift.getY()));
                 }
                 groundPosition = other.getEntity().getPosition();
             }

@@ -19,31 +19,32 @@ import Utilities.FileReader;
  */
 public abstract class Lift extends CollidableEntity implements Copyable{
 
-    private Vector2 bottomPosition = new Vector2();
-    private Vector2 topPosition = new Vector2();
+    private float bottomPosition;
+    private float topPosition;
     private boolean startFromTop = false;
     
     public Lift(Scene s) {
         super(s);
         setSprite(FileReader.readImage("res/game/chapter/lift1.png"));
         setSpriteSize(getSpriteSize().multiply(1.5f));
+        getCollider().setSolid(true);
     }
 
-    public Vector2 getBottomPosition() {
+    public float getBottomPosition() {
         return bottomPosition;
     }
 
-    public void setBottomPosition(Vector2 bottomPosition) {
+    public void setBottomPosition(float bottomPosition) {
         this.bottomPosition = bottomPosition;
     }
 
-    public Vector2 getTopPosition() {
+    public float getTopPosition() {
         return topPosition;
     }
 
-    public void setTopPosition(Vector2 topPosition) {
+    public void setTopPosition(float topPosition) {
         this.topPosition = topPosition;
-    }
+    }    
 
     public boolean isStartFromTop() {
         return startFromTop;
@@ -55,7 +56,7 @@ public abstract class Lift extends CollidableEntity implements Copyable{
 
     @Override
     public void start() {
-
+        
     }
 
     @Override
@@ -82,10 +83,10 @@ public abstract class Lift extends CollidableEntity implements Copyable{
     public void onColliderExit(Collider other) {
 
     }
-    public float distanceBetweenTop(){
-        return (float) Math.sqrt(Math.pow(topPosition.getX() - getPosition().getX(), 2) + Math.pow(topPosition.getY() - getPosition().getY(), 2));
-    }
-    public float distanceBetweenBottom(){
-        return (float) Math.sqrt(Math.pow(bottomPosition.getX() - getPosition().getX(), 2) + Math.pow(bottomPosition.getY() - getPosition().getY(), 2));
-    }
+//    public float distanceBetweenTop(){
+//        return (float) Math.sqrt(Math.pow(topPosition.getX() - getPosition().getX(), 2) + Math.pow(topPosition.getY() - getPosition().getY(), 2));
+//    }
+//    public float distanceBetweenBottom(){
+//        return (float) Math.sqrt(Math.pow(bottomPosition.getX() - getPosition().getX(), 2) + Math.pow(bottomPosition.getY() - getPosition().getY(), 2));
+//    }
 }
