@@ -26,6 +26,7 @@ public class Lava extends CollidableEntity implements Copyable{
     public Lava(Scene s) {
         super(s);
         setName("Lava");
+        setTag("Lava");
         animator = new Animator();
         animator.setAnimation(new LavaAnimation());
         getCollider().setBound(new Vector2(1f, 0.5f));

@@ -26,6 +26,8 @@ public abstract class PhysicableEntity extends CollidableEntity{
     private Vector2 groundPosition = null;
     
     private float minimumStep;
+    
+    private boolean useGravity;
 
     public PhysicableEntity(Scene s) {
         super(s);
@@ -33,6 +35,7 @@ public abstract class PhysicableEntity extends CollidableEntity{
         lockDirection = Vector2.zero();
         getCollider().setSolid(true);
         minimumStep = 0.15f;
+        useGravity = true;
     }
 
     @Override
@@ -48,7 +51,7 @@ public abstract class PhysicableEntity extends CollidableEntity{
     @Override
     public void fixedUpdate() {
         setPosition(getPosition().translate(velocity.add(lockDirection.multiply(Math.abs(velocity.getX())).negative()), Time.fixedDeltaTime()));
-        if(!grounded){
+        if(useGravity && !grounded){
             addVelocity(Vector2.down(), Constants.gravityValue);
         }
         if(lockObject != null && !lockObject.getEntity().isAddedToScene()){
@@ -240,6 +243,14 @@ public abstract class PhysicableEntity extends CollidableEntity{
 
     public Collider getGroundObject() {
         return groundObject;
+    }
+
+    public boolean isUseGravity() {
+        return useGravity;
+    }
+
+    public void setUseGravity(boolean useGravity) {
+        this.useGravity = useGravity;
     }
     
 }

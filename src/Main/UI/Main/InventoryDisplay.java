@@ -37,6 +37,12 @@ public class InventoryDisplay extends UIEntity{
 //        selector.setPosition(inventorySlots[inventory.getSelectedSlot()].getPosition());
         
         for (int i = 0; i < inventory.getSize(); i++) {
+            if(i == inventory.getSelectedSlot()){
+                inventorySlots[i].setLocalScale(Vector2.one().multiply(slotSize * 1.2f));
+            }
+            else{
+                inventorySlots[i].setLocalScale(Vector2.one().multiply(slotSize));
+            }
             InventoryItem item = inventory.getItems()[i];
             if (item != null) {
                 inventorySlots[i].setItem(item);

@@ -2,17 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.ChapterTwo.Entities;
+package Main.ChapterThree.Entities;
 
-import Datas.Vector2;
+import Animations.Animator;
+import Datas.Vector2Int;
 import Entities.CollidableEntity;
 import Entities.Copyable;
 import Entities.Entity;
+import Main.ChapterThree.Animation.FireballVertical;
+import Main.ChapterTwo.Entities.Spike;
 import Main.Entities.Main.Damagable;
+import Main.Entities.Main.PhysicableEntity;
 import Physics.Collider;
 import Physics.Time;
 import Scenes.Scene;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,24 +23,28 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author GA_IA
  */
-public class Spike extends CollidableEntity implements Copyable{
-
+public class Fireball extends CollidableEntity implements Copyable{
     private float delayTime = 1f;
     private float count = 0;
     private boolean spikeEnable = false;
     private Map<Damagable, Float> damageMap = new ConcurrentHashMap<>();
-    public Spike(Scene s) {
+    private Animator animator;
+    
+    public Fireball(Scene s) {
         super(s);
     }
 
     @Override
     public void start() {
         
+        animator = new Animator();
+        animator.setAnimation(new FireballVertical());
+        setSpriteSize(new Vector2Int(100, 100));
     }
 
     @Override
     public void update() {
-        
+        setSprite(animator.getFrame(Time.deltaTime()), true);
     }
 
     @Override
@@ -73,8 +80,7 @@ public class Spike extends CollidableEntity implements Copyable{
 
     @Override
     public <T extends Entity> T copyOf() {
-        Spike spike = new Spike(getScene());
-        return (T) spike;
+        Fireball fireball = new Fireball(getScene());
+        return (T) fireball;
     }
-    
 }

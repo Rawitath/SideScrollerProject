@@ -5,9 +5,16 @@
 package Main.ChapterThree.Scenes;
 
 
+import Datas.Vector2;
 import Main.ChapterOne.Entities.Background.*;
+import Main.ChapterOne.Entities.Lava;
+import Main.ChapterThree.Entities.AutomaticLift;
 import Main.ChapterThree.Entities.Background.CaveBG0;
 import Main.ChapterThree.Entities.ChapterThreeManager;
+import Main.ChapterThree.Entities.Fireball;
+import Main.ChapterThree.Entities.Lift;
+import Main.ChapterThree.Entities.VerticalFireball;
+import Main.ChapterTwo.Entities.Spike;
 import Main.Entities.Main.Lucy;
 import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
@@ -22,6 +29,8 @@ public class ChapterThreeScene extends Scene{
     private Lucy lucy;
     private ChapterThreeManager manager;
     private LucyUISet ui;
+    private Lift lift;
+    private Fireball fireball;
     
     @Override
     public void load() {
@@ -37,9 +46,24 @@ public class ChapterThreeScene extends Scene{
         manager = new ChapterThreeManager(this, lucy, ui);
         addEntity(manager);
         
+        lift = new AutomaticLift(this);
+        
+        fireball = new VerticalFireball(this);
+        
         MapBuilder.useMapBuilder(this);
         MapBuilder.addVariable("spaw for 2", lucy);
+        MapBuilder.addVariable("Spike", new Spike(this));
+        MapBuilder.addVariable("elevator", lift);
+        MapBuilder.addVariable("fire ball UD", fireball);
+        MapBuilder.addVariable("lava", new Lava(this));
+        MapBuilder.setVariableClone("lava", true);
+        MapBuilder.setVariableClone("elevator", true);
+        MapBuilder.setVariableClone("Spike", true);
+        MapBuilder.setVariableClone("fire ball UD", true);
         MapBuilder.loadMap("map/Chapter3");
+        
+        lift.setBottomPosition(lift.getPosition());
+        lift.setTopPosition(lift.getPosition().add(new Vector2(0f, 20f)));
     }
     
 }

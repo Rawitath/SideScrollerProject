@@ -33,7 +33,7 @@ public class SheepBoss extends PhysicableEntity implements CutsceneControllable{
     
     private int health = 20;
     
-    private float attacDuration = 1f;
+    private float attacDuration = 2.5f;
     
     public SheepBoss(Scene s, Lucy lucy) {
         super(s);

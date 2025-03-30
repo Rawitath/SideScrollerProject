@@ -6,6 +6,7 @@ package Main.ChapterFour.Scenes;
 
 import Main.ChapterFive.Entities.Background.*;
 import Main.ChapterFour.Entities.ChapterFourManager;
+import Main.ChapterThree.Entities.VerticalFireball;
 import Main.Entities.Main.Lucy;
 import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
@@ -40,6 +41,7 @@ public class ChapterFourScene extends Scene {
         
         MapBuilder.useMapBuilder(this);
         MapBuilder.addVariable("Entry1", lucy);
+//        MapBuilder.addVariable("fire ball UD", new VerticalFireball(this));
         MapBuilder.loadMap("map/Chapter4");
     }
     

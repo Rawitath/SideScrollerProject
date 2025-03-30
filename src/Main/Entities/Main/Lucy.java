@@ -38,7 +38,7 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
     private int inventorySize = 6;
     
     //Wing
-    private int maxJump = 1;
+    private int maxJump = 10;
     private int currentJump = 0;
     
     //ETC.
@@ -158,6 +158,12 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
                     setVelocity(new Vector2(getVelocity().getX(), jumpForce));
                     currentJump++;
                 }
+            }
+            if(keyCode == KeyEvent.VK_E){
+                inventory.scroll(1);
+            }
+            if(keyCode == KeyEvent.VK_Q){
+                inventory.scroll(-1);
             }
         }
     }
