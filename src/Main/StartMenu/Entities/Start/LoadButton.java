@@ -21,4 +21,10 @@ public class LoadButton extends MenuButton{
         buttonText.setText("LOAD");
     }
     
+    @Override
+    public void onButtonPressed() {
+        if (getController().getCurrentPage() == 0){
+            getController().goToPage(2);
+        }
+    }
 }

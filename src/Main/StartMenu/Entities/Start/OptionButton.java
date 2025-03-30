@@ -23,7 +23,9 @@ public class OptionButton extends MenuButton{
 
     @Override
     public void onButtonPressed() {
-        getController().goToPage(3);
+        if (getController().getCurrentPage() == 0){
+            getController().goToPage(3);
+        }
     }
     
 }

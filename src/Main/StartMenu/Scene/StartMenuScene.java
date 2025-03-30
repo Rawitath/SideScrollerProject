@@ -5,7 +5,9 @@
 package Main.StartMenu.Scene;
 
 import Datas.Vector2Int;
+import Datas.Vector2;
 import Main.StartMenu.Entities.*;
+import Main.StartMenu.Entities.Load.LoadPage;
 import Main.StartMenu.Entities.Option.OptionController;
 import Main.StartMenu.Entities.Option.OptionGroup;
 import Main.StartMenu.Entities.Start.MainGroup;
@@ -16,6 +18,7 @@ import Scenes.Scene;
  * @author GA_IA
  */
 public class StartMenuScene extends Scene {
+    private LoadPage loadPage;
     
     private MenuController controller;
     
@@ -38,6 +41,9 @@ public class StartMenuScene extends Scene {
         
         optionGroup = new OptionGroup(this, controller);
         addEntity(optionGroup);
+        
+        loadPage = new LoadPage(this , controller);
+        addEntity(loadPage);
     }
     
 }
