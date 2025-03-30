@@ -7,6 +7,7 @@ package Main.ChapterFour.Scenes;
 import Main.ChapterFive.Entities.Background.*;
 import Main.ChapterFour.Entities.ChapterFourManager;
 import Main.Entities.Main.Lucy;
+import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
 import Scenes.Scene;
 
@@ -18,6 +19,7 @@ public class ChapterFourScene extends Scene {
 
     private Lucy lucy;
     private ChapterFourManager manager;
+    private LucyUISet ui;
     @Override
     public void load() {
         
@@ -32,7 +34,8 @@ public class ChapterFourScene extends Scene {
         addEntity(new CastleBG8(this));
         
         lucy = new Lucy(this);
-        manager = new ChapterFourManager(this, lucy);
+        ui = new LucyUISet(this, lucy.getInventory());
+        manager = new ChapterFourManager(this, lucy, ui);
         addEntity(manager);
         
         MapBuilder.useMapBuilder(this);

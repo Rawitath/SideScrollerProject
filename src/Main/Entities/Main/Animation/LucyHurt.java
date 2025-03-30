@@ -16,7 +16,7 @@ public class LucyHurt extends Animation {
         super();
         setSpriteSheet(FileReader.readImage("res/game/animation/lucy/hurt.png"));
         sliceSprite(1, 128, 128, 1);
-        setFps(12);
+        setFps(1);
         setLoop(false);
     }
 }

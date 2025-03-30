@@ -8,6 +8,7 @@ import Main.ChapterOne.Entities.ChapterOneManager;
 import Main.ChapterOne.Entities.Lava;
 import Main.ChapterOne.Entities.PushBox;
 import Main.Entities.Main.Lucy;
+import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
 import Scenes.Scene;
 
@@ -19,6 +20,7 @@ public class ChapterOneScene extends Scene{
 
     private Lucy lucy;
     private ChapterOneManager manager;
+    private LucyUISet ui;
     @Override
     public void load() {
         addEntity(new HellBG1(this));
@@ -30,7 +32,8 @@ public class ChapterOneScene extends Scene{
         addEntity(new HellBG7(this));
         
         lucy = new Lucy(this);
-        manager = new ChapterOneManager(this, lucy);
+        ui = new LucyUISet(this, lucy.getInventory());
+        manager = new ChapterOneManager(this, lucy, ui);
         
         addEntity(manager);
         

@@ -7,6 +7,7 @@ package Main.ChapterFive.Entities;
 import Datas.Vector2;
 import Entities.Entity;
 import Inputs.KeyControlable;
+import Main.Entities.Main.ChapterManager;
 import Main.Entities.Main.Lucy;
 import Main.GameSystem.Cutscene.Cutscene;
 import Main.UI.Main.LucyUISet;
@@ -20,37 +21,21 @@ import java.util.List;
  *
  * @author GA_IA
  */
-public class ChapterFiveManager extends Entity implements KeyControlable{
+public class ChapterFiveManager extends ChapterManager{
     
-    private boolean isBoss;
-    private Lucy lucy;
-    private Cutscene cutscene;
     private List<Entity> bosswalls;
-    private LucyUISet ui;
 
-    public ChapterFiveManager(Scene s, Lucy lucy,LucyUISet ui) {
-        super(s);
-        isBoss = false;
-        this.lucy = lucy;
-        this.ui = ui;
+    public ChapterFiveManager(Scene s, Lucy lucy, LucyUISet ui) {
+        super(s, lucy, ui);
         bosswalls = new ArrayList<>();
+        setInitialZoom(85f);
         setName("Manager5");
-        
-    }
-
-    public Cutscene getCutscene() {
-        return cutscene;
-    }
-
-    public void setCutscene(Cutscene cutscene) {
-        this.cutscene = cutscene;
     }
     
-    public boolean isBoss(){
-        return isBoss;
-    }
+    @Override
     public void setIsBoss(boolean isBoss){
-        this.isBoss = isBoss;
+        super.setIsBoss(isBoss);
+        
         for(Entity e : bosswalls){
             BossWall b = (BossWall) e; 
             b.setIsActivated(isBoss);
@@ -59,52 +44,7 @@ public class ChapterFiveManager extends Entity implements KeyControlable{
     
     @Override
     public void start() {
-        getScene().getCamera().setZoom(85f);
+        super.start();
         bosswalls = getScene().getEntities("BossWall");
     }
-
-    @Override
-    public void update() {
-        ui.getHeartFrame().setCurrrentHeart(lucy.getHealth());
-        if(!isBoss && (cutscene == null || !cutscene.isCutscenePlaying())){
-            ui.setActive(true);
-            getScene().getCamera().setPosition(lucy.getPosition().multiply(Vector2.negativeY()));
-        }
-        else{
-            if(cutscene.isCutscenePlaying()){
-                ui.setActive(false);
-                lucy.setBreakControl(true);
-            }
-            else{
-                if(lucy.getHealth() > 0){
-                    ui.setActive(true);
-                    lucy.setBreakControl(false);
-                }
-                else{
-                    ui.setActive(false);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void fixedUpdate() {
-        
-    }
-    
-    @Override
-    public void onKeyPressed(KeyEvent e, int keyCode) {
-        
-    }
-
-    @Override
-    public void onKeyReleased(KeyEvent e, int keyCode) {
-
-    }
-
-    @Override
-    public void onKeyTyped(KeyEvent e, int keyCode) {
-
-    }
-    
 }

@@ -498,6 +498,7 @@ public class MapBuilder {
         tc.setScale(tc.getScale().multiply(map.getTileRatio()).multiply(map.getTiles()[i][j].getColliderSize()));
         tc.setPosition(new Vector2(map.columnToWorldX(i + map.getColumnOffset()), map.rowToWorldY(j + map.getRowOffset()))
                 .add(Vector2.one().multiply(map.getTiles()[i][j].getAnchor()).multiply(tc.getScale().multiply(0.5f)))
+                .add(Vector2.one().multiply(map.getTiles()[i][j].getAnchor()).multiply(map.getTileRatio() / 2f).add(tc.getScale().multiply(Vector2.one().multiply(map.getTiles()[i][j].getAnchor().negative()))))
         );
         if(map.getTiles()[i][j].isSolid()){
             tc.getCollider().setSolid(true);

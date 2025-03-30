@@ -238,7 +238,6 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
         }
         health -= damage;
         if(health < 1){
-            breakControl = true;
             stop();
             animator.setAnimation(new LucyDead());
         }

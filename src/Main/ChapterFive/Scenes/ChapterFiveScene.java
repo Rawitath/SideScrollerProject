@@ -48,7 +48,6 @@ public class ChapterFiveScene extends Scene {
         ui = new LucyUISet(this, lucy.getInventory());
         manager = new ChapterFiveManager(this, lucy, ui);
         addEntity(manager);
-        addEntity(ui);
         
         bossCutscene = new BossCutscene(this);
         sheep = new SheepBoss(this, lucy);

@@ -6,7 +6,9 @@ package Main.ChapterTwo.Scenes;
 
 import Main.ChapterTwo.Entities.ChapterTwoManager;
 import Main.ChapterTwo.Entities.Background.*;
+import Main.ChapterTwo.Entities.Spike;
 import Main.Entities.Main.Lucy;
+import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
 import Scenes.Scene;
 
@@ -18,6 +20,7 @@ public class ChapterTwoScene extends Scene{
 
     private ChapterTwoManager manager;
     private Lucy lucy;
+    private LucyUISet ui;
     
     @Override
     public void load() {
@@ -34,12 +37,15 @@ public class ChapterTwoScene extends Scene{
         addEntity(new ForestBG9(this));
         
         lucy = new Lucy(this);
-        manager = new ChapterTwoManager(this, lucy);
+        ui = new LucyUISet(this, lucy.getInventory());
+        manager = new ChapterTwoManager(this, lucy, ui);
         
         addEntity(manager);
         
         MapBuilder.useMapBuilder(this);
         MapBuilder.addVariable("GoTo1", lucy);
+        MapBuilder.addVariable("Spike", new Spike(this));
+        MapBuilder.setVariableClone("Spike", true);
         MapBuilder.loadMap("map/Chapter2");
     }
     

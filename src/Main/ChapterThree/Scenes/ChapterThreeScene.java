@@ -9,6 +9,7 @@ import Main.ChapterOne.Entities.Background.*;
 import Main.ChapterThree.Entities.Background.CaveBG0;
 import Main.ChapterThree.Entities.ChapterThreeManager;
 import Main.Entities.Main.Lucy;
+import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
 import Scenes.Scene;
 
@@ -20,6 +21,7 @@ public class ChapterThreeScene extends Scene{
 
     private Lucy lucy;
     private ChapterThreeManager manager;
+    private LucyUISet ui;
     
     @Override
     public void load() {
@@ -31,7 +33,8 @@ public class ChapterThreeScene extends Scene{
         addEntity(new HellBG6(this));
         
         lucy = new Lucy(this);
-        manager = new ChapterThreeManager(this, lucy);
+        ui = new LucyUISet(this, lucy.getInventory());
+        manager = new ChapterThreeManager(this, lucy, ui);
         addEntity(manager);
         
         MapBuilder.useMapBuilder(this);

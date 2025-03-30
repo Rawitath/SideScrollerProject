@@ -6,68 +6,22 @@ package Main.ChapterOne.Entities;
 
 import Datas.Vector2;
 import Entities.Entity;
+import Main.Entities.Main.ChapterManager;
 import Main.Entities.Main.Lucy;
 import Main.GameSystem.Cutscene.Cutscene;
+import Main.UI.Main.LucyUISet;
 import Scenes.Scene;
 
 /**
  *
  * @author GA_IA
  */
-public class ChapterOneManager extends Entity{
-    private boolean isBoss;
-    private Lucy lucy;
-    private Cutscene cutscene;
-
-    public ChapterOneManager(Scene s, Lucy lucy) {
-        super(s);
-        isBoss = false;
-        this.lucy = lucy;
+public class ChapterOneManager extends ChapterManager{
+    
+    public ChapterOneManager(Scene s, Lucy lucy, LucyUISet ui) {
+        super(s, lucy, ui);
+        setInitialZoom(85f);
         setName("Manager1");
     }
-
-    public Cutscene getCutscene() {
-        return cutscene;
-    }
-
-    public void setCutscene(Cutscene cutscene) {
-        this.cutscene = cutscene;
-    }
     
-    public boolean isBoss(){
-        return isBoss;
-    }
-    public void setIsBoss(boolean isBoss){
-        this.isBoss = isBoss;
-    }
-
-    @Override
-    public void start() {
-        getScene().getCamera().setZoom(95f);
-    }
-
-    @Override
-    public void update() {
-        if(!isBoss && (cutscene == null || !cutscene.isCutscenePlaying())){
-            getScene().getCamera().setPosition(lucy.getPosition().multiply(Vector2.negativeY()));
-        }
-        else{
-            if(cutscene != null){
-                if(cutscene.isCutscenePlaying()){
-                lucy.setBreakControl(true);
-            }
-            else{
-                if(lucy.getHealth() > 0){
-                    lucy.setBreakControl(false);
-                }
-            }
-            }
-            
-        }
-    }
-
-    @Override
-    public void fixedUpdate() {
-        
-    }
 }
