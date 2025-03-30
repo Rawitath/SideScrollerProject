@@ -17,6 +17,7 @@ public class LucyUISet extends UIEntity{
 
     private HeartFrame heartFrame;
     private InventoryDisplay inventory;
+    private StatPanel statPanel;
     
     public LucyUISet(Scene s, Inventory inv) {
         super(s);
@@ -33,6 +34,12 @@ public class LucyUISet extends UIEntity{
         inventory.setScreenAnchor(BOTTOM_LEFT);
         inventory.setScale(new Vector2(1, 1));
         inventory.setLocalPosition(new Vector2(670, 80));
+        
+        statPanel = new StatPanel(s);
+        addChild(statPanel);
+        statPanel.setLocalScale(new Vector2(1, 1));
+        System.out.println(statPanel.getScale());
+        System.out.println(statPanel.getLocalScale());
     }
 
     @Override
@@ -64,6 +71,14 @@ public class LucyUISet extends UIEntity{
 
     public void setInventory(InventoryDisplay inventory) {
         this.inventory = inventory;
+    }
+
+    public StatPanel getStatPanel() {
+        return statPanel;
+    }
+
+    public void setStatPanel(StatPanel statPanel) {
+        this.statPanel = statPanel;
     }
     
 }

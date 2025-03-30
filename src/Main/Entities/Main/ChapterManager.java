@@ -16,7 +16,7 @@ import java.awt.event.KeyEvent;
  *
  * @author GA_IA
  */
-public class ChapterManager extends Entity implements KeyControlable{
+public class ChapterManager extends Entity{
     private boolean isBoss;
     private Lucy lucy;
     private Cutscene cutscene;
@@ -78,12 +78,25 @@ public class ChapterManager extends Entity implements KeyControlable{
     @Override
     public void update() {
         ui.getHeartFrame().setCurrrentHeart(lucy.getHealth());
+        
         if(!isBoss && (cutscene == null || !cutscene.isCutscenePlaying())){
             ui.setActive(true);
             getScene().getCamera().setPosition(lucy.getPosition().multiply(Vector2.negativeY()));
             if(lucy.getHealth() > 0){
                 ui.setActive(true);
-                lucy.setBreakControl(false);
+                
+                if(lucy.isStatsOpen()){
+                    ui.getHeartFrame().setActive(false);
+                    ui.getInventory().setActive(false);
+                    ui.getStatPanel().setActive(true);
+                    lucy.setBreakControl(true);
+                }
+                else{
+                    ui.getHeartFrame().setActive(true);
+                    ui.getInventory().setActive(true);
+                    ui.getStatPanel().setActive(false);
+                    lucy.setBreakControl(false);
+                }
             }
             else{
                 lucy.setBreakControl(true);
@@ -111,20 +124,5 @@ public class ChapterManager extends Entity implements KeyControlable{
     @Override
     public void fixedUpdate() {
         
-    }
-    
-    @Override
-    public void onKeyPressed(KeyEvent e, int keyCode) {
-        
-    }
-
-    @Override
-    public void onKeyReleased(KeyEvent e, int keyCode) {
-
-    }
-
-    @Override
-    public void onKeyTyped(KeyEvent e, int keyCode) {
-
     }
 }

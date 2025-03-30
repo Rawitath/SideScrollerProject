@@ -49,6 +49,7 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
     private boolean both = false;
     
     private boolean isDamageTaken = false;
+    private boolean statsOpen = false;
     
     //Gameplay System
     private Inventory inventory;
@@ -166,6 +167,9 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
                 inventory.scroll(-1);
             }
         }
+        if(keyCode == KeyEvent.VK_I){
+            statsOpen = !statsOpen;
+        }
     }
     
     @Override
@@ -277,12 +281,20 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
             isDamageTaken = true;
             countdownLeft = Time.time();
             setSprite(FileReader.readImage("res/game/animation/lucy/hurt.png"), true);
-            System.out.println("Damege : " + damage);
+            statsOpen = false;
         }
     }
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public boolean isStatsOpen() {
+        return statsOpen;
+    }
+    
+    public void setStatsOpen(boolean statsOpen) {
+        this.statsOpen = statsOpen;
     }
     
 }
