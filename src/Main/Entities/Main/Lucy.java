@@ -13,8 +13,11 @@ import Main.Entities.Main.Animation.LucyFall;
 import Main.Entities.Main.Animation.LucyJump;
 import Main.Entities.Main.Animation.LucyRun;
 import Main.GameSystem.Cutscene.CutsceneControllable;
+import Main.GameSystem.Door.Door;
+import Main.GameSystem.Door.Key;
 import Main.GameSystem.Inventory.Inventory;
 import Main.GameSystem.Inventory.InventoryItem;
+import Main.GameSystem.Inventory.Obtainable;
 import Physics.Collider;
 import Physics.Time;
 import Scenes.Scene;
@@ -189,7 +192,30 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
     @Override
     public void onColliderEnter(Collider other) {
         super.onColliderEnter(other);
+        if(other.getEntity() instanceof Obtainable){
+            if(inventory.getItemCount() >= inventory.getSize()){
+                return;
+            }
+            Obtainable ob = (Obtainable) other.getEntity();
+            inventory.addItem(ob.obtain());
+        }
     }
+
+    @Override
+    public void onColliderStay(Collider other) {
+        super.onColliderStay(other);
+        if(other.getEntity() instanceof Door){
+            Door door = (Door) other.getEntity();
+            if(!door.isIsOpen()){
+                if(inventory.getSelectedItem() instanceof Key){
+                    if(door.open((Key) (inventory.getSelectedItem()))){
+                        inventory.removeItem(inventory.getSelectedSlot());
+                    }
+                }
+            }
+        }
+    }
+    
 
     @Override
     public void onGroundTouch(Collider ground) {

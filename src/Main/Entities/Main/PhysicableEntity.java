@@ -51,6 +51,10 @@ public abstract class PhysicableEntity extends CollidableEntity{
         if(!grounded){
             addVelocity(Vector2.down(), Constants.gravityValue);
         }
+        if(lockObject != null && !lockObject.getEntity().isAddedToScene()){
+            lockDirection = Vector2.zero();
+            lockObject = null;
+        }
     }
     
     public abstract void onGroundTouch(Collider ground);

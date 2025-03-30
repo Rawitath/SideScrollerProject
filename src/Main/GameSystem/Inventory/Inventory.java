@@ -13,6 +13,7 @@ package Main.GameSystem.Inventory;
 public class Inventory {
     private InventoryItem[] slots;
     private int selectedSlot = 0;
+    private int itemCount = 0;
 
     public Inventory(int size){
         slots = new InventoryItem[size];
@@ -29,6 +30,7 @@ public class Inventory {
         for (int i = 0; i < slots.length; i++) {
             if (slots[i] == null) { 
                 slots[i] = item;
+                itemCount++;
                 return true;
             }
         }
@@ -37,6 +39,9 @@ public class Inventory {
 
     public void removeItem(int index) {
         if (index >= 0 && index < slots.length) {
+            if(slots[index] != null){
+                itemCount--;
+            }
             slots[index] = null;
         }
     }
@@ -72,5 +77,7 @@ public class Inventory {
     public int getSelectedSlot() {
         return selectedSlot;
     }
-    
+    public int getItemCount(){
+        return itemCount;
+    }
 }

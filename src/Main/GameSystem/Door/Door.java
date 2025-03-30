@@ -6,6 +6,7 @@ package Main.GameSystem.Door;
 
 import Entities.CollidableEntity;
 import Physics.Collider;
+import Physics.Time;
 import Scenes.Scene;
 
 /**
@@ -13,12 +14,16 @@ import Scenes.Scene;
  * @author GA_IA
  */
 public class Door extends CollidableEntity{
-    private Integer doorID;
-
+    protected Integer doorID;
+    private float fadeTime = 1.5f;
+    private float previous;
+    private boolean isOpen = false;
+    
     public Door(Scene s) {
         super(s);
+        getCollider().setSolid(true);
     }
-   
+    
 
     @Override
     public void start() {
@@ -27,7 +32,16 @@ public class Door extends CollidableEntity{
 
     @Override
     public void update() {
-
+        if(isOpen){
+            if(Time.time() - previous < fadeTime){
+                if(getAlpha() - (1 / fadeTime) * Time.deltaTime() >= 0){
+                    setAlpha(getAlpha() - (1 / fadeTime) * Time.deltaTime());
+                }
+            }
+            else{
+                getScene().removeEntity(this);
+            }
+        }
     }
 
     @Override
@@ -35,6 +49,10 @@ public class Door extends CollidableEntity{
 
     }
 
+    public boolean isIsOpen() {
+        return isOpen;
+    }
+    
     @Override
     public void onColliderEnter(Collider other) {
 
@@ -49,13 +67,17 @@ public class Door extends CollidableEntity{
     public void onColliderExit(Collider other) {
 
     }
+    
+    public boolean open(Key key){
+        if(key.getKeyID().equals(doorID)){
+            previous = Time.time();
+            isOpen = true;
+            return true;
+        }
+        return false;
+    }
 
     public Integer getDoorID() {
         return doorID;
     }
-
-    public void setDoorID(Integer doorID) {
-        this.doorID = doorID;
-    }
-    
 }

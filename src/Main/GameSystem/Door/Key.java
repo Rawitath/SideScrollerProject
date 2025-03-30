@@ -5,6 +5,7 @@
 package Main.GameSystem.Door;
 
 import Main.GameSystem.Inventory.InventoryItem;
+import Utilities.FileReader;
 import java.awt.image.BufferedImage;
 
 /**
@@ -13,19 +14,22 @@ import java.awt.image.BufferedImage;
  */
 public class Key extends InventoryItem{
     
-    private Integer doorID;
+    protected Integer keyID;
+    private int keyImageNum = 0;
     
-    public Key(String name, int quantity, BufferedImage icon) {
-        super(name, quantity, icon);
+    public Key(String name, Integer keyID, int keyType) {
+        super(name, 1, new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+        BufferedImage keyImage = FileReader.readImage("res/game/animation/chapter/redkey.png");
+        switch(keyType){
+            default:
+                keyImage = keyImage.getSubimage(0, 0, 374, 374);
+                break;
+        }
+        setIcon(keyImage);
+        this.keyID = keyID;
     }
 
-    public Integer getDoorID() {
-        return doorID;
+    public Integer getKeyID() {
+        return keyID;
     }
-
-    public void setDoorID(Integer doorID) {
-        this.doorID = doorID;
-    }
-    
-    
 }

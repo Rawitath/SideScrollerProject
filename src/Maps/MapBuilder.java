@@ -6,6 +6,7 @@ package Maps;
 
 import Datas.Vector2;
 import Datas.Vector2Int;
+import Entities.CollidableEntity;
 import Entities.Copyable;
 import Entities.Entity;
 import Entities.NotCopyableException;
@@ -235,6 +236,15 @@ public class MapBuilder {
                                                     (int)(((SpriteEntity) e).getSprite().getHeight() * map.getImageSizeMultiplier()
                                                             * tile.getImageSizeMultiplier().getY())
                                             ));
+                                            
+                                            if(e instanceof CollidableEntity && tile.hasCollider()){
+                                                CollidableEntity c = (CollidableEntity) e;
+                                                c.getCollider().setBound(c.getCollider().getBound().multiply(map.getTileRatio()).multiply(tile.getColliderSize()));
+                                                c.getCollider().setCenter(new Vector2()
+                .add(Vector2.one().multiply(tile.getAnchor()).multiply(c.getCollider().getBound().multiply(0.5f)))
+                .add(Vector2.one().multiply(tile.getAnchor()).multiply(map.getTileRatio() / 2f).add(c.getCollider().getBound().multiply(Vector2.one().multiply(tile.getAnchor().negative())))));
+                                                    c.getCollider().setSolid(tile.isSolid());
+                                            }
                                             
                                             variableQueue.add(new MapVariable(varName, e));
                                             map.getTiles()[i][j] = null;

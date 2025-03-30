@@ -4,9 +4,8 @@
  */
 package Main.ChapterTwo.Scenes;
 
-import Main.ChapterTwo.Entities.ChapterTwoManager;
+import Main.ChapterTwo.Entities.*;
 import Main.ChapterTwo.Entities.Background.*;
-import Main.ChapterTwo.Entities.Spike;
 import Main.Entities.Main.Lucy;
 import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
@@ -45,6 +44,10 @@ public class ChapterTwoScene extends Scene{
         MapBuilder.useMapBuilder(this);
         MapBuilder.addVariable("GoTo1", lucy);
         MapBuilder.addVariable("Spike", new Spike(this));
+        MapBuilder.addVariable("RedKey1", new RedKey1(this));
+        MapBuilder.addVariable("RedKey2", new RedKey2(this));
+        MapBuilder.addVariable("Door1", new RedDoor1(this));
+        MapBuilder.addVariable("Door2", new RedDoor2(this));
         MapBuilder.setVariableClone("Spike", true);
         MapBuilder.loadMap("map/Chapter2");
     }

@@ -12,7 +12,7 @@ import Scenes.Scene;
  *
  * @author GA_IA
  */
-public class ItemEntity extends CollidableEntity{
+public class ItemEntity extends CollidableEntity implements Obtainable{
     
     private InventoryItem item;
     
@@ -58,5 +58,12 @@ public class ItemEntity extends CollidableEntity{
         this.item = item;
         setSprite(item.getIcon());
     }
+
+    @Override
+    public InventoryItem obtain() {
+        getScene().removeEntity(this);
+        return item;
+    }
+
     
 }
