@@ -38,8 +38,6 @@ public class LucyUISet extends UIEntity{
         statPanel = new StatPanel(s);
         addChild(statPanel);
         statPanel.setLocalScale(new Vector2(1, 1));
-        System.out.println(statPanel.getScale());
-        System.out.println(statPanel.getLocalScale());
     }
 
     @Override

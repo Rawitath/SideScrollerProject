@@ -30,6 +30,8 @@ public class ChapterFiveManager extends ChapterManager{
         bosswalls = new ArrayList<>();
         setInitialZoom(85f);
         setName("Manager5");
+        setMinCameraLimit(new Vector2(-18.48f, 0.44f));
+        setMaxCameraLimit(new Vector2(83.5f, 10.44f));
     }
     
     @Override

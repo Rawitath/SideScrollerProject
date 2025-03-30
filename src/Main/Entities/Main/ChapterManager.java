@@ -5,6 +5,7 @@
 package Main.Entities.Main;
 
 import Datas.Vector2;
+import Entities.Camera;
 import Entities.Entity;
 import Inputs.KeyControlable;
 import Main.GameSystem.Cutscene.Cutscene;
@@ -22,6 +23,9 @@ public class ChapterManager extends Entity{
     private Cutscene cutscene;
     private LucyUISet ui;
     private float initialZoom = 85f;
+    private Vector2 minCameraLimit = new Vector2();
+    private Vector2 maxCameraLimit = new Vector2();
+    protected boolean freeCamera = false;
 
     public ChapterManager(Scene s, Lucy lucy, LucyUISet ui) {
         super(s);
@@ -31,6 +35,22 @@ public class ChapterManager extends Entity{
         s.addEntity(ui);
     }
 
+    public Vector2 getMinCameraLimit() {
+        return minCameraLimit;
+    }
+
+    public void setMinCameraLimit(Vector2 minCameraLimit) {
+        this.minCameraLimit = minCameraLimit;
+    }
+
+    public Vector2 getMaxCameraLimit() {
+        return maxCameraLimit;
+    }
+
+    public void setMaxCameraLimit(Vector2 maxCameraLimit) {
+        this.maxCameraLimit = maxCameraLimit;
+    }
+    
     public float getInitialZoom() {
         return initialZoom;
     }
@@ -72,7 +92,22 @@ public class ChapterManager extends Entity{
     
     @Override
     public void start() {
-        getScene().getCamera().setZoom(initialZoom);
+        Camera camera = getScene().getCamera();
+        camera.setZoom(initialZoom);
+        camera.setPosition(lucy.getPosition().multiply(Vector2.negativeY()));
+        
+        if(camera.getPosition().getX() > maxCameraLimit.getX()){
+            camera.setPosition(new Vector2(maxCameraLimit.getX(), camera.getPosition().getY()));
+        }
+        if(camera.getPosition().getX() < minCameraLimit.getX()){
+            camera.setPosition(new Vector2(minCameraLimit.getX(), camera.getPosition().getY()));
+        }
+        if(camera.getPosition().getY() > maxCameraLimit.getY()){
+            camera.setPosition(new Vector2(camera.getPosition().getX(), maxCameraLimit.getY()));
+        }
+        else if(camera.getPosition().getY() < minCameraLimit.getY()){
+            camera.setPosition(new Vector2(camera.getPosition().getX(), minCameraLimit.getY()));
+        }
     }
 
     @Override
@@ -81,7 +116,20 @@ public class ChapterManager extends Entity{
         
         if(!isBoss && (cutscene == null || !cutscene.isCutscenePlaying())){
             ui.setActive(true);
-            getScene().getCamera().setPosition(lucy.getPosition().multiply(Vector2.negativeY()));
+            Camera camera = getScene().getCamera();
+            
+            if(freeCamera){
+                camera.setPosition(lucy.getPosition().multiply(Vector2.negativeY()));
+            }
+            else{
+                if(lucy.getPosition().getX() <= maxCameraLimit.getX() && lucy.getPosition().getX() >= minCameraLimit.getX()){
+                camera.setPosition(new Vector2(lucy.getPosition().getX(), camera.getPosition().getY()));
+                }
+                if(-lucy.getPosition().getY() <= maxCameraLimit.getY() && -lucy.getPosition().getY() >= minCameraLimit.getY()){
+                    camera.setPosition(new Vector2(camera.getPosition().getX(), -lucy.getPosition().getY()));
+                }
+            }
+            
             if(lucy.getHealth() > 0){
                 ui.setActive(true);
                 

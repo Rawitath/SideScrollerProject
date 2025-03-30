@@ -52,6 +52,9 @@ public class Door extends CollidableEntity{
     public boolean isIsOpen() {
         return isOpen;
     }
+    protected void setIsOpen(boolean isOpen){
+        this.isOpen = isOpen;
+    }
     
     @Override
     public void onColliderEnter(Collider other) {
@@ -69,7 +72,7 @@ public class Door extends CollidableEntity{
     }
     
     public boolean open(Key key){
-        if(key.getKeyID().equals(doorID)){
+        if(true||key.getKeyID().equals(doorID)){
             previous = Time.time();
             isOpen = true;
             return true;

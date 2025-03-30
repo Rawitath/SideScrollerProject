@@ -21,5 +21,7 @@ public class ChapterFourManager extends ChapterManager{
         super(s, lucy, ui);
         setInitialZoom(85f);
         setName("Manager4");
+        setMinCameraLimit(new Vector2(-17.39f, -8.55f));
+        setMaxCameraLimit(new Vector2(21.5f, 10.44f));
     }
 }
