@@ -8,7 +8,9 @@ import Main.ChapterOne.Entities.BreakOnTouchBlock;
 import Main.ChapterOne.Entities.ChapterOneManager;
 import Main.ChapterOne.Entities.Lava;
 import Main.ChapterOne.Entities.PushBox;
+import Main.ChapterOne.Entities.Wall;
 import Main.Entities.Main.Lucy;
+import Main.Entities.Main.SavePoint;
 import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
 import Scenes.Scene;
@@ -22,6 +24,9 @@ public class ChapterOneScene extends Scene{
     private Lucy lucy;
     private ChapterOneManager manager;
     private LucyUISet ui;
+    
+    private SavePoint save0;
+    private SavePoint save1;
     @Override
     public void load() {
         addEntity(new HellBG1(this));
@@ -32,9 +37,13 @@ public class ChapterOneScene extends Scene{
         addEntity(new HellBG6(this));
         addEntity(new HellBG7(this));
         
+        save0 = new SavePoint(this);
+        save1 = new SavePoint(this);
+        
         lucy = new Lucy(this);
         ui = new LucyUISet(this, lucy.getInventory());
         manager = new ChapterOneManager(this, lucy, ui);
+        
         
         addEntity(manager);
         
@@ -43,6 +52,9 @@ public class ChapterOneScene extends Scene{
         MapBuilder.addVariable("Lava", new Lava(this));
         MapBuilder.addVariable("Box", new PushBox(this));
         MapBuilder.addVariable("Drop", new BreakOnTouchBlock(this));
+        MapBuilder.addVariable("Save0", save0);
+        MapBuilder.addVariable("Save1", save1);
+        MapBuilder.addVariable("Wall", new Wall(this));
         MapBuilder.setVariableClone("Drop", true);
         MapBuilder.setVariableClone("Box", true);
         MapBuilder.setVariableClone("Lava", true);
