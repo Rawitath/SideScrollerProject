@@ -10,6 +10,7 @@ import Engine.EngineFrame;
 import Main.ChapterFive.Scenes.ChapterFiveScene;
 import Main.ChapterFour.Scenes.ChapterFourScene;
 import Main.ChapterOne.Scenes.ChapterOneScene;
+import Main.StartMenu.Scene.StartMenuScene;
 import Main.ChapterThree.Scenes.ChapterThreeScene;
 import Main.ChapterTwo.Scenes.ChapterTwoScene;
 import Maps.EditorScene;
@@ -17,6 +18,7 @@ import Maps.MapBuilder;
 import Physics.Time;
 import Scenes.SceneManager;
 import Utilities.FileReader;
+import java.awt.Color;
 
 /**
  *
@@ -35,6 +37,7 @@ public class Main {
         
         //Scene added here
 //        SceneManager.addScene(new EditorScene()); // This Scene will be loaded first
+        SceneManager.addScene(new StartMenuScene()); // This Scene will be loaded first
 //        SceneManager.addScene(new ChapterOneScene()); // This Scene will be loaded first
         SceneManager.addScene(new ChapterTwoScene()); // This Scene will be loaded first
         SceneManager.addScene(new ChapterThreeScene()); // This Scene will be loaded first
@@ -42,7 +45,7 @@ public class Main {
         SceneManager.addScene(new ChapterFiveScene()); // This Scene will be loaded first
         SceneManager.addScene(new ExampleScene()); // This Scene will be loaded first
         
-        EngineFrame window = new EngineFrame("2D Side Scrollbruh", 1280, 720);
+        EngineFrame window = new EngineFrame("2D Side Scrollbruh", 1280, 720, Color.BLACK);
         Time.setEngine(window.getEngine());
         SceneManager.setRenderingPanel(window.getRenderingPanel());
         SceneManager.setInputManager(window.getInputManager());

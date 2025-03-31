@@ -32,6 +32,7 @@ public abstract class UIButton extends UIImage implements MouseControlable{
     public UIButton(Scene s) {
         super(s);
         releasedImage = FileReader.readImage("res/default/whitesquare.png");
+        hoverImage = FileReader.readImage("res/default/blacksquare.png");
         pressedImage = FileReader.readImage("res/default/blacksquare.png");
         setImage(releasedImage);
     }
@@ -62,12 +63,13 @@ public abstract class UIButton extends UIImage implements MouseControlable{
     }
     
     private boolean isMouseOnButton(MouseEvent e){
-        return e.getPoint().x >= getPositionOnScreen().getX() &&
+        return getPositionOnScreen() != null && (e.getPoint().x >= getPositionOnScreen().getX() &&
            e.getPoint().x <= getPositionOnScreen().getX() + getScreenSize().getX() &&
            e.getPoint().y >= getPositionOnScreen().getY() &&
-           e.getPoint().y <= getPositionOnScreen().getY() + getScreenSize().getY();
+           e.getPoint().y <= getPositionOnScreen().getY() + getScreenSize().getY());
     }
     public abstract void onButtonClicked();
+    public abstract void onButtonHovered();
     public abstract void onButtonPressed();
     public abstract void onButtonReleased();
     @Override
@@ -109,4 +111,19 @@ public abstract class UIButton extends UIImage implements MouseControlable{
     public void onMouseExited(MouseEvent e) {
         super.onMouseExited(e);
     }
+
+    @Override
+    public void onMouseMoved(MouseEvent e) {
+        super.onMouseMoved(e);
+        if(isMouseOnButton(e)){
+            buttonState = HOVER;
+            setImage(hoverImage);
+            onButtonHovered();
+        }
+        else{
+            buttonState = RELEASED;
+            setImage(releasedImage);
+        }
+    }
+    
 }

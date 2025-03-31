@@ -163,6 +163,7 @@ public abstract class Entity implements Debuggable, MouseControlable{
             parent.addChild(this);
         }
         else{
+            getScene().removeEntity(this);
             this.parent = parent;
         }
     }
@@ -172,9 +173,7 @@ public abstract class Entity implements Debuggable, MouseControlable{
     }
     
     public void addChild(Entity e){
-        if(e.getParent() == null){
-            e.setParent(this);
-        }
+        e.setParent(this);
         childs.add(e);
         if(isAddedToScene){
             e.setIsAddedToScene(true);
