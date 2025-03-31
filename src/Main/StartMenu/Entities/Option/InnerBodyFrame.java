@@ -47,13 +47,13 @@ public class InnerBodyFrame extends UIImage implements Fadable{
         
         sMaster = new OptionSlider(s);
         this.addChild(sMaster);
-        sMaster.setScale(new Vector2(1,1));
+//        sMaster.setScale(new Vector2(1,1));
         sMusic = new OptionSlider(s);
         this.addChild(sMusic);
-        sMusic.setScale(new Vector2(1,1));
+//        sMusic.setScale(new Vector2(1,1));
         sSFX = new OptionSlider(s);
         this.addChild(sSFX);
-        sSFX.setScale(new Vector2(1,1));
+//        sSFX.setScale(new Vector2(1,1));
         
         full = new OptionTitle(s);
         full.setText("Fullscreen");
@@ -105,7 +105,23 @@ public class InnerBodyFrame extends UIImage implements Fadable{
 
     @Override
     public void start() {
-
+        sMaster.setScale(new Vector2(1,1));
+        sMaster.getBar().setScale(new Vector2(sMaster.getBar().getScale().getX() * 1.5f ,5));
+        sMusic.setScale(new Vector2(1,1));
+        sMusic.getBar().setScale(new Vector2(sMusic.getBar().getScale().getX() * 1.5f ,5));
+        sSFX.setScale(new Vector2(1,1));
+        sSFX.getBar().setScale(new Vector2(sSFX.getBar().getScale().getX() * 1.5f ,5));
+        
+        sMaster.setMax(100);
+        sMaster.setMin(0);
+        sMusic.setMax(100);
+        sMusic.setMin(0);
+        sSFX.setMax(100);
+        sSFX.setMin(0);
+        
+        sMaster.setValue(70f);
+        sMusic.setValue(70f);
+        sSFX.setValue(70f);
     }
 
     @Override

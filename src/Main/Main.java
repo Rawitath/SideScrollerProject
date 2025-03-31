@@ -30,7 +30,7 @@ public class Main {
         System.setProperty("sun.java2d.opengl", "true");
         
         //Uncomment to use Debug Mode
-        DebugManager.useDebug();
+//        DebugManager.useDebug();
 
         //Uncomment to use MapEditor
 //        MapBuilder.setUseEditor(true);
@@ -39,10 +39,10 @@ public class Main {
 //        SceneManager.addScene(new EditorScene()); // This Scene will be loaded first
         SceneManager.addScene(new StartMenuScene()); // This Scene will be loaded first
 //        SceneManager.addScene(new ChapterOneScene()); // This Scene will be loaded first
-        SceneManager.addScene(new ChapterTwoScene()); // This Scene will be loaded first
-        SceneManager.addScene(new ChapterThreeScene()); // This Scene will be loaded first
-        SceneManager.addScene(new ChapterFourScene()); // This Scene will be loaded first
-        SceneManager.addScene(new ChapterFiveScene()); // This Scene will be loaded first
+//        SceneManager.addScene(new ChapterTwoScene()); // This Scene will be loaded first
+//        SceneManager.addScene(new ChapterThreeScene()); // This Scene will be loaded first
+//        SceneManager.addScene(new ChapterFourScene()); // This Scene will be loaded first
+//        SceneManager.addScene(new ChapterFiveScene()); // This Scene will be loaded first
         SceneManager.addScene(new ExampleScene()); // This Scene will be loaded first
         
         EngineFrame window = new EngineFrame("2D Side Scrollbruh", 1280, 720, Color.BLACK);

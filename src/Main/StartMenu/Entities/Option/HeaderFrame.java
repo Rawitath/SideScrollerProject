@@ -10,6 +10,7 @@ import Main.StartMenu.Entities.Fadable;
 import Main.StartMenu.Entities.TextButton;
 import Scenes.Scene;
 import Utilities.FileReader;
+import java.awt.Color;
 
 /**
  *
@@ -45,5 +46,6 @@ public class HeaderFrame extends UIImage implements Fadable{
     @Override
     public void fade(float alpha) {
         setAlpha(alpha);
+        header.setColor(new Color(header.getColor().getRed() / 255f, header.getColor().getGreen() / 255f, header.getColor().getBlue() / 255f, alpha));
     }
 }

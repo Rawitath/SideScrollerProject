@@ -5,6 +5,7 @@
 package Main.GameSystem.Cutscene.UI;
 
 import Datas.Vector2;
+import Entities.UI.UIEntity;
 import Entities.UI.UIText;
 import Physics.Time;
 import Scenes.Scene;
@@ -46,7 +47,7 @@ public class DialogueText extends UIText {
     }
     @Override
     public void start() {
-        this.setScreenAnchor(CENTER);
+        this.setScreenAnchor(UIEntity.CENTER);
     }
 
     public boolean isTextCompleted() {

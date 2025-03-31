@@ -63,7 +63,7 @@ public class ChapterFiveScene extends Scene {
         addEntity(bossCutscene);
         
         MapBuilder.useMapBuilder(this);
-        MapBuilder.addVariable("from", lucy);
+        MapBuilder.addVariable("debugBoss", lucy);
         MapBuilder.addVariable("last boss", sheep);
         MapBuilder.addVariable("BossCutsceneTrigger", trigger);
         MapBuilder.addVariable("Bosswall", bosswall);

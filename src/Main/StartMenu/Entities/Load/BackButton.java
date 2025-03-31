@@ -7,6 +7,7 @@ package Main.StartMenu.Entities.Load;
 import Datas.Vector2;
 import Entities.UI.UIButton;
 import Main.StartMenu.Entities.Fadable;
+import Main.StartMenu.Entities.MenuController;
 import Scenes.Scene;
 import Utilities.FileReader;
 
@@ -16,8 +17,11 @@ import Utilities.FileReader;
  */
 public class BackButton extends UIButton implements Fadable{
 
-    public BackButton(Scene s) {
+    private MenuController controller;
+    
+    public BackButton(Scene s, MenuController controller) {
         super(s);
+        this.controller = controller;
         this.setReleasedImage(FileReader.readImage("res/game/loadmenu/BackButton.png"));
         this.setHoverImage(FileReader.readImage("res/game/loadmenu/BackButtonHover.png"));
         this.setPressedImage(FileReader.readImage("res/game/loadmenu/BackButtonPressed.png"));
@@ -41,7 +45,7 @@ public class BackButton extends UIButton implements Fadable{
 
     @Override
     public void onButtonClicked() {
-
+        
     }
 
     @Override
@@ -51,6 +55,10 @@ public class BackButton extends UIButton implements Fadable{
 
     @Override
     public void onButtonPressed() {
+        if(controller.getCurrentPage() != 2){
+            return;
+        }
+        controller.setCurrentPage(0);
     }
 
     @Override

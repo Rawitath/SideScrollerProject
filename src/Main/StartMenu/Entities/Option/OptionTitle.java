@@ -42,7 +42,7 @@ public class OptionTitle extends UIText implements Fadable{
 
     @Override
     public void fade(float alpha) {
-        this.setAlpha(alpha);
+        setColor(new Color(getColor().getRed() / 255f, getColor().getGreen() / 255f, getColor().getBlue() / 255f, alpha));
     }
     
     

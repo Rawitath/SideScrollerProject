@@ -13,7 +13,7 @@ import java.awt.Font;
  *
  * @author GA_IA
  */
-public class TextButton extends UIText{
+public class TextButton extends UIText implements Fadable{
 
     public TextButton(Scene s) {
         super(s);
@@ -34,6 +34,11 @@ public class TextButton extends UIText{
     @Override
     public void fixedUpdate() {
 
+    }
+
+    @Override
+    public void fade(float alpha) {
+        setColor(new Color(getColor().getRed() / 255f, getColor().getGreen() / 255f, getColor().getBlue() / 255f, alpha));
     }
     
 }

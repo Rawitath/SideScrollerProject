@@ -8,6 +8,7 @@ package Main.UI.Example;
  *
  * @author nirawith2548gmail.com
  */
+import Entities.UI.UIEntity;
 import Entities.UI.UIText;
 import Scenes.Scene;
 import Physics.Time;
@@ -20,7 +21,7 @@ public class ScriptDialogueTest1 extends UIText{
 
     public ScriptDialogueTest1(Scene s){
         super(s);
-        this.setLocalPosition(UIText.CENTER);
+        this.setLocalPosition(UIEntity.CENTER);
     }
     
     public byte getLastDialogue(){

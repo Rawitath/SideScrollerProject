@@ -31,7 +31,7 @@ public class LoadGroup extends UIImage implements Fadable{
         this.setImage(FileReader.readImage("res/game/loadmenu/MainBorder.png"));
         this.setScale(new Vector2(1000,950));
         
-        backButton = new BackButton(s);
+        backButton = new BackButton(s, controller);
         addChild(backButton);
         backButton.setLocalPosition(new Vector2(-300, 400));
         backButton.setScale(new Vector2(backButton.getImage().getWidth()-120,backButton.getImage().getHeight()-50));

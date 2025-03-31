@@ -48,7 +48,7 @@ public class OptionGroup extends UIEntity{
         addChild(headerFrame);
         headerFrame.setLocalPosition(new Vector2(0, 530));
         
-        backButton = new BackButton(s);
+        backButton = new BackButton(s, controller);
         addChild(backButton);
         backButton.setLocalPosition(new Vector2(-750, 520));
         

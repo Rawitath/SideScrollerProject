@@ -5,14 +5,16 @@
 package Main.StartMenu.Entities.Load;
 
 import Entities.UI.UIText;
+import Main.StartMenu.Entities.Fadable;
 import Scenes.Scene;
+import java.awt.Color;
 import java.awt.Font;
 
 /**
  *
  * @author nirawith2548gmail.com
  */
-public class PlayTime extends UIText{
+public class PlayTime extends UIText implements Fadable{
     
     public PlayTime(Scene s){
         super(s);
@@ -29,6 +31,11 @@ public class PlayTime extends UIText{
 
     @Override
     public void fixedUpdate() {
+    }
+
+    @Override
+    public void fade(float alpha) {
+        setColor(new Color(getColor().getRed() / 255f, getColor().getGreen() / 255f, getColor().getBlue() / 255f, alpha));
     }
     
 }
