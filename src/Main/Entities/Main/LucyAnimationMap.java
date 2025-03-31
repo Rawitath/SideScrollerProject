@@ -14,7 +14,7 @@ import java.util.Map;
  * @author GA_IA
  */
 public class LucyAnimationMap {
-    public static LucyAnimationMap instance;
+    private static LucyAnimationMap instance;
     private Map<String, Animation> lucyMap;
     private Map<String, Animation> lucyWandMap;
     private Map<String, Animation> lucyWingMap;

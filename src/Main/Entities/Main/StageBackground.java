@@ -51,14 +51,14 @@ public abstract class StageBackground extends SpriteEntity{
 
     @Override
     public void update() {
-        setPosition(getScene().getCamera().getPosition().multiply(Vector2Int.negativeY()));
-        setPosition(getPosition().multiply(new Vector2(horizontalShiftMultiplier, verticalShiftMultiplier)));
-        setScale(initialScale.multiply(factor / getScene().getCamera().getZoom()));
+        
     }
 
     @Override
     public void fixedUpdate() {
-
+        setPosition(getScene().getCamera().getPosition().multiply(Vector2Int.negativeY()));
+        setPosition(getPosition().multiply(new Vector2(horizontalShiftMultiplier, verticalShiftMultiplier)));
+        setScale(initialScale.multiply(factor / getScene().getCamera().getZoom()));
     }
     
 }

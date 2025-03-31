@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.UI.Main;
+package Main.UI.Main.Stats;
 
 import Datas.Vector2;
 import Entities.UI.UIEntity;
+import Entities.UI.UIText;
 import Scenes.Scene;
 
 /**
@@ -31,8 +32,10 @@ public class MonsterTextGroup extends UIEntity{
 
     @Override
     public void start() {
-        monsterName.setLocalPosition(new Vector2(-50, 0));
-        monsterNum.setLocalPosition(new Vector2(50, 0));
+        monsterName.setLocalPosition(new Vector2(-170, 0));
+        monsterName.setHorizontalAlignment(UIText.LEFT);
+        monsterNum.setLocalPosition(new Vector2(170, 0));
+        monsterNum.setHorizontalAlignment(UIText.RIGHT);
     }
 
     public MonsterText getMonsterName() {

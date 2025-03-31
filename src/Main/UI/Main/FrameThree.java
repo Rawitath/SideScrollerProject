@@ -20,7 +20,7 @@ public class FrameThree extends UIImage{
 
     @Override
     public void start() {
-
+        
     }
 
     @Override

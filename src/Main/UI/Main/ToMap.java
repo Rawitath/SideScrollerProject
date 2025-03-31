@@ -12,13 +12,15 @@ import Utilities.FileReader;
  *
  * @author GA_IA
  */
-public class ToAchievement  extends UIButton{
+public class ToMap extends UIButton{
+    private StatPanel p;
     
-    public ToAchievement(Scene s) {
+    public ToMap(Scene s, StatPanel p) {
         super(s);
-        setReleasedImage(FileReader.readImage("res/game/hud/statmenu/Achivement.png"));
-        setHoverImage(FileReader.readImage("res/game/hud/statmenu/Achivement.png"));
-        setPressedImage(FileReader.readImage("res/game/hud/statmenu/Achivement.png"));
+        this.p = p;
+        setReleasedImage(FileReader.readImage("res/game/hud/statmenu/MAP.png"));
+        setPressedImage(FileReader.readImage("res/game/hud/statmenu/MAP.png"));
+        setHoverImage(FileReader.readImage("res/game/hud/statmenu/MAP.png"));
     }
 
     @Override
@@ -33,7 +35,7 @@ public class ToAchievement  extends UIButton{
 
     @Override
     public void onButtonPressed() {
-
+        p.setCurrentPage(1);
     }
 
     @Override
@@ -55,4 +57,5 @@ public class ToAchievement  extends UIButton{
     public void fixedUpdate() {
 
     }
+    
 }
