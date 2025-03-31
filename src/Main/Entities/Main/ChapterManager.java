@@ -10,9 +10,11 @@ import Entities.Entity;
 import Inputs.KeyControlable;
 import Main.GameSystem.Cutscene.Cutscene;
 import Main.UI.Main.LucyUISet;
+import Physics.Time;
 import Saves.GameSave;
 import Saves.SaveManager;
 import Scenes.Scene;
+import Scenes.SceneManager;
 import java.awt.event.KeyEvent;
 
 /**
@@ -21,7 +23,7 @@ import java.awt.event.KeyEvent;
  */
 public class ChapterManager extends Entity{
     
-    private GameSave save;
+    private GameSave save = SaveManager.getInstance().getCurrentSave();
     
     private boolean isBoss;
     private Lucy lucy;
@@ -30,7 +32,11 @@ public class ChapterManager extends Entity{
     private float initialZoom = 85f;
     private Vector2 minCameraLimit = new Vector2();
     private Vector2 maxCameraLimit = new Vector2();
+    protected boolean isDead = false;
     protected boolean freeCamera = false;
+    
+    private float deathDelay = 1.5f;
+    private float deathCountdown;
 
     public ChapterManager(Scene s, Lucy lucy, LucyUISet ui) {
         super(s);
@@ -38,13 +44,6 @@ public class ChapterManager extends Entity{
         this.lucy = lucy;
         this.ui = ui;
         s.addEntity(ui);
-        
-        save = SaveManager.getInstance().getCurrentSave();
-        lucy.setSave(save);
-    }
-
-    public GameSave getSave() {
-        return save;
     }
 
     public Vector2 getMinCameraLimit() {
@@ -127,7 +126,6 @@ public class ChapterManager extends Entity{
         ui.getHeartFrame().setCurrrentHeart(lucy.getHealth());
         
         if(!isBoss && (cutscene == null || !cutscene.isCutscenePlaying())){
-            ui.setActive(true);
             Camera camera = getScene().getCamera();
             
             if(freeCamera){
@@ -159,8 +157,17 @@ public class ChapterManager extends Entity{
                 }
             }
             else{
-                lucy.setBreakControl(true);
-                ui.setActive(false);
+                if(!isDead){
+                    lucy.setBreakControl(true);
+                    ui.setActive(false);
+                    isDead = true;
+                    deathCountdown = Time.time();
+                }
+                else{
+                    if(Time.time() - deathCountdown > deathDelay){
+                        respawn();
+                    }
+                }
             }
         }
         else{
@@ -184,5 +191,10 @@ public class ChapterManager extends Entity{
     @Override
     public void fixedUpdate() {
         
+    }
+    
+    protected void respawn(){
+        save.setDeath(save.getDeath() + 1);
+        SceneManager.loadScene(getScene().getId());
     }
 }

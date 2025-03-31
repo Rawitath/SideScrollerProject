@@ -17,6 +17,7 @@ import Main.GameSystem.Inventory.Obtainable;
 import Physics.Collider;
 import Physics.Time;
 import Saves.GameSave;
+import Saves.SaveManager;
 import Scenes.Scene;
 import java.awt.event.KeyEvent;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
     private Interactable currentInteractable = null;
     
     //Gameplay System
-    private GameSave save;
+    private GameSave save = SaveManager.getInstance().getCurrentSave();;
     private Inventory inventory;
     private Animator animator;
     private Map<String, Animation> animationMap;
@@ -81,14 +82,11 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
         
         bubble = new LucyBubble(s);
         addChild(bubble);
+        
+        refreshSave();
     }
-
-    public GameSave getSave() {
-        return save;
-    }
-
-    public void setSave(GameSave save) {
-        this.save = save;
+    
+    public void refreshSave(){
         health = save.getMaxHP();
         if(save.getWandAchived()){
             animationMap = LucyAnimationMap.getInstance().getLucyWandMap();

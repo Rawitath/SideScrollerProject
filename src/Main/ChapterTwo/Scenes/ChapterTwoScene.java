@@ -7,6 +7,8 @@ package Main.ChapterTwo.Scenes;
 import Main.ChapterTwo.Entities.*;
 import Main.ChapterTwo.Entities.Background.*;
 import Main.Entities.Main.Lucy;
+import Main.Entities.Main.SpawnMarker;
+import Main.GameSystem.SavePoint.SavePoint;
 import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
 import Scenes.Scene;
@@ -20,6 +22,7 @@ public class ChapterTwoScene extends Scene{
     private ChapterTwoManager manager;
     private Lucy lucy;
     private LucyUISet ui;
+    private SavePoint save2;
     
     @Override
     public void load() {
@@ -40,9 +43,15 @@ public class ChapterTwoScene extends Scene{
         manager = new ChapterTwoManager(this, lucy, ui);
         
         addEntity(manager);
+        SpawnMarker sp = new SpawnMarker(this);
+        sp.setName("Mark1");
+        
+        save2 = new SavePoint(this);
+        save2.setSavePointID(2);
         
         MapBuilder.useMapBuilder(this);
-        MapBuilder.addVariable("GoTo1", lucy);
+        MapBuilder.addVariable("From1", sp);
+        MapBuilder.addVariable("Save2", save2);
         MapBuilder.addVariable("Spike", new Spike(this));
         MapBuilder.addVariable("RedKey1", new RedKey1(this));
         MapBuilder.addVariable("RedKey2", new RedKey2(this));

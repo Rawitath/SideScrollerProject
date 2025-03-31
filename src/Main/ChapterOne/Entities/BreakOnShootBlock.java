@@ -16,6 +16,7 @@ import Scenes.Scene;
 public class BreakOnShootBlock extends BreakableBlock implements Copyable, Damagable{
     public BreakOnShootBlock(Scene s) {
         super(s);
+        setName("Destory");
     }
 
     @Override

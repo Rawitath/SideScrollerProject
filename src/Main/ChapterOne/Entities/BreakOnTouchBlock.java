@@ -7,6 +7,7 @@ package Main.ChapterOne.Entities;
 import Entities.Copyable;
 import Entities.Entity;
 import Physics.Collider;
+import Saves.SaveManager;
 import Scenes.Scene;
 
 /**
@@ -17,11 +18,13 @@ public class BreakOnTouchBlock extends BreakableBlock implements Copyable{
 
     public BreakOnTouchBlock(Scene s) {
         super(s);
+        setName("Drop");
     }
 
     @Override
     public void destroyBlock(Entity e) {
         if(e.getTag().equals("Player")){
+            SaveManager.getInstance().getCurrentSave().setOne_GroundDrop(true);
             destroy();
         }
     }

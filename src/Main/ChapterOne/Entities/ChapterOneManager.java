@@ -9,8 +9,12 @@ import Entities.Entity;
 import Main.Entities.Main.ChapterManager;
 import Main.Entities.Main.Lucy;
 import Main.GameSystem.Cutscene.Cutscene;
+import Main.GameSystem.SavePoint.SavePoint;
 import Main.UI.Main.LucyUISet;
+import Saves.GameSave;
+import Saves.SaveManager;
 import Scenes.Scene;
+import java.util.List;
 
 /**
  *
@@ -18,11 +22,12 @@ import Scenes.Scene;
  */
 public class ChapterOneManager extends ChapterManager{
     
-    private Lucy lucy;
+    private GameSave save = SaveManager.getInstance().getCurrentSave();
+    private List<Entity> touchBlock;
+    private List<Entity> breakBlock;
     
     public ChapterOneManager(Scene s, Lucy lucy, LucyUISet ui) {
         super(s, lucy, ui);
-        this.lucy = lucy;
         setInitialZoom(85f);
         setName("Manager1");
         setMinCameraLimit(new Vector2(-9.51f, -3.55f));
@@ -31,11 +36,44 @@ public class ChapterOneManager extends ChapterManager{
 
     @Override
     public void start() {
-        if(getSave().getCurrentCheckpoint() == null){
-            lucy.setPosition(getScene().getEntity("Mark1").getPosition());
-            getScene().addEntity(lucy);
+        if(save.getCurrentCheckpoint() == null){
+            getLucy().setPosition(getScene().getEntity("Mark1").getPosition());
+            getScene().addEntity(getLucy());
         }
+        else{
+            for(Entity e : getScene().getEntities("Save")){
+                SavePoint s = (SavePoint) e;
+                if(save.getCurrentCheckpoint().equals(s.getSavePointID())){
+                    getLucy().setPosition(s.getPosition());
+                    getScene().addEntity(getLucy());
+                    break;
+                }
+            }
+        }
+        
+        touchBlock = getScene().getEntities("Drop");
+        breakBlock = getScene().getEntities("Destroy");
+        
+        if(save.getOne_GroundDrop()){
+            for(Entity e : touchBlock){
+                BreakableBlock b = (BreakableBlock) e;
+                b.destroy();
+            }
+        }
+        
+        if(save.getOne_WallDestroy()){
+            for(Entity e : breakBlock){
+                BreakableBlock b = (BreakableBlock) e;
+                b.destroy();
+            }
+        }
+        
         super.start();
+    }
+
+    @Override
+    public void update() {
+        super.update();
     }
     
 }

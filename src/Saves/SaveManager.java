@@ -21,9 +21,9 @@ public class SaveManager {
         gs.setSaveNumber(0);
         gs.setSaveCreated(LocalDateTime.now());
         gs.setPlayTime(0L);
-        gs.setWandAchived(true);
-        gs.setWingAchived(true);
-        gs.setMaxJump(2);
+//        gs.setWandAchived(true);
+//        gs.setWingAchived(true);
+//        gs.setMaxJump(2);
         
         return gs;
     }

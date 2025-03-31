@@ -29,7 +29,8 @@ public class ChapterOneScene extends Scene{
     
     private SavePoint save0;
     private SavePoint save1;
-    private BreakOnShootBlock breakBlock;
+    
+    
     @Override
     public void load() {
         addEntity(new HellBG1(this));
@@ -43,6 +44,9 @@ public class ChapterOneScene extends Scene{
         save0 = new SavePoint(this);
         save1 = new SavePoint(this);
         
+        save0.setSavePointID(0);
+        save1.setSavePointID(1);
+        
         lucy = new Lucy(this);
         ui = new LucyUISet(this, lucy.getInventory());
         manager = new ChapterOneManager(this, lucy, ui);
@@ -52,14 +56,17 @@ public class ChapterOneScene extends Scene{
         SpawnMarker mark1 = new SpawnMarker(this);
         mark1.setName("Mark1");
         
-        breakBlock = new BreakOnShootBlock(this);
-        breakBlock.setName("Destroy");
+        BreakOnTouchBlock touchBlock = new BreakOnTouchBlock(this);
+        //touchBlock.setName("Drop");
+        
+        BreakOnShootBlock breakBlock = new BreakOnShootBlock(this);
+        //breakBlock.setName("Destroy");
         
         MapBuilder.useMapBuilder(this);
         MapBuilder.addVariable("Spawn", mark1);
         MapBuilder.addVariable("Lava", new Lava(this));
         MapBuilder.addVariable("Box", new PushBox(this));
-        MapBuilder.addVariable("Drop", new BreakOnTouchBlock(this));
+        MapBuilder.addVariable("Drop", touchBlock);
         MapBuilder.addVariable("Save0", save0);
         MapBuilder.addVariable("Save1", save1);
         MapBuilder.addVariable("Destory", breakBlock);

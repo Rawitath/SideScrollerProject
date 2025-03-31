@@ -7,6 +7,7 @@ package Main.GameSystem.SavePoint;
 import Entities.CollidableEntity;
 import Main.Entities.Main.Interactable;
 import Physics.Collider;
+import Saves.SaveManager;
 import Scenes.Scene;
 
 /**
@@ -19,7 +20,7 @@ public class SavePoint extends CollidableEntity implements Interactable{
     
     public SavePoint(Scene s) {
         super(s);
-   
+        setName("Save");
     }
 
     public int getSavePointID() {
@@ -62,7 +63,8 @@ public class SavePoint extends CollidableEntity implements Interactable{
 
     @Override
     public void interact() {
-        
+        SaveManager.getInstance().getCurrentSave().setCurrentCheckpoint(savePointID);
+        SaveManager.getInstance().saveCurrentSave();
     }
     
 }
