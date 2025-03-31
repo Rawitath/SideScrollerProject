@@ -43,6 +43,10 @@ public class ChapterManager extends Entity{
         lucy.setSave(save);
     }
 
+    public GameSave getSave() {
+        return save;
+    }
+
     public Vector2 getMinCameraLimit() {
         return minCameraLimit;
     }

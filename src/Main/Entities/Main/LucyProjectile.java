@@ -19,7 +19,7 @@ public class LucyProjectile extends AttackProjectile{
         super(s, direction, speed, duration);
         setSprite(FileReader.readImage("res/game/main/lucyprojectile.png"));
         setScale(getScale().multiply(0.22f));
-        
+        setTag("Lucy Projectile");
     }
     public LucyProjectile(Scene s, Vector2 direction, float speed) {
         this(s, direction, speed, 3f);

@@ -18,11 +18,24 @@ import Scenes.Scene;
  */
 public class ChapterOneManager extends ChapterManager{
     
+    private Lucy lucy;
+    
     public ChapterOneManager(Scene s, Lucy lucy, LucyUISet ui) {
         super(s, lucy, ui);
+        this.lucy = lucy;
         setInitialZoom(85f);
         setName("Manager1");
         setMinCameraLimit(new Vector2(-9.51f, -3.55f));
         setMaxCameraLimit(new Vector2(19.43f, 4.96f));
     }
+
+    @Override
+    public void start() {
+        if(getSave().getCurrentCheckpoint() == null){
+            lucy.setPosition(getScene().getEntity("Mark1").getPosition());
+            getScene().addEntity(lucy);
+        }
+        super.start();
+    }
+    
 }

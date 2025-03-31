@@ -4,13 +4,15 @@
  */
 package Main.ChapterOne.Scenes;
 import Main.ChapterOne.Entities.Background.*;
+import Main.ChapterOne.Entities.BreakOnShootBlock;
 import Main.ChapterOne.Entities.BreakOnTouchBlock;
 import Main.ChapterOne.Entities.ChapterOneManager;
 import Main.ChapterOne.Entities.Lava;
 import Main.ChapterOne.Entities.PushBox;
 import Main.ChapterOne.Entities.Wall;
 import Main.Entities.Main.Lucy;
-import Main.Entities.Main.SavePoint;
+import Main.GameSystem.SavePoint.SavePoint;
+import Main.Entities.Main.SpawnMarker;
 import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
 import Scenes.Scene;
@@ -27,6 +29,7 @@ public class ChapterOneScene extends Scene{
     
     private SavePoint save0;
     private SavePoint save1;
+    private BreakOnShootBlock breakBlock;
     @Override
     public void load() {
         addEntity(new HellBG1(this));
@@ -46,15 +49,22 @@ public class ChapterOneScene extends Scene{
         
         
         addEntity(manager);
+        SpawnMarker mark1 = new SpawnMarker(this);
+        mark1.setName("Mark1");
+        
+        breakBlock = new BreakOnShootBlock(this);
+        breakBlock.setName("Destroy");
         
         MapBuilder.useMapBuilder(this);
-        MapBuilder.addVariable("Spawn", lucy);
+        MapBuilder.addVariable("Spawn", mark1);
         MapBuilder.addVariable("Lava", new Lava(this));
         MapBuilder.addVariable("Box", new PushBox(this));
         MapBuilder.addVariable("Drop", new BreakOnTouchBlock(this));
         MapBuilder.addVariable("Save0", save0);
         MapBuilder.addVariable("Save1", save1);
+        MapBuilder.addVariable("Destory", breakBlock);
         MapBuilder.addVariable("Wall", new Wall(this));
+        MapBuilder.setVariableClone("Destory", true);
         MapBuilder.setVariableClone("Drop", true);
         MapBuilder.setVariableClone("Box", true);
         MapBuilder.setVariableClone("Lava", true);
