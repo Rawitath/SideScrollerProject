@@ -4,19 +4,17 @@
  */
 package Main.ChapterThree.Entities;
 
-import Main.GameSystem.Door.Door;
-import Main.GameSystem.Door.Key;
-import Physics.Collider;
 import Scenes.Scene;
 
 /**
  *
  * @author GA_IA
  */
-public class RoomBoss extends Door{
+public class Rever extends Lever{
     
-    public RoomBoss(Scene s) {
+    public Rever(Scene s) {
         super(s);
-        doorID = 3;
+        setLeverID(2);
     }
+    
 }

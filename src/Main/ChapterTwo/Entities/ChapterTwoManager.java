@@ -25,5 +25,4 @@ public class ChapterTwoManager extends ChapterManager{
         setMinCameraLimit(new Vector2(-14.45f, -13.55f));
         setMaxCameraLimit(new Vector2(45.33f, -5.55f));
     }
-    
 }

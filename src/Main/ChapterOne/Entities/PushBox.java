@@ -24,8 +24,10 @@ public class PushBox extends PhysicableEntity implements Copyable, Pushable{
         super(s);
         setSprite(FileReader.readImage("res/game/chapter/Box.png"));
         setTag("Pushable");
-        setAnchor(new Vector2(-0.05f, 0.4f));
-        getCollider().setBound(new Vector2(0.5f, 0.45f));
+        setSpriteSize(getSpriteSize().multiply(new Vector2(1.9f, 2.5f)));
+        setAnchor(new Vector2(-0.05f, 0.44f));
+        getCollider().setBound(new Vector2(1f, 1f));
+        setMass(3f);
     }
 
     @Override

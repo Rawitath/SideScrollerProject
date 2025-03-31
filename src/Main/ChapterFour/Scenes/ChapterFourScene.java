@@ -6,8 +6,14 @@ package Main.ChapterFour.Scenes;
 
 import Main.ChapterFive.Entities.Background.*;
 import Main.ChapterFour.Entities.ChapterFourManager;
-import Main.ChapterFour.Entities.FireballStatic;
+import Main.ChapterFour.Entities.Elevator;
+import Main.ChapterFour.Entities.FireballLeftRight;
+import Main.ChapterFour.Entities.FireballUpDown;
+import Main.ChapterFour.Entities.LeverLift;
+import Main.ChapterFour.Entities.LiftLever;
+import Main.ChapterFour.Entities.StaticFire;
 import Main.ChapterThree.Entities.VerticalFireball;
+import Main.ChapterTwo.Entities.Spike;
 import Main.Entities.Main.Lucy;
 import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
@@ -22,6 +28,9 @@ public class ChapterFourScene extends Scene {
     private Lucy lucy;
     private ChapterFourManager manager;
     private LucyUISet ui;
+    private LeverLift lift;
+    private LiftLever lever;
+    
     @Override
     public void load() {
         
@@ -40,9 +49,22 @@ public class ChapterFourScene extends Scene {
         manager = new ChapterFourManager(this, lucy, ui);
         addEntity(manager);
         
+        lever = new LiftLever(this);
+        lift = new LeverLift(this, lever);
+        
         MapBuilder.useMapBuilder(this);
         MapBuilder.addVariable("Entry1", lucy);
-        MapBuilder.addVariable("fire ball UD", new FireballStatic(this));
+        MapBuilder.addVariable("fire ball UD", new FireballUpDown(this));
+        MapBuilder.addVariable("Lever", lever);
+        MapBuilder.addVariable("fire", new StaticFire(this));
+        MapBuilder.addVariable("spike", new Spike(this));
+        MapBuilder.addVariable("elvevator", new Elevator(this));
+        MapBuilder.addVariable("fire ball LR", new FireballLeftRight(this));
+        MapBuilder.setVariableClone("fire ball LR", true);
+        MapBuilder.setVariableClone("elvevator", true);
+        MapBuilder.setVariableClone("fire", true);
+        MapBuilder.setVariableClone("spike", true);
+        MapBuilder.addVariable("leverlift", lift);
         MapBuilder.loadMap("map/Chapter4");
     }
     

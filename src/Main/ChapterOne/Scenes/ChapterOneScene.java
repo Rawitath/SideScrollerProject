@@ -4,6 +4,7 @@
  */
 package Main.ChapterOne.Scenes;
 import Main.ChapterOne.Entities.Background.*;
+import Main.ChapterOne.Entities.BreakOnTouchBlock;
 import Main.ChapterOne.Entities.ChapterOneManager;
 import Main.ChapterOne.Entities.Lava;
 import Main.ChapterOne.Entities.PushBox;
@@ -41,6 +42,8 @@ public class ChapterOneScene extends Scene{
         MapBuilder.addVariable("Spawn", lucy);
         MapBuilder.addVariable("Lava", new Lava(this));
         MapBuilder.addVariable("Box", new PushBox(this));
+        MapBuilder.addVariable("Drop", new BreakOnTouchBlock(this));
+        MapBuilder.setVariableClone("Drop", true);
         MapBuilder.setVariableClone("Box", true);
         MapBuilder.setVariableClone("Lava", true);
         MapBuilder.loadMap("map/Chapter1");

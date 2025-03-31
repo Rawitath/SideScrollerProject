@@ -28,6 +28,8 @@ public abstract class PhysicableEntity extends CollidableEntity{
     private float minimumStep;
     
     private boolean useGravity;
+    
+    private float mass = 1f;
 
     public PhysicableEntity(Scene s) {
         super(s);
@@ -57,6 +59,9 @@ public abstract class PhysicableEntity extends CollidableEntity{
         if(lockObject != null && !lockObject.getEntity().isAddedToScene()){
             lockDirection = Vector2.zero();
             lockObject = null;
+        }
+        if(groundObject != null && !groundObject.getEntity().isAddedToScene()){
+            checkGroundExit();
         }
     }
     
@@ -158,6 +163,10 @@ public abstract class PhysicableEntity extends CollidableEntity{
                     setPosition(new Vector2(getPosition().getX(), drift.getY()));
                 }
                 groundPosition = other.getEntity().getPosition();
+                if(other.getEntity() instanceof PhysicableEntity && other.getEntity() instanceof Pushable){
+                        PhysicableEntity ph = (PhysicableEntity) other.getEntity();
+                        ph.setVelocity(ph.getVelocity().multiply(Vector2.up()));
+                    }
             }
             //Check if approch right or left of other, lockDirection will lock if approch is true
             if(groundObject != other && lockObject != other){
@@ -176,17 +185,20 @@ public abstract class PhysicableEntity extends CollidableEntity{
                
                     
                     if(getPosition().getX() + getCollider().getCenter().getX() > other.getEntity().getPosition().getX() + other.getCenter().getX()){
-                        lockDirection = Vector2.left();
-                        lockObject = other;
+                        
 
                         if(this instanceof Pushable){
                             if(other.getEntity() instanceof PhysicableEntity){
                                 PhysicableEntity p = (PhysicableEntity) other.getEntity();
                                 if(!p.getVelocity().equals(Vector2.zero())){
-                                    setVelocity(p.getVelocity().multiply(Vector2.right()));
+                                    setVelocity(p.getVelocity().multiply(Vector2.right().multiply(1f / mass)));
                                 }
                             }
 //                            other.getEntity().setPosition(other.getEntity().getPosition().translate(velocity.multiply(Vector2.right()), Time.fixedDeltaTime()));
+                        }
+                        else{
+                            lockDirection = Vector2.left();
+                            lockObject = other;
                         }
                     }
                     else if(getPosition().getX() + getCollider().getCenter().getX() < other.getEntity().getPosition().getX() + other.getCenter().getX()){
@@ -197,10 +209,14 @@ public abstract class PhysicableEntity extends CollidableEntity{
                             if(other.getEntity() instanceof PhysicableEntity){
                                 PhysicableEntity p = (PhysicableEntity) other.getEntity();
                                 if(!p.getVelocity().equals(Vector2.zero())){
-                                    setVelocity(p.getVelocity().multiply(Vector2.right()));
+                                    setVelocity(p.getVelocity().multiply(Vector2.right().multiply(1f / mass)));
                                 }
                             }
 //                            other.getEntity().setPosition(other.getEntity().getPosition().translate(velocity.multiply(Vector2.right()), Time.fixedDeltaTime()));
+                        }
+                        else{
+                            lockDirection = Vector2.right();
+                            lockObject = other;
                         }
                     }
                 
@@ -211,6 +227,9 @@ public abstract class PhysicableEntity extends CollidableEntity{
     @Override
     public void onColliderExit(Collider other) {
         if(getCollider().isSolid() && other.isSolid()){
+            if(this instanceof Pushable){
+                setVelocity(Vector2.zero());
+            }
             if(groundObject == other){
                 checkGroundExit();
             }
@@ -251,6 +270,14 @@ public abstract class PhysicableEntity extends CollidableEntity{
 
     public void setUseGravity(boolean useGravity) {
         this.useGravity = useGravity;
+    }
+
+    public float getMass() {
+        return mass;
+    }
+
+    public void setMass(float mass) {
+        this.mass = mass;
     }
     
 }

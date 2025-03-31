@@ -4,6 +4,7 @@
  */
 package Main.ChapterFour.Entities;
 
+import Datas.Vector2;
 import Entities.Entity;
 import Main.ChapterThree.Entities.Fireball;
 import Scenes.Scene;
@@ -12,14 +13,18 @@ import Scenes.Scene;
  *
  * @author GA_IA
  */
-public class FireballStaticHorizontal extends Fireball{
-
-    public FireballStaticHorizontal(Scene s) {
+public class StaticFire extends Fireball{
+    
+    public StaticFire(Scene s) {
         super(s);
+        setScale(getScale().multiply(0.7f));
+        setFlip(Vector2.negativeY());
     }
+
     @Override
     public <T extends Entity> T copyOf() {
-        FireballStaticHorizontal fireball = new FireballStaticHorizontal(getScene());
-        return (T) fireball;
+        StaticFire fire = new StaticFire(getScene());
+        return (T) fire;
     }
+    
 }

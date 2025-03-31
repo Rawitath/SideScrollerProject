@@ -14,12 +14,13 @@ import java.util.Map;
  * @author GA_IA
  */
 public class LucyAnimationMap {
+    public static LucyAnimationMap instance;
     private Map<String, Animation> lucyMap;
     private Map<String, Animation> lucyWandMap;
     private Map<String, Animation> lucyWingMap;
     private Map<String, Animation> lucyHaloMap;
     
-    public LucyAnimationMap(){
+    private LucyAnimationMap(){
         lucyMap = new HashMap<>();
         lucyWandMap = new HashMap<>();
         lucyWingMap = new HashMap<>();
@@ -66,4 +67,28 @@ public class LucyAnimationMap {
         lucyWingMap.put("Fly", new LucyWingFly());
         lucyHaloMap.put("Fly", new LucyHaloFly());
     }
+    
+    public static LucyAnimationMap getInstance(){
+        if(instance == null){
+            instance = new LucyAnimationMap();
+        }
+        return instance;
+    }
+
+    public Map<String, Animation> getLucyMap() {
+        return lucyMap;
+    }
+
+    public Map<String, Animation> getLucyWandMap() {
+        return lucyWandMap;
+    }
+
+    public Map<String, Animation> getLucyWingMap() {
+        return lucyWingMap;
+    }
+
+    public Map<String, Animation> getLucyHaloMap() {
+        return lucyHaloMap;
+    }
+    
 }

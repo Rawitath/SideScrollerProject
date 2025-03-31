@@ -15,7 +15,7 @@ public class FireballHorizontal extends Animation{
     public FireballHorizontal(){
         super();
         setSpriteSheet(FileReader.readImage("res/game/animation/chapter/fireball1.png"));
-        sliceSprite(3, 460, 460, 3);
+        sliceSprite(1, 460, 460, 3);
         setFps(12);
         setLoop(true);
     }

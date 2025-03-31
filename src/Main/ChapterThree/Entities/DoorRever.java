@@ -5,6 +5,7 @@
 package Main.ChapterThree.Entities;
 
 import Main.GameSystem.Door.Door;
+import Main.GameSystem.Door.Key;
 import Scenes.Scene;
 
 /**
@@ -13,9 +14,20 @@ import Scenes.Scene;
  */
 public class DoorRever extends Door{
     
-    public DoorRever(Scene s) {
+    private Lever rever;
+    
+    public DoorRever(Scene s, Lever rever) {
         super(s);
-        doorID = 3;
+        doorID = 2;
+        this.rever = rever;
+    }
+
+    @Override
+    public void update() {
+        if(rever.isIsOn() && !isIsOpen()){
+            open(new Key("Rever", rever.getLeverID(), 0));
+        }
+        super.update();
     }
     
 }

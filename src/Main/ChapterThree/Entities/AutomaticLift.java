@@ -17,6 +17,7 @@ import java.util.Vector;
 public class AutomaticLift extends Lift{
     private boolean isUp = false;
     private boolean isWorking;
+    private float speed = 2f;
     
     public AutomaticLift(Scene s) {
         super(s);
@@ -25,8 +26,8 @@ public class AutomaticLift extends Lift{
     @Override
     public void start() {
         super.start();
-        setBottomPosition(getPosition().getY());
-        setTopPosition(getPosition().getY() + 12);
+        setBottomPosition(getPosition().getY() - 1);
+        setTopPosition(getPosition().getY() + 11);
         isWorking = true;
     }
     
@@ -36,7 +37,7 @@ public class AutomaticLift extends Lift{
         if(isWorking){
             if(isUp){
             if(getPosition().getY() < getTopPosition()){
-                setPosition(getPosition().translate(Vector2.up(), 2 * Time.fixedDeltaTime()));
+                setPosition(getPosition().translate(Vector2.up(), speed * Time.fixedDeltaTime()));
             }
             else{
                 isUp = false;
@@ -44,13 +45,29 @@ public class AutomaticLift extends Lift{
         }
         else{
             if(getPosition().getY() > getBottomPosition()){
-                setPosition(getPosition().translate(Vector2.down(), 2 * Time.fixedDeltaTime()));
+                setPosition(getPosition().translate(Vector2.down(), speed * Time.fixedDeltaTime()));
             }
             else{
                 isUp = true;
             }
         }
         }
+    }
+
+    public boolean isIsWorking() {
+        return isWorking;
+    }
+
+    public void setIsWorking(boolean isWorking) {
+        this.isWorking = isWorking;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
     
     @Override

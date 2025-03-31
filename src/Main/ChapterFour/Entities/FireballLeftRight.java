@@ -5,7 +5,6 @@
 package Main.ChapterFour.Entities;
 
 import Datas.Vector2;
-import Entities.Copyable;
 import Entities.Entity;
 import Main.ChapterThree.Entities.Fireball;
 import Physics.Time;
@@ -15,36 +14,33 @@ import Scenes.Scene;
  *
  * @author GA_IA
  */
-public class FireballStatic extends Fireball{
-    
+public class FireballLeftRight extends Fireball{
+
     private Vector2 begin;
-    
-    public FireballStatic(Scene s) {
+    public FireballLeftRight(Scene s) {
         super(s);
+        setIsHorizontal(true);
+        setScale(getScale().multiply(0.7f));
     }
 
     @Override
     public void start() {
         super.start();
-        begin = getPosition().add(new Vector2(0, 2));
-        setFlip(Vector2.negativeY());
+        begin = getPosition().add(new Vector2(1, 0));
+        setFlip(Vector2.negativeX());
     }
-
+        
     @Override
     public void fixedUpdate() {
         super.fixedUpdate();
-        if(getPosition().getY() < begin.getY() - 6){
+        if(getPosition().getX() < begin.getX() - 6){
             setPosition(begin);
         }
-        setPosition(getPosition().translate(Vector2.down(), 1 * Time.fixedDeltaTime()));
+        setPosition(getPosition().translate(Vector2.left(), 2.5f * Time.fixedDeltaTime()));
     }
     
-    
-
     @Override
     public <T extends Entity> T copyOf() {
-        FireballStatic fireball = new FireballStatic(getScene());
-        return (T) fireball;
+        return (T) new FireballLeftRight(getScene());
     }
-    
 }

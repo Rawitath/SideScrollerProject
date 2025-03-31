@@ -2,21 +2,27 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.ChapterThree.Entities;
+package Main.ChapterFour.Entities;
 
-import Main.GameSystem.Door.Door;
-import Main.GameSystem.Door.Key;
-import Physics.Collider;
+import Main.ChapterThree.Entities.Lever;
 import Scenes.Scene;
+
+
 
 /**
  *
  * @author GA_IA
  */
-public class RoomBoss extends Door{
-    
-    public RoomBoss(Scene s) {
+public class LiftLever extends Lever{
+
+    public LiftLever(Scene s) {
         super(s);
-        doorID = 3;
+        setLeverID(0);
     }
+
+    @Override
+    public void start() {
+        super.start();
+    }
+    
 }

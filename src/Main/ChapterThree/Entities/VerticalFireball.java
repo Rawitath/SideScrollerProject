@@ -29,6 +29,7 @@ public class VerticalFireball extends Fireball{
     public void start() {
         super.start();
         setPosition(new Vector2(getPosition().getX(), getPosition().getY() - 2f));
+        setScale(getScale().multiply(0.7f));
     }
 
     @Override

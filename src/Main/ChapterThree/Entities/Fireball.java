@@ -9,6 +9,7 @@ import Datas.Vector2Int;
 import Entities.CollidableEntity;
 import Entities.Copyable;
 import Entities.Entity;
+import Main.ChapterThree.Animation.FireballHorizontal;
 import Main.ChapterThree.Animation.FireballVertical;
 import Main.ChapterTwo.Entities.Spike;
 import Main.Entities.Main.Damagable;
@@ -29,19 +30,38 @@ public class Fireball extends CollidableEntity implements Copyable{
     private boolean spikeEnable = false;
     private Map<Damagable, Float> damageMap = new ConcurrentHashMap<>();
     private Animator animator;
+    private boolean isHorizontal;
     
     public Fireball(Scene s) {
         super(s);
+        animator = new Animator();
     }
 
     @Override
     public void start() {
-        
-        animator = new Animator();
-        animator.setAnimation(new FireballVertical());
+        if(isHorizontal){
+            animator.setAnimation(new FireballHorizontal());
+        }
+        else{
+            animator.setAnimation(new FireballVertical());
+        }
         setSpriteSize(new Vector2Int(100, 100));
     }
 
+    public boolean isIsHorizontal() {
+        return isHorizontal;
+    }
+
+    public void setIsHorizontal(boolean isHorizontal) {
+        this.isHorizontal = isHorizontal;
+        if(isHorizontal){
+            animator.setAnimation(new FireballHorizontal());
+        }
+        else{
+            animator.setAnimation(new FireballVertical());
+        }
+    }
+    
     @Override
     public void update() {
         setSprite(animator.getFrame(Time.deltaTime()), true);

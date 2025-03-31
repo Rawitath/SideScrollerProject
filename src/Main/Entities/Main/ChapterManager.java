@@ -10,6 +10,8 @@ import Entities.Entity;
 import Inputs.KeyControlable;
 import Main.GameSystem.Cutscene.Cutscene;
 import Main.UI.Main.LucyUISet;
+import Saves.GameSave;
+import Saves.SaveManager;
 import Scenes.Scene;
 import java.awt.event.KeyEvent;
 
@@ -18,6 +20,9 @@ import java.awt.event.KeyEvent;
  * @author GA_IA
  */
 public class ChapterManager extends Entity{
+    
+    private GameSave save;
+    
     private boolean isBoss;
     private Lucy lucy;
     private Cutscene cutscene;
@@ -33,6 +38,9 @@ public class ChapterManager extends Entity{
         this.lucy = lucy;
         this.ui = ui;
         s.addEntity(ui);
+        
+        save = SaveManager.getInstance().getCurrentSave();
+        lucy.setSave(save);
     }
 
     public Vector2 getMinCameraLimit() {
