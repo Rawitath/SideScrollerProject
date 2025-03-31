@@ -92,7 +92,7 @@ public class Vector2 implements Serializable{
     }
 
     public boolean equals(Vector2 vec) {
-        return this.x == vec.getX() && this.y == vec.getY();
+        return Math.abs(this.x - vec.getX()) < 0.0001f && Math.abs(this.y - vec.getY()) < 0.0001f;
     }
     
     
