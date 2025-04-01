@@ -10,8 +10,11 @@ import Inputs.KeyControlable;
 import Main.Entities.Main.ChapterManager;
 import Main.Entities.Main.Lucy;
 import Main.GameSystem.Cutscene.Cutscene;
+import Main.GameSystem.SavePoint.SavePoint;
 import Main.UI.Main.LucyUISet;
 import Physics.Time;
+import Saves.GameSave;
+import Saves.SaveManager;
 import Scenes.Scene;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ import java.util.List;
  */
 public class ChapterFiveManager extends ChapterManager{
     
+    private GameSave save = SaveManager.getInstance().getCurrentSave();
     private List<Entity> bosswalls;
 
     public ChapterFiveManager(Scene s, Lucy lucy, LucyUISet ui) {
@@ -48,5 +52,30 @@ public class ChapterFiveManager extends ChapterManager{
     public void start() {
         super.start();
         bosswalls = getScene().getEntities("BossWall");
-    }
+        
+        if(save.getCurrentCheckpoint() == null){
+            getLucy().setPosition(getScene().getEntity("Mark1").getPosition());
+            getScene().addEntity(getLucy());
+        }
+        else{
+            for(Entity e : getScene().getEntities("Save")){
+                SavePoint s = (SavePoint) e;
+                if(save.getCurrentCheckpoint().equals(s.getSavePointID())){
+                    getLucy().setPosition(s.getPosition());
+                    getScene().addEntity(getLucy());
+                    break;
+                }
+            }
+        }
+        
+//        breakBlock = getScene().getEntities("Destroy");
+//        
+//        if(save.getOne_WallDestroy()){
+//            for(Entity e : breakBlock){
+//                BreakableBlock b = (BreakableBlock) e;
+//                b.destroy();
+//            }
+//        }
+        super.start();
+    }   
 }

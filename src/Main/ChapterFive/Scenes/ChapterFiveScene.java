@@ -10,8 +10,10 @@ import Main.ChapterFive.Entities.Background.*;
 import Main.ChapterFive.Entities.BossWall;
 import Main.ChapterFive.Entities.ChapterFiveManager;
 import Main.ChapterFive.Entities.SheepBoss;
+import Main.ChapterTwo.Entities.Spike;
 import Main.Entities.Main.Lucy;
 import Main.GameSystem.Cutscene.CutsceneTrigger;
+import Main.GameSystem.SavePoint.SavePoint;
 import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
 import Scenes.Scene;
@@ -28,6 +30,9 @@ public class ChapterFiveScene extends Scene {
     private CutsceneTrigger trigger;
     private ChapterFiveManager manager;
     private LucyUISet ui;
+    private SavePoint save9;
+    private SavePoint save10;
+    private SavePoint save11;
     
     private BossWall bosswall;
     
@@ -49,6 +54,13 @@ public class ChapterFiveScene extends Scene {
         manager = new ChapterFiveManager(this, lucy, ui);
         addEntity(manager);
         
+        save9 = new SavePoint(this);
+        save9.setSavePointID(9);
+        save10 = new SavePoint(this);
+        save10.setSavePointID(10);
+        save11 = new SavePoint(this);
+        save11.setSavePointID(11);
+        
         bossCutscene = new BossCutscene(this);
         sheep = new SheepBoss(this, lucy);
         bossCutscene.addControlledEntities("Lucy", lucy);
@@ -60,13 +72,19 @@ public class ChapterFiveScene extends Scene {
         
         bosswall = new BossWall(this);
         
+        
         addEntity(bossCutscene);
         
         MapBuilder.useMapBuilder(this);
         MapBuilder.addVariable("debugBoss", lucy);
+        MapBuilder.addVariable("Spike", new Spike(this));
+        MapBuilder.addVariable("Save9", save9);
+        MapBuilder.addVariable("Save10", save10);
+        MapBuilder.addVariable("Save11", save11);
         MapBuilder.addVariable("last boss", sheep);
         MapBuilder.addVariable("BossCutsceneTrigger", trigger);
         MapBuilder.addVariable("Bosswall", bosswall);
+        MapBuilder.setVariableClone("Spike", true);
         MapBuilder.setVariableClone("Bosswall", true);
         
         MapBuilder.loadMap("map/Chapter5");

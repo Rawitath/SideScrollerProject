@@ -15,6 +15,7 @@ import Main.ChapterFour.Entities.StaticFire;
 import Main.ChapterThree.Entities.VerticalFireball;
 import Main.ChapterTwo.Entities.Spike;
 import Main.Entities.Main.Lucy;
+import Main.GameSystem.SavePoint.SavePoint;
 import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
 import Scenes.Scene;
@@ -30,6 +31,9 @@ public class ChapterFourScene extends Scene {
     private LucyUISet ui;
     private LeverLift lift;
     private LiftLever lever;
+    private SavePoint save6;
+    private SavePoint save7;
+    private SavePoint save8;
     
     @Override
     public void load() {
@@ -52,10 +56,20 @@ public class ChapterFourScene extends Scene {
         lever = new LiftLever(this);
         lift = new LeverLift(this, lever);
         
+        save6 = new SavePoint(this);
+        save6.setSavePointID(6);
+        save7 = new SavePoint(this);
+        save7.setSavePointID(7);
+        save8 = new SavePoint(this);
+        save8.setSavePointID(8);
+        
         MapBuilder.useMapBuilder(this);
         MapBuilder.addVariable("Entry1", lucy);
         MapBuilder.addVariable("fire ball UD", new FireballUpDown(this));
         MapBuilder.addVariable("Lever", lever);
+        MapBuilder.addVariable("Save6", save6);
+        MapBuilder.addVariable("Save7", save7);
+        MapBuilder.addVariable("Save8", save8);
         MapBuilder.addVariable("fire", new StaticFire(this));
         MapBuilder.addVariable("spike", new Spike(this));
         MapBuilder.addVariable("elvevator", new Elevator(this));

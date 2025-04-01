@@ -7,6 +7,7 @@ package Main.Entities.Main;
 import Datas.Vector2;
 import Entities.Camera;
 import Entities.Entity;
+import Entities.UI.UIImage;
 import Inputs.KeyControlable;
 import Main.GameSystem.Cutscene.Cutscene;
 import Main.UI.Main.LucyUISet;
@@ -35,15 +36,23 @@ public class ChapterManager extends Entity{
     protected boolean isDead = false;
     protected boolean freeCamera = false;
     
-    private float deathDelay = 1.5f;
+    private UIImage screenFade;
+    private float fadeDelay = 1f;
+    private float fadeCountdown;
+    
+    private float deathDelay = 3f;
     private float deathCountdown;
 
     public ChapterManager(Scene s, Lucy lucy, LucyUISet ui) {
         super(s);
+        
+        screenFade = new ScreenFade(getScene());
+        getScene().addEntity(screenFade);
+        
         isBoss = false;
         this.lucy = lucy;
         this.ui = ui;
-        s.addEntity(ui);
+        s.addEntity(ui); 
     }
 
     public Vector2 getMinCameraLimit() {
@@ -141,6 +150,12 @@ public class ChapterManager extends Entity{
             }
             
             if(lucy.getHealth() > 0){
+                if(screenFade.getAlpha() - 4f * Time.deltaTime() > 0f){
+                    screenFade.setAlpha(screenFade.getAlpha() - 2.5f * Time.deltaTime());
+                }
+                else{
+                    screenFade.setActive(false);
+                }
                 ui.setActive(true);
                 
                 if(lucy.isStatsOpen()){
@@ -162,10 +177,16 @@ public class ChapterManager extends Entity{
                     ui.setActive(false);
                     isDead = true;
                     deathCountdown = Time.time();
+                    screenFade.setActive(true);
                 }
                 else{
                     if(Time.time() - deathCountdown > deathDelay){
                         respawn();
+                    }
+                    else{
+                        if(screenFade.getAlpha() + 1 / deathDelay * Time.deltaTime() < 1f){
+                            screenFade.setAlpha(screenFade.getAlpha() + 1 / deathDelay * Time.deltaTime());
+                        }
                     }
                 }
             }
@@ -194,7 +215,7 @@ public class ChapterManager extends Entity{
     }
     
     protected void respawn(){
-        save.setDeath(save.getDeath() + 1);
+        save.setDeath(save.getDeath() + 1);    
         SceneManager.loadScene(getScene().getId());
     }
 }

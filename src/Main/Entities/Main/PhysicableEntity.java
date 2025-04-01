@@ -10,6 +10,8 @@ import Entities.CollidableEntity;
 import Physics.Collider;
 import Physics.Time;
 import Scenes.Scene;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -30,6 +32,8 @@ public abstract class PhysicableEntity extends CollidableEntity{
     private boolean useGravity;
     
     private float mass = 1f;
+    
+    private List<String> ignoreCollision = new CopyOnWriteArrayList<>();
 
     public PhysicableEntity(Scene s) {
         super(s);
@@ -40,6 +44,15 @@ public abstract class PhysicableEntity extends CollidableEntity{
         useGravity = true;
     }
 
+    public List<String> getIgnoreCollision() {
+        return ignoreCollision;
+    }
+    public void addIgnore(String ignore){
+        ignoreCollision.add(ignore);
+    }
+    public void removeIgnore(String ignore){
+        ignoreCollision.remove(ignore);
+    }
     @Override
     public void start() {
 
@@ -94,7 +107,7 @@ public abstract class PhysicableEntity extends CollidableEntity{
 
     @Override
     public void onColliderEnter(Collider other) {
-        if(getCollider().isSolid() && other.isSolid()){
+        if(getCollider().isSolid() && other.isSolid() && !ignoreCollision.contains(other.getEntity().getTag())){
             if(!grounded){
                 //Check the bottom is colliding with top of other
                 if((getPosition().getY() + getCollider().getCenter().getY() - getCollider().getBoundScale().getY() / 2
@@ -133,7 +146,7 @@ public abstract class PhysicableEntity extends CollidableEntity{
 
     @Override
     public void onColliderStay(Collider other) {
-        if(getCollider().isSolid() && other.isSolid()){
+        if(getCollider().isSolid() && other.isSolid() && !ignoreCollision.contains(other.getEntity().getTag())){
             //For being on multiple tile
             if(!grounded){
                 //Check the bottom is colliding with top of other
@@ -226,7 +239,7 @@ public abstract class PhysicableEntity extends CollidableEntity{
 
     @Override
     public void onColliderExit(Collider other) {
-        if(getCollider().isSolid() && other.isSolid()){
+        if(getCollider().isSolid() && other.isSolid() && !ignoreCollision.contains(other.getEntity().getTag())){
             if(this instanceof Pushable){
                 setVelocity(Vector2.zero());
             }

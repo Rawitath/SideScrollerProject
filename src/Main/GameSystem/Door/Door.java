@@ -7,6 +7,7 @@ package Main.GameSystem.Door;
 import Entities.CollidableEntity;
 import Physics.Collider;
 import Physics.Time;
+import Saves.SaveManager;
 import Scenes.Scene;
 
 /**
@@ -27,7 +28,10 @@ public class Door extends CollidableEntity{
 
     @Override
     public void start() {
-
+        if(SaveManager.getInstance().getCurrentSave().getUnlockedDoors().contains(doorID)){
+            setActive(false);
+            getScene().removeEntity(this);
+        }
     }
 
     @Override
@@ -72,7 +76,7 @@ public class Door extends CollidableEntity{
     }
     
     public boolean open(Key key){
-        if(true||key.getKeyID().equals(doorID)){
+        if(key.getKeyID().equals(doorID)){
             previous = Time.time();
             isOpen = true;
             return true;

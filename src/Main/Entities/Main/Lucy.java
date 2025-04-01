@@ -121,6 +121,8 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
         
         bubble.setLocalPosition(new Vector2(-0.37f, 0.37f));
         bubble.setLocalScale(bubble.getLocalScale().multiply(0.2f));
+        
+        addIgnore("Enemy");
     }
 
     @Override

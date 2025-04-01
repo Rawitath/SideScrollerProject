@@ -6,6 +6,7 @@ package Main.ChapterThree.Entities;
 
 import Main.GameSystem.Door.Door;
 import Main.GameSystem.Door.Key;
+import Saves.SaveManager;
 import Scenes.Scene;
 
 /**
@@ -20,6 +21,15 @@ public class DoorRever extends Door{
         super(s);
         doorID = 2;
         this.rever = rever;
+    }
+
+    @Override
+    public void start() {
+        super.start();
+        if(SaveManager.getInstance().getCurrentSave().getUnlockedDoors().contains(doorID)){
+            rever.setLever(true);
+            getScene().removeEntity(this);
+        }
     }
 
     @Override

@@ -45,6 +45,10 @@ public class Animator {
     public void setAnimation(Animation animation) {
         setAnimation(animation, false);
     }
+    
+    public boolean isAnimationEnd(){
+        return frame == animation.getSpriteFrame().length - 1;
+    }
 
     public BufferedImage getFrame(float time) {
         if(animation == null){
