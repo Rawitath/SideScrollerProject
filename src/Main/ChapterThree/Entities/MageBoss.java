@@ -17,6 +17,7 @@ import Main.GameSystem.Cutscene.CutsceneControllable;
 import Physics.Collider;
 import Physics.Time;
 import Scenes.Scene;
+import java.util.Random;
 
 /**
  *
@@ -34,9 +35,10 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
     
     private ChapterManager manager;
     
-    private int health = 20;
+    private int health = 30;
     
-    private float attacDuration = 2.5f;
+    private float attacDuration = 3.5f;
+   
     
     public MageBoss(Scene s, Lucy lucy) {
         super(s);
@@ -57,6 +59,39 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
     public void update() {
         super.update();
         setSprite(animator.getFrame(Time.deltaTime()), true);
+    }
+    @Override
+    public void fixedUpdate() {
+        super.fixedUpdate();
+        if(manager.isBoss() && lucy.getHealth() > 0){
+            Vector2 lucyDistance = lucy.getPosition();
+            Vector2 selfDistance = this.getPosition();
+
+            if(previous == 0){
+                previous = Time.time();
+            }
+            if(Time.time() - previous > attacDuration){
+                int attack = new Random().nextInt();
+                if(attack % 100 / 100 > 20f){
+                    bombAttack();
+                }
+                else{
+                    fireAttack();
+                }
+                previous = Time.time();
+            }
+        }
+    }
+    
+    private void bombAttack(){
+        Bomb bomb = new Bomb(getScene(), 2);
+        int bombPos = new Random().nextInt(1, 7);
+        bomb.setPosition(getPosition().add(new Vector2(-bombPos, 4)));
+        getScene().addEntity(bomb);
+    }
+    private void fireAttack(){
+        MageFire fire = new MageFire(getScene(), Vector2.left(), 5f, 3f);
+        getScene().addEntity(fire);
     }
     
     @Override
