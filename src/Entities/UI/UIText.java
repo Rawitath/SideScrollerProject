@@ -26,6 +26,14 @@ public abstract class UIText extends UIEntity{
     private int style;
     private int size;
     private Color color;
+    private float alpha;
+    
+    public static final float LEFT = 0f;
+    public static final float CENTER = 0.5f;
+    public static final float RIGHT = 1f;
+    
+    private float horizontalAlignment;
+    private float verticalAlignment;
     
     public UIText(Scene s) {
         super(s);
@@ -34,8 +42,18 @@ public abstract class UIText extends UIEntity{
         size = 14;
         font = new Font("Arial", style, size);
         color = Color.BLACK;
+        horizontalAlignment = LEFT;
+        alpha = 1f;
     }
 
+    public float getHorizontalAlignment() {
+        return horizontalAlignment;
+    }
+
+    public void setHorizontalAlignment(float horizontalAlignment) {
+        this.horizontalAlignment = horizontalAlignment;
+    }
+    
     public String getText() {
         return text;
     }
@@ -84,6 +102,14 @@ public abstract class UIText extends UIEntity{
     public void setColor(Color color) {
         this.color = color;
     }
+    
+    public float getAlpha() {
+        return alpha;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
+    }
 
     @Override
     public void draw(Graphics g, Vector2 posOffset, Vector2 scaleOffset, float zoom) {
@@ -96,7 +122,7 @@ public abstract class UIText extends UIEntity{
         g.setColor(color);
         Vector2 pos = getPosition().add(getScreenAnchor()).multiply(Vector2.negativeY())
                 .multiply(new Vector2((float)screen.width / (float)reference.getX(), (float)screen.height / (float)reference.getY()))
-                .add(posOffset).add(new Vector2(-g.getFontMetrics().stringWidth(text) / 2, g.getFontMetrics().getHeight() / 3.25f));
+                .add(posOffset).add(new Vector2(-g.getFontMetrics().stringWidth(text) * horizontalAlignment, g.getFontMetrics().getHeight() / 3.25f));
         g.drawString(text, Math.round(pos.getX()),Math.round(pos.getY()) );
     }
     

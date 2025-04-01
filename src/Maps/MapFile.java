@@ -7,6 +7,7 @@ package Maps;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -24,6 +25,7 @@ public class MapFile implements Serializable{
     private float offsetX;
     private float offsetY;
     private transient List<BufferedImage> usedImages;
+    private Map<String, Integer> filePaths;
 
     public MapFile(String name) {
         this.name = name;
@@ -112,6 +114,14 @@ public class MapFile implements Serializable{
 
     public void setImageSizeMultiplier(float imageSizeMultiplier) {
         this.imageSizeMultiplier = imageSizeMultiplier;
+    }
+
+    public Map<String, Integer> getFilePaths() {
+        return filePaths;
+    }
+
+    public void setFilePaths(Map<String, Integer> filePaths) {
+        this.filePaths = filePaths;
     }
     
 }

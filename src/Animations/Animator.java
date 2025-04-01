@@ -37,13 +37,17 @@ public class Animator {
 //    }
     public void setAnimation(Animation animation, boolean resetAnimation) {
         if(this.animation == null || (this.animation.getClass() != animation.getClass() || resetAnimation)){
+            time = 0f;
+            frame = 0;
             this.animation = animation;
-        time = 0f;
-        frame = 0;
         }
     }
     public void setAnimation(Animation animation) {
         setAnimation(animation, false);
+    }
+    
+    public boolean isAnimationEnd(){
+        return frame == animation.getSpriteFrame().length - 1;
     }
 
     public BufferedImage getFrame(float time) {

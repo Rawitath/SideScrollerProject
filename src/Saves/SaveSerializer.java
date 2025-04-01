@@ -23,7 +23,10 @@ public class SaveSerializer {
     private static final String savePath = "saves/";
     
     public static void save(GameSave save){
-        try (FileOutputStream file = new FileOutputStream(savePath+UUID.randomUUID().toString()+".lucy");
+        if(save.getSaveID() == null){
+            save.setSaveID(UUID.randomUUID().toString());
+        }
+        try (FileOutputStream file = new FileOutputStream(savePath+save.getSaveID()+".lucy");
                 ObjectOutputStream os = new ObjectOutputStream(file);){
             os.writeObject(save);
         } catch (FileNotFoundException ex) {
@@ -49,7 +52,22 @@ public class SaveSerializer {
         }
         return saves;
     }
+    public static GameSave load(String saveID){
+        for(GameSave gs : getSaves()){
+            if(gs.getSaveID().equals(saveID)){
+                return gs;
+            }
+        }
+        System.err.println("Save ID: "+saveID+" not found!");
+        return null;
+    }
     public static GameSave load(int saveNumber){
-        return getSaves()[saveNumber];
+        for(GameSave gs : getSaves()){
+            if(gs.getSaveNumber().equals(saveNumber)){
+                return gs;
+            }
+        }
+        System.err.println("Save Number: "+saveNumber+" not found!");
+        return null;
     }
 }

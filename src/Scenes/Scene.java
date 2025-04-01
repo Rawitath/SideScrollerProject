@@ -7,6 +7,7 @@ package Scenes;
 import Entities.Camera;
 import Entities.Entity;
 import Entities.UI.UIView;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -22,6 +23,10 @@ public abstract class Scene {
     private UIView mainUIView = null;
     
     public Scene(){
+        resetScene();
+    }
+    
+    private void resetScene(){
         entities = new CopyOnWriteArrayList<>();
         name = this.getClass().getTypeName();
         mainCamera = new Camera(this);
@@ -42,6 +47,7 @@ public abstract class Scene {
         for(var e : entities){
             removeEntity(e);
         }
+        resetScene();
     }
     
     public int getId() {
@@ -57,17 +63,34 @@ public abstract class Scene {
     }
     
     public void addEntity(Entity e){
+        e.setIsAddedToScene(true);
         entities.add(e);
+        for(Entity c : e.getChilds()){
+            c.setIsAddedToScene(true);
+        }
         SceneManager.addToRender(e);
     }
     
     public void removeEntity(Entity e){
         SceneManager.removeFromRender(e);
+        for(Entity c : e.getChilds()){
+            c.setIsAddedToScene(false);
+        }
         entities.remove(e);
+        e.setIsAddedToScene(false);
     }
 
     public List<Entity> getEntities() {
         return entities;
+    }
+    public List<Entity> getEntities(String name) {
+        List<Entity> e = new ArrayList<>();
+        for(Entity en : entities){
+            if(en.getName().equals(name)){
+                e.add(en);
+            }
+        }
+        return e;
     }
     public <T extends Entity> T getEntity(String name){
         for(var e : entities){

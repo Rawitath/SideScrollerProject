@@ -114,11 +114,15 @@ public abstract class SpriteEntity extends Entity{
             Vector2 scale = getScale().multiply(flip).multiply(scaleOffset).multiply(spriteSize).multiply(pixelRatio);
             AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
             g2d.setComposite(ac);
+            int x = Math.round(pos.getX() - (scale.getX() / 2));
+            int y = Math.round(pos.getY() - (scale.getY() / 2));
+            int width = Math.round(scale.getX());
+            int height = Math.round(scale.getY());
             g2d.drawImage(sprite, 
-                Math.round(pos.getX() - (scale.getX() / 2))
-                ,Math.round(pos.getY() - (scale.getY() / 2)),
-                Math.round(scale.getX())
-                , Math.round(scale.getY())
+                x
+                ,y,
+                width
+                , height
                 , null);
             ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1);
             g2d.setComposite(ac);
