@@ -6,10 +6,12 @@ package Main.StartMenu.Entities.Load;
 
 import Datas.Vector2;
 import Entities.UI.UIImage;
+import Entities.UI.UIText;
 import Main.StartMenu.Entities.Fadable;
 import Scenes.Scene;
 import Utilities.FileReader;
 import Main.StartMenu.Entities.TextButton;
+import Saves.GameSave;
 
 /**
  *
@@ -22,6 +24,9 @@ public class SaveGroup extends UIImage implements Fadable{
     private LoadButton load;
     private PlayTime playtime;
     private DeleteButton delete;
+    private GameSave save;
+    
+    private TextButton createNew;
     
     public SaveGroup(Scene s){
         super(s);
@@ -51,6 +56,38 @@ public class SaveGroup extends UIImage implements Fadable{
         this.addChild(delete);
         delete.setScale(new Vector2(delete.getImage().getWidth()-90,delete.getImage().getHeight()-37));
         delete.setPosition(new Vector2(280,6));
+        
+        createNew = new TextButton(s);
+        this.addChild(createNew);
+        createNew.setSize(72);
+        createNew.setText("Click to Create New");
+        createNew.setHorizontalAlignment(UIText.CENTER);
+    }
+
+    public GameSave getSave() {
+        return save;
+    }
+
+    public void setSave(GameSave save) {
+        this.save = save;
+        if(this.save == null){
+            saveNumber.setActive(false);
+            chapterBord.setActive(false);
+            load.setActive(false);
+            playtime.setActive(false);
+            delete.setActive(false);
+            
+            createNew.setActive(true);
+        }
+        else{
+            saveNumber.setActive(true);
+            chapterBord.setActive(true);
+            load.setActive(true);
+            playtime.setActive(true);
+            delete.setActive(true);
+            
+            createNew.setActive(true);
+        }
     }
     
     public void setSaveNumber(String s){

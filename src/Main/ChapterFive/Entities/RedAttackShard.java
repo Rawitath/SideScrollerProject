@@ -18,7 +18,7 @@ import Utilities.FileReader;
 public class RedAttackShard extends AttackShard {
     public RedAttackShard(Scene s, Vector2 direction, float speed, float duration) {
         super(s, direction, speed, duration);
-        setSprite(FileReader.readImage("res/default/Framesquare.png"));
+        setSprite(FileReader.readImage("res/game/animation/sheep/slashred.png"));
     }
 
     public RedAttackShard(Scene s, Vector2 direction, float speed) {

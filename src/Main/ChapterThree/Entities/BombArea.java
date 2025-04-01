@@ -17,6 +17,7 @@ public class BombArea extends CollidableEntity{
     public BombArea(Scene s) {
         super(s);
         getCollider().setSolid(false);
+        setTag("Bomb Area");
     }
 
     @Override

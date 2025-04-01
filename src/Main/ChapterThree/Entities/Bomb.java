@@ -38,7 +38,7 @@ public class Bomb extends PhysicableEntity implements Pushable{
     public void fixedUpdate() {
         super.fixedUpdate();
         if(isIgnite){
-            if(Time.time() - bombDelay < bombDelay){
+            if(Time.time() - previous < bombDelay){
                 
             }
             else{
@@ -47,7 +47,6 @@ public class Bomb extends PhysicableEntity implements Pushable{
                         d.damageTaken(damage);
                     }
                 }
-                removeChild(bombArea);
                 getScene().removeEntity(this);
             }
         }
@@ -61,6 +60,8 @@ public class Bomb extends PhysicableEntity implements Pushable{
                 isIgnite = true;
                 bombArea = new BombArea(getScene());
                 addChild(bombArea);
+                bombArea.setScale(new Vector2(bombArea.getScale().getX() * 3, bombArea.getScale().getY()));
+                previous = Time.time();
             }
         }
         

@@ -22,11 +22,11 @@ public class SaveManager {
         gs.setSaveCreated(LocalDateTime.now());
         gs.setPlayTime(0L);
         gs.setWandAchived(true);
-        gs.setWingAchived(true);
-        gs.setMaxJump(2);
-        gs.setCurrentCheckpoint(5);
-        gs.getUnlockedDoors().add(2);
-        gs.getUnlockedDoors().add(3);
+//        gs.setWingAchived(true);
+//        gs.setMaxJump(2);
+//        gs.setCurrentCheckpoint(11);
+//        gs.getUnlockedDoors().add(2);
+//        gs.getUnlockedDoors().add(3);
         
         return gs;
     }

@@ -19,7 +19,7 @@ public class OrangeAttackShard extends AttackShard{
     
     public OrangeAttackShard(Scene s, Vector2 direction, float speed, float duration) {
         super(s, direction, speed, duration);
-        setSprite(FileReader.readImage("res/default/whitesquare.png"));
+        setSprite(FileReader.readImage("res/game/animation/sheep/slashorange.png"));
     }
 
     public OrangeAttackShard(Scene s, Vector2 direction, float speed) {

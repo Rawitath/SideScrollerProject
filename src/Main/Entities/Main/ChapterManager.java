@@ -202,8 +202,23 @@ public class ChapterManager extends Entity{
                     lucy.setBreakControl(false);
                 }
                 else{
+                    if(!isDead){
                     lucy.setBreakControl(true);
                     ui.setActive(false);
+                    isDead = true;
+                    deathCountdown = Time.time();
+                    screenFade.setActive(true);
+                }
+                else{
+                    if(Time.time() - deathCountdown > deathDelay){
+                        respawn();
+                    }
+                    else{
+                        if(screenFade.getAlpha() + 1 / deathDelay * Time.deltaTime() < 1f){
+                            screenFade.setAlpha(screenFade.getAlpha() + 1 / deathDelay * Time.deltaTime());
+                        }
+                    }
+                }
                 }
             }
         }

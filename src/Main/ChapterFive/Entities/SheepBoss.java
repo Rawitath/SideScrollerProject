@@ -6,7 +6,11 @@ package Main.ChapterFive.Entities;
 
 import Animations.Animator;
 import Datas.Vector2;
+import Main.ChapterFive.Animations.SheepAttack;
+import Main.ChapterFive.Animations.SheepAttackTwo;
 import Main.ChapterFive.Animations.SheepBreath;
+import Main.ChapterFive.Animations.SheepDead;
+import Main.ChapterThree.Animation.MageDead;
 import Main.Entities.Main.Damagable;
 import Main.Entities.Main.Lucy;
 import Main.Entities.Main.PhysicableEntity;
@@ -34,7 +38,13 @@ public class SheepBoss extends PhysicableEntity implements CutsceneControllable,
     
     private int health = 20;
     
-    private float attacDuration = 2.5f;
+    private float attacDuration = 2f;
+    
+    private float attack1Time = 0.67f;
+    private float attack2Time = 1.08f;
+    private float attackCountdown = 1.5f;
+    
+    private boolean isAttacking = false;
     
     public SheepBoss(Scene s, Lucy lucy) {
         super(s);
@@ -56,7 +66,15 @@ public class SheepBoss extends PhysicableEntity implements CutsceneControllable,
     @Override
     public void update() {
         super.update();
-        if(manager.isBoss() && lucy.getHealth() > 0){
+        setSprite(animator.getFrame(Time.deltaTime()), true);
+    }
+
+    int attack = 0;
+    
+    @Override
+    public void fixedUpdate() {
+        super.fixedUpdate();
+        if(manager.isBoss() && lucy.getHealth() > 0 && health > 0){
             Vector2 lucyDistance = lucy.getPosition();
             Vector2 selfDistance = this.getPosition();
 
@@ -77,22 +95,62 @@ public class SheepBoss extends PhysicableEntity implements CutsceneControllable,
                 previous = Time.time();
             }
             if(Time.time() - previous > attacDuration){
-                int attack = new Random().nextInt();
-                if(attack % 11 == 0){
-                    attackRed();
+                if(!isAttacking){
+                    attack = new Random().nextInt();
+                    if(attack % 10 == 0){
+                        if(!isAttacking){
+                            attackCountdown = Time.time();
+                            isAttacking = true;
+                            animator.setAnimation(new SheepAttackTwo());
+                        }
+
+                    }
+                    else if(attack % 2 == 0){
+                        if(!isAttacking){
+                            attackCountdown = Time.time();
+                            isAttacking = true;
+                            animator.setAnimation(new SheepAttack());
+                        }
+                        
+                    }
+                    else if(attack % 2 != 0){
+                        if(!isAttacking){
+                            attackCountdown = Time.time();
+                            isAttacking = true;
+                            animator.setAnimation(new SheepAttack());
+                        }
+                        
+                    }
                 }
-                else if(attack % 2 == 0){
-                    attackOrange(side);
+                else{
+                    if(attack % 10 == 0){
+                        if(Time.time() - attackCountdown >= attack2Time){
+                            attackRed();
+                            isAttacking = false;
+                            previous = Time.time();
+                            animator.setAnimation(new SheepBreath());
+                        }
+                    }
+                    else if(attack % 2 == 0){
+                        if(Time.time() - attackCountdown >= attack1Time){
+                            attackOrange(side);
+                            isAttacking = false;
+                            previous = Time.time();
+                            animator.setAnimation(new SheepBreath());
+                        }
+                    }
+                    else if(attack % 2 != 0){
+                        if(Time.time() - attackCountdown >= attack1Time){
+                            attackBlue(side);
+                            isAttacking = false;
+                            previous = Time.time();
+                            animator.setAnimation(new SheepBreath());
+                        } 
+                    }
+                    
                 }
-                else if(attack % 2 != 0){
-                    attackBlue(side);
-                }
-                previous = Time.time();
             }
         }
-        setSprite(animator.getFrame(Time.deltaTime()), true);
-        
-        
     }
     
     private void attackOrange(int side){
@@ -166,7 +224,11 @@ public class SheepBoss extends PhysicableEntity implements CutsceneControllable,
 
     @Override
     public void damageTaken(int damage) {
-
+        health -= damage;
+        if(health < 1){
+            stop();
+            animator.setAnimation(new SheepDead());
+        }
     }
     
 }

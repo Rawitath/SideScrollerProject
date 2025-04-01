@@ -9,6 +9,8 @@ import Datas.Vector2;
 import Main.ChapterFive.Animations.SheepBreath;
 import Main.ChapterFive.Entities.ChapterFiveManager;
 import Main.ChapterThree.Animation.MageBreath;
+import Main.ChapterThree.Animation.MageDead;
+import Main.ChapterThree.Animation.MageStun;
 import Main.Entities.Main.ChapterManager;
 import Main.Entities.Main.Damagable;
 import Main.Entities.Main.Lucy;
@@ -63,7 +65,7 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
     @Override
     public void fixedUpdate() {
         super.fixedUpdate();
-        if(manager.isBoss() && lucy.getHealth() > 0){
+        if(manager.isBoss() && lucy.getHealth() > 0 && health > 0){
             Vector2 lucyDistance = lucy.getPosition();
             Vector2 selfDistance = this.getPosition();
 
@@ -72,7 +74,7 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
             }
             if(Time.time() - previous > attacDuration){
                 int attack = new Random().nextInt();
-                if(attack % 100 / 100 > 20f){
+                if(attack % 2 == 0){
                     bombAttack();
                 }
                 else{
@@ -91,6 +93,8 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
     }
     private void fireAttack(){
         MageFire fire = new MageFire(getScene(), Vector2.left(), 5f, 3f);
+        fire.setPosition(getPosition().add(new Vector2(-2, 1)));
+        fire.setScale(getScale().multiply(2f));
         getScene().addEntity(fire);
     }
     
@@ -123,7 +127,7 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
     public void moveDown() {
         
     }
-
+    
     @Override
     public void stop() {
         setVelocity(new Vector2(0, getVelocity().getY()));
@@ -133,10 +137,24 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
     public Vector2 currentPosition() {
         return getPosition();
     }
-
+    
+    private void stun(){
+        animator.setAnimation(new MageStun());
+    }
+    
     @Override
     public void damageTaken(int damage) {
-
+        health -= damage;
+        if(health < 1){
+            stop();
+            animator.setAnimation(new MageDead());
+        }
+        else{
+//            //animator.setAnimation(animationMap.get("Hurt"));
+//            isDamageTaken = true;
+//            countdownLeft = Time.time();
+//            statsOpen = false;
+        }
     }
     
 }

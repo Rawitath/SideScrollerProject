@@ -19,7 +19,7 @@ public class BlueAttackShard extends AttackShard{
     
     public BlueAttackShard(Scene s, Vector2 direction, float speed, float duration) {
         super(s, direction, speed, duration);
-        setSprite(FileReader.readImage("res/default/blacksquare.png"));
+        setSprite(FileReader.readImage("res/game/animation/sheep/slashblue.png"));
     }
 
     public BlueAttackShard(Scene s, Vector2 direction, float speed) {

@@ -46,9 +46,12 @@ public class LoadGroup extends UIImage implements Fadable{
         this.addChild(first);
         first.setScale(new Vector2(870 , 180));
 //        first.setLocalPosition(new Vector2(0,200));
-        first.setSaveNumber("Save 1");
-        first.setChapter("Chapter 1");
-        first.setPlayTime("Time Played");
+
+//        first.setSaveNumber("Save 1");
+//        first.setChapter("Chapter 1");
+//        first.setPlayTime("Time Played");
+        
+        first.setSave(null);
 //        first.setSaveNumber("Save " + save1.saveNumber);
 //        first.setChapter("Chapter " + save1.currentChapter);
 //        first.setPlayTime("Time Played:" + save1.playTime);
@@ -57,9 +60,12 @@ public class LoadGroup extends UIImage implements Fadable{
 //        save2 = new GameSave();
         this.addChild(second);
         second.setScale(new Vector2(870 , 180));
-        second.setSaveNumber("Save 2");
-        second.setChapter("Chapter 2");
-        second.setPlayTime("Time Played");
+        
+//        second.setSaveNumber("Save 2");
+//        second.setChapter("Chapter 2");
+//        second.setPlayTime("Time Played");
+        
+        second.setSave(null);
 //        second.setSaveNumber("Save " + save2.saveNumber);
 //        second.setChapter("Chapter " + save2.currentChapter);
 //        second.setPlayTime("Time Played:" + save2.playTime);
@@ -68,9 +74,12 @@ public class LoadGroup extends UIImage implements Fadable{
 //        save3 = new GameSave();
         this.addChild(third);
         third.setScale(new Vector2(870 , 180));
-        third.setSaveNumber("Save 3");
-        third.setChapter("Chapter 3");
-        third.setPlayTime("Time Played");
+        
+//        third.setSaveNumber("Save 3");
+//        third.setChapter("Chapter 3");
+//        third.setPlayTime("Time Played");
+        
+        third.setSave(null);
 //        third.setSaveNumber("Save " + save3.saveNumber);
 //        third.setChapter("Chapter " + save3.currentChapter);
 //        third.setPlayTime("Time Played:" + save3.playTime);

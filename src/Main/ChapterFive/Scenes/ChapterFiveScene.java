@@ -12,6 +12,7 @@ import Main.ChapterFive.Entities.ChapterFiveManager;
 import Main.ChapterFive.Entities.SheepBoss;
 import Main.ChapterTwo.Entities.Spike;
 import Main.Entities.Main.Lucy;
+import Main.Entities.Main.SpawnMarker;
 import Main.GameSystem.Cutscene.CutsceneTrigger;
 import Main.GameSystem.SavePoint.SavePoint;
 import Main.UI.Main.LucyUISet;
@@ -75,8 +76,11 @@ public class ChapterFiveScene extends Scene {
         
         addEntity(bossCutscene);
         
+        SpawnMarker marker = new SpawnMarker(this);
+        marker.setName("Mark1");
+        
         MapBuilder.useMapBuilder(this);
-        MapBuilder.addVariable("debugBoss", lucy);
+        MapBuilder.addVariable("debugBoss", marker);
         MapBuilder.addVariable("Spike", new Spike(this));
         MapBuilder.addVariable("Save9", save9);
         MapBuilder.addVariable("Save10", save10);
