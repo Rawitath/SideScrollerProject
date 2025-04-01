@@ -4,6 +4,7 @@
  */
 package Main.ChapterThree.Entities;
 
+import Datas.Vector2;
 import Entities.CollidableEntity;
 import Main.Entities.Main.Interactable;
 import Physics.Collider;
@@ -26,6 +27,7 @@ public class Lever extends CollidableEntity implements Interactable{
         super(s);
         offSprite = FileReader.readImage("res/game/chapter/lever_1.png");
         onSprite = FileReader.readImage("res/game/chapter/lever_2.png");
+        setAnchor(new Vector2(0, 0.5f));
         setSprite(offSprite);
         isOn = false;
     }

@@ -4,17 +4,21 @@
  */
 package Main.ChapterFour.Scenes;
 
+import Datas.Vector2;
 import Main.ChapterFive.Entities.Background.*;
+import Main.ChapterFour.Cutscenes.ChefCutscene;
 import Main.ChapterFour.Entities.ChapterFourManager;
+import Main.ChapterFour.Entities.ChefBoss;
 import Main.ChapterFour.Entities.Elevator;
 import Main.ChapterFour.Entities.FireballLeftRight;
 import Main.ChapterFour.Entities.FireballUpDown;
 import Main.ChapterFour.Entities.LeverLift;
 import Main.ChapterFour.Entities.LiftLever;
 import Main.ChapterFour.Entities.StaticFire;
-import Main.ChapterThree.Entities.VerticalFireball;
 import Main.ChapterTwo.Entities.Spike;
 import Main.Entities.Main.Lucy;
+import Main.Entities.Main.SpawnMarker;
+import Main.GameSystem.Cutscene.CutsceneTrigger;
 import Main.GameSystem.SavePoint.SavePoint;
 import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
@@ -63,9 +67,26 @@ public class ChapterFourScene extends Scene {
         save8 = new SavePoint(this);
         save8.setSavePointID(8);
         
+        ChefBoss chef = new ChefBoss(this, lucy);
+        
+        ChefCutscene bossCutscene = new ChefCutscene(this);
+        bossCutscene.addControlledEntities("Lucy", lucy);
+        bossCutscene.addControlledEntities("Boss", chef);
+        
+        CutsceneTrigger trigger = new CutsceneTrigger(this, bossCutscene);
+        trigger.setTriggerTag("Player");
+        trigger.getCollider().setBound(new Vector2(1, 100));
+        
+        SpawnMarker marker = new SpawnMarker(this);
+        marker.setName("Mark1");
+        
+        addEntity(bossCutscene);
+        
         MapBuilder.useMapBuilder(this);
-        MapBuilder.addVariable("Entry1", lucy);
+        MapBuilder.addVariable("Entry1", marker);
         MapBuilder.addVariable("fire ball UD", new FireballUpDown(this));
+        MapBuilder.addVariable("BossTrigger", trigger);
+        MapBuilder.addVariable("chef boss", chef);
         MapBuilder.addVariable("Lever", lever);
         MapBuilder.addVariable("Save6", save6);
         MapBuilder.addVariable("Save7", save7);
@@ -80,6 +101,8 @@ public class ChapterFourScene extends Scene {
         MapBuilder.setVariableClone("spike", true);
         MapBuilder.addVariable("leverlift", lift);
         MapBuilder.loadMap("map/Chapter4");
+        
+        manager.setCutscene(bossCutscene);
     }
     
 }

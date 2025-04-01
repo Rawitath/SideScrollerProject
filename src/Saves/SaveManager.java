@@ -24,7 +24,7 @@ public class SaveManager {
         gs.setWandAchived(true);
         gs.setWingAchived(true);
         gs.setMaxJump(2);
-        gs.setCurrentCheckpoint(5);
+        gs.setCurrentCheckpoint(8);
         gs.getUnlockedDoors().add(2);
         gs.getUnlockedDoors().add(3);
         
