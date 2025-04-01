@@ -9,6 +9,7 @@ import Entities.UI.UIEntity;
 import Entities.UI.UIText;
 import Physics.Time;
 import Scenes.Scene;
+import java.awt.Font;
 
 /**
  *
@@ -24,6 +25,9 @@ public class DialogueText extends UIText {
     public DialogueText(Scene s){
         super(s);
         isTextCompleted = false;
+        setFont("res/font/MOON Night DEMO.otf", Font.TRUETYPE_FONT);
+        setSize(36);
+        setHorizontalAlignment(UIText.CENTER);
     }
 
     public float getDuration() {
@@ -63,6 +67,7 @@ public class DialogueText extends UIText {
     public void update() {
         if (Time.time() - start < duration){
             this.setText(dialogue[dialoguePick]);
+
         }
         else{
             this.start = Time.time();

@@ -7,6 +7,7 @@ package Main.ChapterFive.Entities;
 import Animations.Animator;
 import Datas.Vector2;
 import Main.ChapterFive.Animations.SheepBreath;
+import Main.Entities.Main.Damagable;
 import Main.Entities.Main.Lucy;
 import Main.Entities.Main.PhysicableEntity;
 import Main.GameSystem.Cutscene.CutsceneControllable;
@@ -19,7 +20,7 @@ import java.util.Random;
  *
  * @author GA_IA
  */
-public class SheepBoss extends PhysicableEntity implements CutsceneControllable{
+public class SheepBoss extends PhysicableEntity implements CutsceneControllable, Damagable{
 
     private Animator animator;
     
@@ -161,6 +162,11 @@ public class SheepBoss extends PhysicableEntity implements CutsceneControllable{
     @Override
     public Vector2 currentPosition() {
         return getPosition();
+    }
+
+    @Override
+    public void damageTaken(int damage) {
+
     }
     
 }

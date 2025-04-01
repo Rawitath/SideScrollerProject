@@ -22,10 +22,12 @@ import Main.ChapterThree.Entities.DoorRever;
 import Main.ChapterThree.Entities.Fireball;
 import Main.ChapterThree.Entities.Lever;
 import Main.ChapterThree.Entities.Lift;
+import Main.ChapterThree.Entities.MageBoss;
 import Main.ChapterThree.Entities.Rever;
 import Main.ChapterThree.Entities.RoomBoss;
 import Main.ChapterThree.Entities.Skeleton;
 import Main.ChapterThree.Entities.VerticalFireball;
+import Main.ChapterThree.Entities.Wing;
 import Main.ChapterTwo.Entities.Spike;
 import Main.Entities.Main.Lucy;
 import Main.Entities.Main.SpawnMarker;
@@ -80,9 +82,11 @@ public class ChapterThreeScene extends Scene{
         save5 = new SavePoint(this);
         save5.setSavePointID(5);
         
+        MageBoss mage = new MageBoss(this, lucy);
+        
         MageCutscene bossCutscene = new MageCutscene(this);
         bossCutscene.addControlledEntities("Lucy", lucy);
-        //bossCutscene.addControlledEntities("Boss", sheep);
+        bossCutscene.addControlledEntities("Boss", mage);
         
         CutsceneTrigger trigger = new CutsceneTrigger(this, bossCutscene);
         trigger.setTriggerTag("Player");
@@ -96,11 +100,13 @@ public class ChapterThreeScene extends Scene{
         addEntity(bossCutscene);
         
         MapBuilder.useMapBuilder(this);
+        MapBuilder.addVariable("wizard boss", mage);
         MapBuilder.addVariable("spaw for 2", marker);
         MapBuilder.addVariable("Spike", new Spike(this));
         MapBuilder.addVariable("elevator", lift);
         MapBuilder.addVariable("Save3", save3);
         MapBuilder.addVariable("Save4", save4);
+        MapBuilder.addVariable("wing", new Wing(this));
         MapBuilder.addVariable("Save5", save5);
         MapBuilder.addVariable("fire ball UD", fireball);
         MapBuilder.addVariable("Rever", rever);
