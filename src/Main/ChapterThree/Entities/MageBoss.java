@@ -6,6 +6,7 @@ package Main.ChapterThree.Entities;
 
 import Animations.Animator;
 import Datas.Vector2;
+import Entities.Entity;
 import Main.ChapterFive.Animations.SheepBreath;
 import Main.ChapterFive.Entities.ChapterFiveManager;
 import Main.ChapterThree.Animation.MageBreath;
@@ -18,6 +19,7 @@ import Main.Entities.Main.PhysicableEntity;
 import Main.GameSystem.Cutscene.CutsceneControllable;
 import Physics.Collider;
 import Physics.Time;
+import Saves.SaveManager;
 import Scenes.Scene;
 import java.util.Random;
 
@@ -40,6 +42,9 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
     private int health = 30;
     
     private float attacDuration = 3.5f;
+    
+    private float fadeDuration = 3f;
+    
    
     
     public MageBoss(Scene s, Lucy lucy) {
@@ -60,6 +65,21 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
     @Override
     public void update() {
         super.update();
+        
+        if(health < 1){
+            if(animator.isAnimationEnd()){
+                if(Time.time() - previous >= fadeDuration){
+                    manager.setIsBoss(false);
+                    getScene().removeEntity(this);
+                }
+                else{
+                    if(getAlpha() - (1 / fadeDuration) * Time.fixedDeltaTime() > 0){
+                        setAlpha(getAlpha() - (1 / fadeDuration) * Time.fixedDeltaTime());
+                    }
+                }
+            }
+            }
+        
         setSprite(animator.getFrame(Time.deltaTime()), true);
     }
     @Override
@@ -93,9 +113,12 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
     }
     private void fireAttack(){
         MageFire fire = new MageFire(getScene(), Vector2.left(), 5f, 3f);
-        fire.setPosition(getPosition().add(new Vector2(-2, 1)));
+        fire.setPosition(getPosition().add(new Vector2(-2, 0)));
         fire.setScale(getScale().multiply(2f));
+        fire.setDamage(1);
         getScene().addEntity(fire);
+        
+        
     }
     
     @Override
@@ -148,6 +171,12 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
         if(health < 1){
             stop();
             animator.setAnimation(new MageDead());
+            for(Entity e : getScene().getEntities("Mage Bomb")){
+                getScene().removeEntity(e);
+            }
+            SaveManager.getInstance().getCurrentSave().getDefeatedBosses().add(0);
+            SaveManager.getInstance().saveCurrentSave();
+            previous = Time.time();
         }
         else{
 //            //animator.setAnimation(animationMap.get("Hurt"));

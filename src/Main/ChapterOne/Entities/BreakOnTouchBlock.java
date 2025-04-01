@@ -25,6 +25,7 @@ public class BreakOnTouchBlock extends BreakableBlock implements Copyable{
     public void destroyBlock(Entity e) {
         if(e.getTag().equals("Player")){
             SaveManager.getInstance().getCurrentSave().setOne_GroundDrop(true);
+            setSpriteVisibled(false);
             destroy();
         }
     }

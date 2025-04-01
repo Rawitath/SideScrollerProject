@@ -54,19 +54,7 @@ public class ChapterOneManager extends ChapterManager{
         touchBlock = getScene().getEntities("Drop");
         breakBlock = getScene().getEntities("Destroy");
         
-        if(save.getOne_GroundDrop()){
-            for(Entity e : touchBlock){
-                BreakableBlock b = (BreakableBlock) e;
-                b.destroy();
-            }
-        }
         
-        if(save.getOne_WallDestroy()){
-            for(Entity e : breakBlock){
-                BreakableBlock b = (BreakableBlock) e;
-                b.destroy();
-            }
-        }
         
         super.start();
     }
@@ -74,6 +62,15 @@ public class ChapterOneManager extends ChapterManager{
     @Override
     public void update() {
         super.update();
+        if(!touchBlock.isEmpty()){
+            
+        }
+        if(save.getOne_GroundDrop()){
+            for(Entity e : touchBlock){
+                BreakableBlock b = (BreakableBlock) e;
+                b.destroy();
+            }
+        }
     }
     
 }

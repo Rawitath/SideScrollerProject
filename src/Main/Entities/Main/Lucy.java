@@ -7,6 +7,7 @@ package Main.Entities.Main;
 import Animations.Animation;
 import Animations.Animator;
 import Datas.Vector2;
+import Entities.Entity;
 import Entities.SpriteEntity;
 import Inputs.KeyControlable;
 import Main.GameSystem.Cutscene.CutsceneControllable;
@@ -241,6 +242,11 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
             if(keyCode == KeyEvent.VK_J){
                 if(currentInteractable != null){
                     currentInteractable.interact();
+                    if(currentInteractable instanceof Entity ce){
+                        if(ce.getTag().equals("Key Item")){
+                            refreshSave();
+                        }
+                    }
                 }
             }
             if(keyCode == KeyEvent.VK_ENTER){

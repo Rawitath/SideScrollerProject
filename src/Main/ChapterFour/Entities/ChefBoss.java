@@ -6,7 +6,11 @@ package Main.ChapterFour.Entities;
 
 import Animations.Animator;
 import Datas.Vector2;
+import Main.ChapterFive.Animations.SheepDead;
+import Main.ChapterFour.Animations.ChefAttackOne;
 import Main.ChapterFour.Animations.ChefBreath;
+import Main.ChapterFour.Animations.ChefDead;
+import Main.ChapterFour.Animations.ChefWalk;
 import Main.Entities.Main.ChapterManager;
 import Main.Entities.Main.Damagable;
 import Main.Entities.Main.Lucy;
@@ -14,6 +18,7 @@ import Main.Entities.Main.PhysicableEntity;
 import Main.GameSystem.Cutscene.CutsceneControllable;
 import Physics.Collider;
 import Physics.Time;
+import Saves.SaveManager;
 import Scenes.Scene;
 
 /**
@@ -33,7 +38,19 @@ public class ChefBoss extends PhysicableEntity implements CutsceneControllable, 
     
     private int health = 20;
     
-    private float attacDuration = 2.5f;
+    private float attack1Time = 0.67f;
+    private float attack2Time = 1.08f;
+    private float attackCountdown = 1.5f;
+    
+    private boolean isAttacking;
+    private float attackLimit = 1;
+    private float limit = 5;
+    private float limitY = 2;
+    private float attackTime = 0.35f;
+    private float attackDelay = 0.1f;
+    private float delayCountdown;
+    
+    private float fadeDuration = 3f;
     
     public ChefBoss(Scene s, Lucy lucy) {
         super(s);
@@ -53,9 +70,91 @@ public class ChefBoss extends PhysicableEntity implements CutsceneControllable, 
     @Override
     public void update() {
         super.update();
+        if(health > 0){
+            if(!isAttacking){
+                
+                    if(Math.abs(getVelocity().getX()) > 0.01f){
+                        animator.setAnimation(new ChefWalk());
+                    }
+                    else{
+                        animator.setAnimation(new ChefBreath());
+                    }
+                
+            }
+        }
+        else{
+            if(animator.isAnimationEnd()){
+                if(Time.time() - previous >= fadeDuration){
+                    manager.setIsBoss(false);
+                    getScene().removeEntity(this);
+                }
+                else{
+                    if(getAlpha() - (1 / fadeDuration) * Time.fixedDeltaTime() > 0){
+                        setAlpha(getAlpha() - (1 / fadeDuration) * Time.fixedDeltaTime());
+                    }
+                }
+            }
+            }
         setSprite(animator.getFrame(Time.deltaTime()), true);
     }
     
+    private int side = 1;
+
+    @Override
+    public void fixedUpdate() {
+        super.fixedUpdate();
+        if(manager.isBoss() && lucy.getHealth() > 0 && health > 0){
+            Vector2 lucyDistance = lucy.getPosition();
+            Vector2 selfDistance = this.getPosition();
+            if(isAttacking){
+            if(Time.time() - attackCountdown >= attackTime){
+                if(Math.abs(lucyDistance.getX() - selfDistance.getX()) < attackLimit &&
+                    Math.abs(lucyDistance.getY() - selfDistance.getY()) < 1){
+                     lucy.damageTaken(1);
+                 }
+                isAttacking = false;
+            }
+            // enemy move on X-axis
+        if(!isAttacking){
+            if(Math.abs(lucyDistance.getY() - selfDistance.getY()) < limitY){
+                if(Math.abs(lucyDistance.getX() - selfDistance.getX()) < attackLimit){
+                    if(Time.time() - delayCountdown >= attackDelay){
+                        stop();
+                        attack();
+                    }
+                }
+                else if (Math.abs(lucyDistance.getX() - selfDistance.getX()) < limit){
+                    if (lucyDistance.getX() > selfDistance.getX()){
+                        moveRight();
+                    }
+                    else if (lucyDistance.getX() < selfDistance.getX()){
+                        moveLeft();
+                    }
+                }
+                else{
+                    stop();
+                }
+            }
+            else {
+                stop();
+            }
+        }
+        }
+        }
+        
+        
+    }
+     private void attack(){
+        if(isAttacking){
+            return;
+        }
+        
+        animator.setAnimation(new ChefAttackOne());
+        
+        isAttacking = true;
+        attackCountdown = Time.time();
+        delayCountdown = Time.time();
+    }
     @Override
     public void onGroundTouch(Collider ground) {
 
@@ -69,11 +168,13 @@ public class ChefBoss extends PhysicableEntity implements CutsceneControllable, 
     @Override
     public void moveLeft() {
         setVelocity(new Vector2(-2, getVelocity().getY()));
+        setFlip(Vector2.one());
     }
 
     @Override
     public void moveRight() {
         setVelocity(new Vector2(2, getVelocity().getY()));
+        setFlip(Vector2.negativeX());
     }
 
     @Override
@@ -98,6 +199,13 @@ public class ChefBoss extends PhysicableEntity implements CutsceneControllable, 
 
     @Override
     public void damageTaken(int damage) {
-
+        health -= damage;
+        if(health < 1){
+            stop();
+            animator.setAnimation(new ChefDead());
+            SaveManager.getInstance().getCurrentSave().getDefeatedBosses().add(1);
+            SaveManager.getInstance().saveCurrentSave();
+            previous = Time.time();
+        }
     }
 }

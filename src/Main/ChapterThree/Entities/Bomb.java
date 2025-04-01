@@ -26,22 +26,38 @@ public class Bomb extends PhysicableEntity implements Pushable{
     private BombArea bombArea = null;
     private int damage;
     
+    
     public Bomb(Scene s, int damage) {
         super(s);
         this.damage = damage;
         
         setSprite(FileReader.readImage("res/game/animation/mage/bomb.png"));
-        setSpriteSize(getSpriteSize().multiply(2f));
+        setSpriteSize(getSpriteSize().multiply(2.4f));
+        setAnchor(new Vector2(0, 0.3f));
+        setName("Mage Bomb");
     }
+
+    @Override
+    public void update() {
+        super.update();
+        if(isIgnite){
+            if(((bombDelay - (Time.time() - previous)) * 2) % 2 == 0){
+                    setSprite(FileReader.readImage("res/game/animation/mage/blackbomb.png"), true);
+                }
+                else{
+                    setSprite(FileReader.readImage("res/game/animation/mage/redbomb.png"), true);
+                }
+        }
+    }
+    
+    
 
     @Override
     public void fixedUpdate() {
         super.fixedUpdate();
         if(isIgnite){
-            if(Time.time() - previous < bombDelay){
-                
-            }
-            else{
+            if(Time.time() - previous >= bombDelay){
+                setSprite(FileReader.readImage("res/game/animation/chapter/fireball.png"), true);
                 for(Collider c : bombArea.getCollider().getCollidedObject()){
                     if(c.getEntity() instanceof Damagable d){
                         d.damageTaken(damage);

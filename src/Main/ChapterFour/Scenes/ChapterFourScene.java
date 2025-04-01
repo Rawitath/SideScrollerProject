@@ -75,7 +75,8 @@ public class ChapterFourScene extends Scene {
         
         CutsceneTrigger trigger = new CutsceneTrigger(this, bossCutscene);
         trigger.setTriggerTag("Player");
-        trigger.getCollider().setBound(new Vector2(1, 100));
+        trigger.getCollider().setBound(new Vector2(1, 10));
+        trigger.getCollider().setCenter(new Vector2(0, 5));
         
         SpawnMarker marker = new SpawnMarker(this);
         marker.setName("Mark1");

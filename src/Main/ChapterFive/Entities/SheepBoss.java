@@ -17,6 +17,7 @@ import Main.Entities.Main.PhysicableEntity;
 import Main.GameSystem.Cutscene.CutsceneControllable;
 import Physics.Collider;
 import Physics.Time;
+import Saves.SaveManager;
 import Scenes.Scene;
 import java.util.Random;
 
@@ -85,6 +86,7 @@ public class SheepBoss extends PhysicableEntity implements CutsceneControllable,
                 if (lucyDistance.getX() > selfDistance.getX()){
                     side = 1;
                     setFlip(Vector2.negativeX());
+                    
                 }
                 else if (lucyDistance.getX() < selfDistance.getX()){
                     side = -1;
@@ -228,6 +230,9 @@ public class SheepBoss extends PhysicableEntity implements CutsceneControllable,
         if(health < 1){
             stop();
             animator.setAnimation(new SheepDead());
+            SaveManager.getInstance().getCurrentSave().getDefeatedBosses().add(2);
+            SaveManager.getInstance().saveCurrentSave();
+            previous = Time.time();
         }
     }
     

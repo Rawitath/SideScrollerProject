@@ -21,10 +21,11 @@ public class SaveManager {
         gs.setSaveNumber(0);
         gs.setSaveCreated(LocalDateTime.now());
         gs.setPlayTime(0L);
-        gs.setWandAchived(true);
+//        gs.setWandAchived(true);
+//        gs.setOne_GroundDrop(true);
 //        gs.setWingAchived(true);
 //        gs.setMaxJump(2);
-//        gs.setCurrentCheckpoint(11);
+//        gs.setCurrentCheckpoint(5);
 //        gs.getUnlockedDoors().add(2);
 //        gs.getUnlockedDoors().add(3);
         

@@ -89,7 +89,7 @@ public class Zombie extends CommonEnemy{
         Vector2 lucyDistance = lucy.getPosition();
         Vector2 kotoriDistance = this.getPosition();
         if(Math.abs(lucyDistance.getX() - kotoriDistance.getX()) < attackLimit &&
-           Math.abs(lucyDistance.getY() - kotoriDistance.getY()) < 2){
+           Math.abs(lucyDistance.getY() - kotoriDistance.getY()) < 1){
             lucy.damageTaken(1);
         }
     }
