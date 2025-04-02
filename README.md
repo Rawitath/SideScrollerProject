@@ -1,5 +1,6 @@
- # Lucy Engine
- An Engine for Hellderland / Little Lucy
+ # Lucy Engine by Group นี้ไม่ได้นอน
+ ## Repository นี้ถูกเปิดไว้เป็นสาธารณะเพื่อเป็นวิทยาทานให้กับทุกคน
+ An Engine for Little Lucy
  คนบ้าอะไรทำ Engine เอง
  ## NEW FEATURE!!!
  ### Debug Mode
