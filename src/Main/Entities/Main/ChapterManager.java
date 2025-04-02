@@ -240,11 +240,12 @@ public class ChapterManager extends Entity{
     
     protected void respawn(){
         save.setDeath(save.getDeath() + 1);
-        if(SaveManager.getInstance().getCurrentSave().getCurrentCheckpoint() == null){
+        save.getObtainedKey().clear();
+        if(save.getCurrentCheckpoint() == null){
             SceneManager.loadScene(1);
         }
         else{
-            SceneManager.loadScene(SaveSceneMap.getInstance().savemap.get(SaveManager.getInstance().getCurrentSave().getCurrentCheckpoint()));
+            SceneManager.loadScene(SaveSceneMap.getInstance().savemap.get(save.getCurrentCheckpoint()));
         }    
     }
 }

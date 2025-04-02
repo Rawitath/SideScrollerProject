@@ -6,14 +6,17 @@ package Main.ChapterFive.Entities;
 
 import Animations.Animator;
 import Datas.Vector2;
+import Entities.Entity;
 import Main.ChapterFive.Animations.SheepAttack;
 import Main.ChapterFive.Animations.SheepAttackTwo;
 import Main.ChapterFive.Animations.SheepBreath;
 import Main.ChapterFive.Animations.SheepDead;
+import Main.ChapterFive.Cutscenes.FinalCutscene;
 import Main.ChapterThree.Animation.MageDead;
 import Main.Entities.Main.Damagable;
 import Main.Entities.Main.Lucy;
 import Main.Entities.Main.PhysicableEntity;
+import Main.GameSystem.Cutscene.Cutscene;
 import Main.GameSystem.Cutscene.CutsceneControllable;
 import Physics.Collider;
 import Physics.Time;
@@ -37,7 +40,7 @@ public class SheepBoss extends PhysicableEntity implements CutsceneControllable,
     
     private ChapterFiveManager manager;
     
-    private int health = 20;
+    private int health = 1;
     
     private float attacDuration = 2f;
     
@@ -153,24 +156,43 @@ public class SheepBoss extends PhysicableEntity implements CutsceneControllable,
                 }
             }
         }
+        else{
+            if(health < 1){
+                if(animator.isAnimationEnd()){
+                getScene().removeEntity(this);
+                for(Entity e : getScene().getEntities("BossWall")){
+                    getScene().removeEntity(e);
+                }
+                Cutscene cuts = new FinalCutscene(getScene());
+                cuts.addControlledEntities("Lucy", lucy);
+                    getScene().addEntity(cuts);
+                manager.setCutscene(cuts);
+                cuts.triggerCutscene();
+            }
+            }
+            
+        }
     }
     
     private void attackOrange(int side){
         AttackShard shard = new OrangeAttackShard(getScene(), Vector2.right().multiply(side), 8);
         shard.setDamage(1);
         shard.setPosition(getPosition().add(new Vector2(2 * side, 0)));
+        shard.setFlip(new Vector2(-side, 1f));
         getScene().addEntity(shard);
     }
     private void attackBlue(int side){
         AttackShard shard = new BlueAttackShard(getScene(), Vector2.right().multiply(side), 8);
         shard.setDamage(1);
         shard.setPosition(getPosition().add(new Vector2(2 * side, 0)));
+         shard.setFlip(new Vector2(-side, 1f));
         getScene().addEntity(shard);
     }
     private void attackRed(){
         AttackShard shard1 = new RedAttackShard(getScene(), Vector2.right(), 8);
         shard1.setDamage(1);
         shard1.setPosition(getPosition().add(new Vector2(2, 0)));
+         shard1.setFlip(new Vector2(-side, 1f));
         getScene().addEntity(shard1);
         
         AttackShard shard2 = new RedAttackShard(getScene(), Vector2.left(), 8);

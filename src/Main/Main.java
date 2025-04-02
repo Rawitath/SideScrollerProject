@@ -34,10 +34,10 @@ public class Main {
 //        DebugManager.useDebug();
 
         //Uncomment to use MapEditor
-        MapBuilder.setUseEditor(true);
+//        MapBuilder.setUseEditor(true);
         
         //Scene added here
-        SceneManager.addScene(new EditorScene()); // This Scene will be loaded first
+//        SceneManager.addScene(new EditorScene()); // This Scene will be loaded first
         SceneManager.addScene(new StartMenuScene()); // This Scene will be loaded first
         SceneManager.addScene(new ChapterOneScene()); // This Scene will be loaded first
         SceneManager.addScene(new ChapterTwoScene()); // This Scene will be loaded first

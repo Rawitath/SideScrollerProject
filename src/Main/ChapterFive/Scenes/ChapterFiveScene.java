@@ -9,7 +9,11 @@ import Main.ChapterFive.Cutscenes.BossCutscene;
 import Main.ChapterFive.Entities.Background.*;
 import Main.ChapterFive.Entities.BossWall;
 import Main.ChapterFive.Entities.ChapterFiveManager;
+import Main.ChapterFive.Entities.Halo;
 import Main.ChapterFive.Entities.SheepBoss;
+import Main.ChapterOne.Entities.Lava;
+import Main.ChapterOne.Entities.Zombie;
+import Main.ChapterThree.Entities.Skeleton;
 import Main.ChapterTwo.Entities.Spike;
 import Main.Entities.Main.Lucy;
 import Main.Entities.Main.SpawnMarker;
@@ -77,12 +81,16 @@ public class ChapterFiveScene extends Scene {
         addEntity(bossCutscene);
         
         SpawnMarker marker = new SpawnMarker(this);
-        marker.setName("Mark1");
+        marker.setName("From4");
         
         MapBuilder.useMapBuilder(this);
-        MapBuilder.addVariable("debugBoss", marker);
+        MapBuilder.addVariable("From4", marker);
+        MapBuilder.addVariable("halo", new Halo(this));
         MapBuilder.addVariable("Spike", new Spike(this));
         MapBuilder.addVariable("Save9", save9);
+        MapBuilder.addVariable("eme", new Zombie(this));
+        MapBuilder.addVariable("eme2", new Skeleton(this));
+        MapBuilder.addVariable("Lava", new Lava(this));
         MapBuilder.addVariable("Save10", save10);
         MapBuilder.addVariable("Save11", save11);
         MapBuilder.addVariable("last boss", sheep);
@@ -90,6 +98,9 @@ public class ChapterFiveScene extends Scene {
         MapBuilder.addVariable("Bosswall", bosswall);
         MapBuilder.setVariableClone("Spike", true);
         MapBuilder.setVariableClone("Bosswall", true);
+        MapBuilder.setVariableClone("eme", true);
+        MapBuilder.setVariableClone("eme2l", true);
+        MapBuilder.setVariableClone("Lava", true);
         
         MapBuilder.loadMap("map/Chapter5");
         

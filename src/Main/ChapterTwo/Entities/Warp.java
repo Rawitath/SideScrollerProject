@@ -19,6 +19,7 @@ public class Warp extends CollidableEntity implements Interactable{
 
     public Warp(Scene s) {
         super(s);
+        setName("Warp");
     }
 
     @Override
@@ -54,7 +55,7 @@ public class Warp extends CollidableEntity implements Interactable{
     @Override
     public void interact(Entity interactor) {
         ChapterManager manager = getScene().getEntity("Manager2");
-        manager.goTo(3, "Mark1");
+        manager.goTo(3, "Rope");
     }
     
 }

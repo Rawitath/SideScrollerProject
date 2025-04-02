@@ -36,15 +36,15 @@ public class ChefBoss extends PhysicableEntity implements CutsceneControllable, 
     
     private ChapterManager manager;
     
-    private int health = 20;
+    private int health = 1;
     
     private float attack1Time = 0.67f;
     private float attack2Time = 1.08f;
     private float attackCountdown = 1.5f;
     
-    private boolean isAttacking;
+    private boolean isAttacking = false;
     private float attackLimit = 1;
-    private float limit = 5;
+    private float limit = 13f;
     private float limitY = 2;
     private float attackTime = 0.35f;
     private float attackDelay = 0.1f;
@@ -67,6 +67,10 @@ public class ChefBoss extends PhysicableEntity implements CutsceneControllable, 
         manager = getScene().getEntity("Manager4");
     }
 
+    public int getHealth() {
+        return health;
+    }
+    
     @Override
     public void update() {
         super.update();
@@ -115,7 +119,7 @@ public class ChefBoss extends PhysicableEntity implements CutsceneControllable, 
                 isAttacking = false;
             }
             // enemy move on X-axis
-        if(!isAttacking){
+            }else{
             if(Math.abs(lucyDistance.getY() - selfDistance.getY()) < limitY){
                 if(Math.abs(lucyDistance.getX() - selfDistance.getX()) < attackLimit){
                     if(Time.time() - delayCountdown >= attackDelay){
@@ -139,7 +143,7 @@ public class ChefBoss extends PhysicableEntity implements CutsceneControllable, 
                 stop();
             }
         }
-        }
+        
         }
         
         
@@ -167,13 +171,13 @@ public class ChefBoss extends PhysicableEntity implements CutsceneControllable, 
 
     @Override
     public void moveLeft() {
-        setVelocity(new Vector2(-4, getVelocity().getY()));
+        setVelocity(new Vector2(-9, getVelocity().getY()));
         setFlip(Vector2.one());
     }
 
     @Override
     public void moveRight() {
-        setVelocity(new Vector2(4, getVelocity().getY()));
+        setVelocity(new Vector2(9, getVelocity().getY()));
         setFlip(Vector2.negativeX());
     }
 

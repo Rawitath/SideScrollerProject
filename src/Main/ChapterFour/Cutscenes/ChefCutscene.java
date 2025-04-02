@@ -25,7 +25,7 @@ public class ChefCutscene extends DialogueCutscene{
     @Override
     public void start(){
         super.start();
-        setScript(new String[]{"Wish to see your own world?", "Just dream under my fire"});
+        setScript(new String[]{"มีหนูสกปรกเข้ามาในปราสาทงั้นหรือ", "คงต้องจัดการก่อนราชาจะเห็นแล้วสินะ"});
     }
 
     @Override

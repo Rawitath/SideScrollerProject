@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class SaveManager {
     private static SaveManager instance;
     private GameSave currentSave;
-    private boolean useDebugSave = true;
+    private boolean useDebugSave = false;
     
     private GameSave debugSave(){
         GameSave gs = new GameSave();
@@ -25,11 +25,12 @@ public class SaveManager {
         gs.setOne_GroundDrop(true);
         gs.setWingAchived(true);
         gs.setMaxJump(2);
-        gs.setCurrentCheckpoint(2);
+        gs.setCurrentCheckpoint(11);
         gs.getUnlockedDoors().add(0);
         gs.getUnlockedDoors().add(1);
         gs.getUnlockedDoors().add(2);
         gs.getUnlockedDoors().add(3);
+        gs.getUnlockedDoors().add(4);
         gs.getDefeatedBosses().add(0);
         
         return gs;

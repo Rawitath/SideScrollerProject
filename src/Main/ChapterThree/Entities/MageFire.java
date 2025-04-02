@@ -8,6 +8,8 @@ import Animations.Animator;
 import Datas.Vector2;
 import Main.ChapterThree.Animation.FireballHorizontal;
 import Main.Entities.Main.AttackProjectile;
+import Main.Entities.Main.Damagable;
+import Physics.Collider;
 import Physics.Time;
 import Scenes.Scene;
 import Utilities.FileReader;
@@ -26,6 +28,7 @@ public class MageFire extends AttackProjectile{
         animator = new Animator();
         animator.setAnimation(new FireballHorizontal());
         setSpriteSize(getSpriteSize().multiply(0.7f));
+        getCollider().setBound(new  Vector2(1f, 0.7f));
         setFlip(Vector2.negativeX());
     }
 
@@ -33,6 +36,15 @@ public class MageFire extends AttackProjectile{
     public void update() {
         super.update();
         setSprite(animator.getFrame(Time.deltaTime()), true);
+    }
+
+    @Override
+    public void onColliderEnter(Collider other) {
+        super.onColliderEnter(other);
+        if(other.getEntity() instanceof Damagable){
+            Damagable d = (Damagable) other.getEntity();
+            d.damageTaken(getDamage());
+        }
     }
     
     

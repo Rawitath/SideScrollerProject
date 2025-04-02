@@ -27,7 +27,7 @@ public class BossCutscene extends DialogueCutscene{
     @Override
     public void start() {
         super.start();
-        setScript(new String[]{"I'm a sheep", "King of hell, you know?"});
+        setScript(new String[]{"มาได้ทันเวลาพอดีเลยนะเจ้าหนู", "ชั้นกำลังจะวิเคราะห์ halo เธอเสร็จพอดี", "แต่ถ้าเธออยากได้มันคืนก็คงต้องผ่านชั้นไปก่อนนะ"});
     }
     
     

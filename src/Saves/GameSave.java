@@ -23,7 +23,7 @@ public class GameSave implements Serializable{
     private LocalDateTime saveCreated = null;
     private Long playTime = null;
     private Integer saveNumber = null;
-    private Integer currentChapter = null;
+    private Integer currentChapter = 0;
     private Integer[] items = null;
     private Integer death = 0;
     private Integer maxHP = 5;

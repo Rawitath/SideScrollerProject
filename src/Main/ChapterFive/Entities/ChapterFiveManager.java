@@ -67,13 +67,22 @@ public class ChapterFiveManager extends ChapterManager{
             }
         }
         else{
-            for(Entity e : getScene().getEntities("Save")){
+            if(SaveManager.getInstance().getCurrentSave().getMarkerName() != null){
+                getLucy().setPosition(getScene().getEntity(SaveManager.getInstance().getCurrentSave().getMarkerName()).getPosition());
+                getLucy().setHealth(SaveManager.getInstance().getCurrentSave().getCurrentHearts());
+                getScene().addEntity(getLucy());
+                SaveManager.getInstance().getCurrentSave().setCurrentHearts(null);
+                SaveManager.getInstance().getCurrentSave().setMarkerName(null);
+            }
+            else{
+                for(Entity e : getScene().getEntities("Save")){
                 SavePoint s = (SavePoint) e;
                 if(save.getCurrentCheckpoint().equals(s.getSavePointID())){
                     getLucy().setPosition(s.getPosition());
                     getScene().addEntity(getLucy());
                     break;
                 }
+            }
             }
         }
         

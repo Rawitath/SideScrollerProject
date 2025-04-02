@@ -12,8 +12,11 @@ import Main.ChapterFour.Entities.ChefBoss;
 import Main.ChapterFour.Entities.Elevator;
 import Main.ChapterFour.Entities.FireballLeftRight;
 import Main.ChapterFour.Entities.FireballUpDown;
+import Main.ChapterFour.Entities.GoTo2;
+import Main.ChapterFour.Entities.GoTo5;
 import Main.ChapterFour.Entities.LeverLift;
 import Main.ChapterFour.Entities.LiftLever;
+import Main.ChapterFour.Entities.SheepDoor;
 import Main.ChapterFour.Entities.StaticFire;
 import Main.ChapterOne.Entities.GoTo3;
 import Main.ChapterOne.Entities.Zombie;
@@ -83,10 +86,10 @@ public class ChapterFourScene extends Scene {
         trigger.getCollider().setCenter(new Vector2(0, 5));
         
         SpawnMarker marker = new SpawnMarker(this);
-        marker.setName("Mark1");
+        marker.setName("From2");
         
         SpawnMarker marker2 = new SpawnMarker(this);
-        marker.setName("From3");
+        marker2.setName("From3");
         
         addEntity(bossCutscene);
         
@@ -97,8 +100,12 @@ public class ChapterFourScene extends Scene {
              MapBuilder.addVariable("BossTrigger", trigger);
              MapBuilder.addVariable("chef boss", chef);
         }
+        MapBuilder.addVariable("From2", marker);
         MapBuilder.addVariable("From3", marker2);
         MapBuilder.addVariable("GoTo3", new GoTo3(this, manager));
+        MapBuilder.addVariable("GoTo2", new GoTo2(this, manager));
+        MapBuilder.addVariable("GoTo5", new GoTo5(this, manager));
+        MapBuilder.addVariable("go to 5", new SheepDoor(this, chef));
         MapBuilder.addVariable("zombie", new Zombie(this));
         MapBuilder.addVariable("skeleton", new Skeleton(this));
         MapBuilder.addVariable("Lever", lever);
@@ -111,6 +118,7 @@ public class ChapterFourScene extends Scene {
         MapBuilder.addVariable("fire ball LR", new FireballLeftRight(this));
         MapBuilder.setVariableClone("GoTo3", true);
         MapBuilder.setVariableClone("zombie", true);
+        MapBuilder.setVariableClone("GoTo5", true);
         MapBuilder.setVariableClone("skeleton", true);
         MapBuilder.setVariableClone("fire ball LR", true);
         MapBuilder.setVariableClone("elvevator", true);

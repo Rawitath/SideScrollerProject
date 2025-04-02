@@ -45,7 +45,8 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
     
     private float fadeDuration = 3f;
     
-   
+   private float stunDuration = 4f;
+   private float stunCount = 0;
     
     public MageBoss(Scene s, Lucy lucy) {
         super(s);
@@ -92,7 +93,11 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
             if(previous == 0){
                 previous = Time.time();
             }
-            if(Time.time() - previous > attacDuration){
+            if(Time.time() - stunCount > stunDuration){ 
+                if(animator.isAnimationEnd()){
+                   // animator.setAnimation(new MageBreath());
+                }
+                    if(Time.time() - previous > attacDuration){
                 int attack = new Random().nextInt();
                 if(attack % 2 == 0){
                     bombAttack();
@@ -101,6 +106,10 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
                     fireAttack();
                 }
                 previous = Time.time();
+            }
+            }
+            else{
+              //s  animator.setAnimation(new MageStun());
             }
         }
     }
@@ -168,6 +177,9 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
     @Override
     public void damageTaken(int damage) {
         health -= damage;
+        if(damage > 1){
+            stunCount = Time.time();
+        }
         if(health < 1){
             stop();
             animator.setAnimation(new MageDead());
