@@ -29,6 +29,12 @@ public abstract class UIProgressBar extends UIImage{
         return max;
     }
 
+    @Override
+    public void setAlpha(float alpha) {
+        super.setAlpha(alpha);
+        fill.setAlpha(alpha);
+    }
+    
     public void setMax(float max) {
         this.max = max;
     }

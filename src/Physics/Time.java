@@ -18,7 +18,7 @@ public class Time {
     }
     
     public static float time(){
-        return System.nanoTime() / 1000000000;
+        return System.nanoTime() / 1000000000f;
     }
     public static float deltaTime(){
         return (float)engine.getDeltaTime();

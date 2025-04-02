@@ -23,7 +23,10 @@ public class SaveSerializer {
     private static final String savePath = "saves/";
     
     public static void save(GameSave save){
-        try (FileOutputStream file = new FileOutputStream(savePath+UUID.randomUUID().toString()+".lucy");
+        if(save.getSaveID() == null){
+            save.setSaveID(UUID.randomUUID().toString());
+        }
+        try (FileOutputStream file = new FileOutputStream(savePath+save.getSaveID()+".lucy");
                 ObjectOutputStream os = new ObjectOutputStream(file);){
             os.writeObject(save);
         } catch (FileNotFoundException ex) {
@@ -32,8 +35,19 @@ public class SaveSerializer {
             Logger.getLogger(SaveSerializer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public static void deleteSaves(int saveNumber){
+        GameSave gs = load(saveNumber);
+        File[] saveList = new File(savePath).listFiles((d, name) -> name.endsWith(".lucy"));
+        for(int i = 0; i < saveList.length; i++){
+            if(saveList[i].getName().equals(gs.getSaveID()+".lucy")){
+                saveList[i].delete();
+                return;
+            }
+        }
+        
+    }
     public static GameSave[] getSaves(){
-        File[] saveList = new File(savePath).listFiles();
+        File[] saveList = new File(savePath).listFiles((d, name) -> name.endsWith(".lucy"));
         GameSave[] saves = new GameSave[saveList.length];
         for(int i = 0; i < saveList.length; i++){
             try(FileInputStream file = new FileInputStream(savePath+saveList[i].getName());
@@ -49,7 +63,28 @@ public class SaveSerializer {
         }
         return saves;
     }
+    public static GameSave load(String saveID){
+        for(GameSave gs : getSaves()){
+            if(gs == null){
+                continue;
+            }
+            if(gs.getSaveID().equals(saveID)){
+                return gs;
+            }
+        }
+        System.err.println("Save ID: "+saveID+" not found!");
+        return null;
+    }
     public static GameSave load(int saveNumber){
-        return getSaves()[saveNumber];
+        for(GameSave gs : getSaves()){
+            if(gs == null){
+                continue;
+            }
+            if(gs.getSaveNumber().equals(saveNumber)){
+                return gs;
+            }
+        }
+        System.err.println("Save Number: "+saveNumber+" not found!");
+        return null;
     }
 }

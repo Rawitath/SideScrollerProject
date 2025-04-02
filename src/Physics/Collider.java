@@ -89,6 +89,10 @@ public class Collider{
     public void setBound(Vector2 bound) {
         this.bound = bound;
     }
+    
+    public Vector2 getBoundScale() {
+        return bound.multiply(entity.getScale());
+    }
 
     public boolean isSolid() {
         return solid;

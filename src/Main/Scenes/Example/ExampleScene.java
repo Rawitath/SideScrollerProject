@@ -10,6 +10,7 @@ import Main.Entities.Example.HellBackground;
 import Main.Entities.Example.Ground;
 import Main.Entities.Example.Lucy;
 import Main.Entities.Example.Mutsuki;
+import Main.Entities.Example.CutsceneOne;
 import Entities.Audios.AudioSource;
 import Main.Entities.Example.Kotori;
 import Main.UI.Example.InventoryBar;
@@ -42,6 +43,7 @@ public class ExampleScene extends Scene{
         addEntity(new Ground(this));
         addEntity(new Kotori(this));
         addEntity(new Mutsuki(this));
+        this.addEntity(new CutsceneOne(this));
         Lucy lucy = new Lucy(this);
         lucy.setName("Lucy"); // set name for lucy to let her use it in uiimg
         addEntity(lucy);

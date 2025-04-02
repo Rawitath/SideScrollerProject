@@ -56,4 +56,9 @@ public class MyButton extends UIButton{
     public void onMouseWheelMoved(MouseWheelEvent e) {
 
     }
+
+    @Override
+    public void onButtonHovered() {
+        
+    }
 }

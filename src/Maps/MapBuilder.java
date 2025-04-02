@@ -6,7 +6,10 @@ package Maps;
 
 import Datas.Vector2;
 import Datas.Vector2Int;
+import Entities.CollidableEntity;
+import Entities.Copyable;
 import Entities.Entity;
+import Entities.NotCopyableException;
 import Entities.SpriteEntity;
 import Scenes.Scene;
 import java.awt.image.BufferedImage;
@@ -16,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -43,14 +47,18 @@ public class MapBuilder {
     
     private static Map<String, Entity> variableMap = new HashMap<>();
     private static Map<String, Entity> parentMap = new HashMap<>();
+    private static Map<String, Boolean> cloneMap = new HashMap<>();
     
     private static Queue<MapVariable> variableQueue = new LinkedList<>();
     
     public static void addVariable(String key, Entity value){
         variableMap.put(key, value);
     }
-    public static void serVariableParent(String key, Entity value){
+    public static void setVariableParent(String key, Entity value){
         parentMap.put(key, value);
+    }
+    public static void setVariableClone(String key, Boolean value){
+        cloneMap.put(key, value);
     }
 
     public static boolean isUseEditor() {
@@ -123,13 +131,17 @@ public class MapBuilder {
                 }
                 
                 File[] imgs = tileDir.listFiles();
-                if(map.getUsedImages() == null){
-                    map.setUsedImages(new ArrayList<>());
-                }
                 if(imgs != null){
-                    for(File img : imgs){
-                        map.getUsedImages().add(ImageIO.read(img));
+                    BufferedImage[] usedImages = new BufferedImage[imgs.length];
+                    for (File img : imgs) {
+                        String n = img.getName().replace(".png", "");
+                        usedImages[Integer.parseInt(n)] = ImageIO.read(img);
                     }
+                    map.setUsedImages(new ArrayList<>());
+                    map.getUsedImages().addAll(Arrays.asList(usedImages));
+                }
+                else{
+                    map.setUsedImages(new ArrayList<>());
                 }
                 buildMap(map);
             } catch (FileNotFoundException ex) {
@@ -153,6 +165,8 @@ public class MapBuilder {
         for (Entity child : container.getChilds()) {
             container.removeChild(container);
         }
+        variableMap.clear();
+        parentMap.clear();
     }
     
     private static void buildMap(MapFile map){
@@ -182,6 +196,14 @@ public class MapBuilder {
                                 else{
                                     if(varMode == 0 || tileType == TileFile.VARIABLE){
                                         Entity e = variableMap.get(varName);
+                                        if(cloneMap.containsKey(varName) && cloneMap.get(varName).equals(true)){
+                                            if(e instanceof Copyable){
+                                                e = ((Copyable) e).copyOf();
+                                            }
+                                            else{
+                                                throw new NotCopyableException();
+                                            }
+                                        }
                                         e.setPosition(new Vector2(
                                             map.columnToWorldX(i + map.getColumnOffset()) + map.getOffsetX(),
                                             map.rowToWorldY(j + map.getRowOffset()) + map.getOffsetY()
@@ -192,6 +214,14 @@ public class MapBuilder {
                                     }
                                     else if(varMode == 1){
                                         Entity e = variableMap.get(varName);
+                                        if(cloneMap.containsKey(varName) && cloneMap.get(varName).equals(true)){
+                                            if(e instanceof Copyable){
+                                                e = ((Copyable) e).copyOf();
+                                            }
+                                            else{
+                                                throw new NotCopyableException();
+                                            }
+                                        }
                                         if(e instanceof SpriteEntity){
                                             BufferedImage tileImage = map.getUsedImages().get(tile.getTile());
                                             ((SpriteEntity) e).setSprite(tileImage);
@@ -206,6 +236,15 @@ public class MapBuilder {
                                                     (int)(((SpriteEntity) e).getSprite().getHeight() * map.getImageSizeMultiplier()
                                                             * tile.getImageSizeMultiplier().getY())
                                             ));
+                                            
+                                            if(e instanceof CollidableEntity && tile.hasCollider()){
+                                                CollidableEntity c = (CollidableEntity) e;
+                                                c.getCollider().setBound(c.getCollider().getBound().multiply(map.getTileRatio()).multiply(tile.getColliderSize()));
+                                                c.getCollider().setCenter(new Vector2()
+                .add(Vector2.one().multiply(tile.getAnchor()).multiply(c.getCollider().getBound().multiply(0.5f)))
+                .add(Vector2.one().multiply(tile.getAnchor()).multiply(map.getTileRatio() / 2f).add(c.getCollider().getBound().multiply(Vector2.one().multiply(tile.getAnchor().negative())))));
+                                                    c.getCollider().setSolid(tile.isSolid());
+                                            }
                                             
                                             variableQueue.add(new MapVariable(varName, e));
                                             map.getTiles()[i][j] = null;
@@ -224,6 +263,7 @@ public class MapBuilder {
                                    }
                                 }
                             }
+                            
                             TileDisplayEntity tile = new TileDisplayEntity(currentScene);
                             tile.setTileFile(map.getTiles()[i][j]);
                             BufferedImage tileImage = map.getUsedImages().get(tile.getTileFile().getTile());
@@ -468,6 +508,7 @@ public class MapBuilder {
         tc.setScale(tc.getScale().multiply(map.getTileRatio()).multiply(map.getTiles()[i][j].getColliderSize()));
         tc.setPosition(new Vector2(map.columnToWorldX(i + map.getColumnOffset()), map.rowToWorldY(j + map.getRowOffset()))
                 .add(Vector2.one().multiply(map.getTiles()[i][j].getAnchor()).multiply(tc.getScale().multiply(0.5f)))
+                .add(Vector2.one().multiply(map.getTiles()[i][j].getAnchor()).multiply(map.getTileRatio() / 2f).add(tc.getScale().multiply(Vector2.one().multiply(map.getTiles()[i][j].getAnchor().negative()))))
         );
         if(map.getTiles()[i][j].isSolid()){
             tc.getCollider().setSolid(true);
