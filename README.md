@@ -2,6 +2,15 @@
  ## Repository นี้ถูกเปิดไว้เป็นสาธารณะเพื่อเป็นวิทยาทานให้กับทุกคน
  An Engine for Little Lucy
  คนบ้าอะไรทำ Engine เอง
+ ## Basic Lucy Control
+ D = ขวา
+ A =  ซ้าย
+ W,Spacebar = กระโดด
+ Q E = เลื่อนช่องเก็บของ
+ K = ใช้item
+ J = ยิง
+ F = interact 
+
  ## NEW FEATURE!!!
  ### Debug Mode
 โหมดที่เมื่อเปิดแล้วจะทำให้เห็น Collider, Boundary ของทุก Entity และมี Debug Window สำหรับดูข้อมูล Entity แต่ละตัวได้<br>
