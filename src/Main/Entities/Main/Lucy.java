@@ -7,6 +7,7 @@ package Main.Entities.Main;
 import Animations.Animation;
 import Animations.Animator;
 import Datas.Vector2;
+import Entities.Audios.AudioSource;
 import Entities.Entity;
 import Entities.SpriteEntity;
 import Inputs.KeyControlable;
@@ -73,8 +74,7 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
         super(s);
         setName("Lucy");
         setTag("Player");
-        
-        
+      
         inventory = new Inventory(inventorySize);
         
         animator = new Animator();

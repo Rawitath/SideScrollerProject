@@ -5,6 +5,7 @@
 package Main.Entities.Main;
 
 import Datas.Vector2;
+import Entities.Audios.AudioSource;
 import Entities.Camera;
 import Entities.Entity;
 import Entities.UI.UIImage;
@@ -37,12 +38,16 @@ public class ChapterManager extends Entity{
     protected boolean isDead = false;
     protected boolean freeCamera = false;
     
+    private boolean isAudioPlayed = false;
+    
     private UIImage screenFade;
     private float fadeDelay = 1f;
     private float fadeCountdown;
     
     private float deathDelay = 3f;
     private float deathCountdown;
+    
+    private AudioSource bgSound;
 
     public ChapterManager(Scene s, Lucy lucy, LucyUISet ui) {
         super(s);
@@ -54,6 +59,8 @@ public class ChapterManager extends Entity{
         this.lucy = lucy;
         this.ui = ui;
         s.addEntity(ui); 
+        bgSound = new AudioSource(s);
+        s.addEntity(bgSound);
     }
 
     public Vector2 getMinCameraLimit() {
@@ -136,6 +143,11 @@ public class ChapterManager extends Entity{
         ui.getHeartFrame().setCurrrentHeart(lucy.getHealth());
         
         if(!isBoss && (cutscene == null || !cutscene.isCutscenePlaying())){
+            if(!isAudioPlayed){
+                bgSound.setAudioClip("res/sound/AngelInHell.wav");
+                bgSound.loop(true);
+                 isAudioPlayed = true;
+            }
             Camera camera = getScene().getCamera();
             
             if(freeCamera){
@@ -195,10 +207,17 @@ public class ChapterManager extends Entity{
         else{
             
             if(cutscene.isCutscenePlaying()){
+                bgSound.stop();
                 ui.setActive(false);
                 lucy.setBreakControl(true);
+                 isAudioPlayed = false;
             }
             else{
+               if(!isAudioPlayed){
+                bgSound.setAudioClip("res/sound/Approch.wav");
+                bgSound.loop(true);
+                isAudioPlayed = true;
+                }
                 if(lucy.getHealth() > 0){
                     ui.setActive(true);
                     lucy.setBreakControl(false);

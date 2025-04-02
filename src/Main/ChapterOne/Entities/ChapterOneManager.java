@@ -5,6 +5,7 @@
 package Main.ChapterOne.Entities;
 
 import Datas.Vector2;
+import Entities.Audios.AudioSource;
 import Entities.Entity;
 import Main.Entities.Main.ChapterManager;
 import Main.Entities.Main.Lucy;
@@ -26,12 +27,15 @@ public class ChapterOneManager extends ChapterManager{
     private List<Entity> touchBlock;
     private List<Entity> breakBlock;
     
+    
     public ChapterOneManager(Scene s, Lucy lucy, LucyUISet ui) {
         super(s, lucy, ui);
         setInitialZoom(85f);
         setName("Manager1");
         setMinCameraLimit(new Vector2(-9.51f, -3.55f));
         setMaxCameraLimit(new Vector2(19.43f, 4.96f));
+        
+        
     }
 
     @Override

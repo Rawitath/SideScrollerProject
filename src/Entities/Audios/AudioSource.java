@@ -19,12 +19,16 @@ import javax.sound.sampled.FloatControl;
 public class AudioSource extends Entity{
     
     private Clip clip;
+    private String currentPath;
 
     public AudioSource(Scene s) {
         super(s);
     }
     
     public void setAudioClip(String path){
+        if(currentPath != null && currentPath.equals(path)){
+            return;
+        }
         try{
             AudioInputStream stream = AudioSystem.getAudioInputStream(FileReader.readFile(path));
             clip = AudioSystem.getClip();
