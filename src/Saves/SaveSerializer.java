@@ -36,7 +36,7 @@ public class SaveSerializer {
         }
     }
     public static GameSave[] getSaves(){
-        File[] saveList = new File(savePath).listFiles();
+        File[] saveList = new File(savePath).listFiles((d, name) -> name.endsWith(".lucy"));
         GameSave[] saves = new GameSave[saveList.length];
         for(int i = 0; i < saveList.length; i++){
             try(FileInputStream file = new FileInputStream(savePath+saveList[i].getName());
@@ -54,6 +54,9 @@ public class SaveSerializer {
     }
     public static GameSave load(String saveID){
         for(GameSave gs : getSaves()){
+            if(gs == null){
+                continue;
+            }
             if(gs.getSaveID().equals(saveID)){
                 return gs;
             }
@@ -63,6 +66,9 @@ public class SaveSerializer {
     }
     public static GameSave load(int saveNumber){
         for(GameSave gs : getSaves()){
+            if(gs == null){
+                continue;
+            }
             if(gs.getSaveNumber().equals(saveNumber)){
                 return gs;
             }

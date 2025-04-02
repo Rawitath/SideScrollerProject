@@ -7,6 +7,8 @@ package Main.StartMenu.Entities.Load;
 import Entities.UI.UIButton;
 import Main.StartMenu.Entities.Fadable;
 import Main.StartMenu.Entities.MenuController;
+import Physics.Time;
+import Saves.GameSave;
 import Scenes.Scene;
 import Utilities.FileReader;
 
@@ -16,14 +18,22 @@ import Utilities.FileReader;
  */
 public class DeleteButton extends UIButton implements Fadable{
     
-    public DeleteButton(Scene s){
+    private SaveGroup sv;
+    private float deleteCount = 5f;
+    private float previous;
+    private boolean isDelete = false;
+    
+    public DeleteButton(Scene s, SaveGroup sv){
         super(s);
+        this.sv = sv;
         this.setReleasedImage(FileReader.readImage("res/game/loadmenu/DeleteSaveButton.png"));
         this.setHoverImage(FileReader.readImage("res/game/loadmenu/DeleteSaveButton.png"));
         this.setPressedImage(FileReader.readImage("res/game/loadmenu/DeleteSaveButton.png"));
     }
+    
     @Override
     public void onButtonClicked() {
+        
     }
 
     @Override
@@ -32,10 +42,13 @@ public class DeleteButton extends UIButton implements Fadable{
 
     @Override
     public void onButtonPressed() {
+        previous = Time.time();
+        isDelete = true;
     }
 
     @Override
     public void onButtonReleased() {
+        isDelete = false;
     }
 
     @Override
@@ -44,6 +57,13 @@ public class DeleteButton extends UIButton implements Fadable{
 
     @Override
     public void update() {
+        if(isDelete){
+            if(Time.time() - previous > deleteCount){
+                GameSave gs = sv.getSave();
+                sv.setSave(null);
+                
+            }
+        }
     }
 
     @Override

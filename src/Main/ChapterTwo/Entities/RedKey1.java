@@ -9,6 +9,7 @@ import Main.ChapterTwo.Animation.RedKeyAnimation;
 import Main.GameSystem.Door.Key;
 import Main.GameSystem.Inventory.ItemEntity;
 import Physics.Time;
+import Saves.SaveManager;
 import Scenes.Scene;
 
 /**
@@ -36,6 +37,11 @@ public class RedKey1 extends ItemEntity{
 
     @Override
     public void update() {
+        if(SaveManager.getInstance().getCurrentSave().getUnlockedDoors().contains(key.getKeyID()) || 
+                SaveManager.getInstance().getCurrentSave().getObtainedKey().contains(key)){
+            setActive(false);
+            getScene().removeEntity(this);
+        }
         super.update();
         setSprite(animator.getFrame(Time.deltaTime()), true);
     }

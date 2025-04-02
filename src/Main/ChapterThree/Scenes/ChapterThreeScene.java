@@ -10,6 +10,7 @@ import Main.ChapterFive.Cutscenes.BossCutscene;
 import Main.ChapterFive.Entities.BossWall;
 import Main.ChapterFive.Entities.SheepBoss;
 import Main.ChapterOne.Entities.Background.*;
+import Main.ChapterOne.Entities.BreakOnShootBlock;
 import Main.ChapterOne.Entities.Lava;
 import Main.ChapterOne.Entities.PushBox;
 import Main.ChapterOne.Entities.Zombie;
@@ -17,9 +18,12 @@ import Main.ChapterThree.Cutscenes.MageCutscene;
 import Main.ChapterThree.Entities.AutomaticLift;
 import Main.ChapterThree.Entities.Background.CaveBG0;
 import Main.ChapterThree.Entities.BossKey;
+import Main.ChapterThree.Entities.CastleKey;
 import Main.ChapterThree.Entities.ChapterThreeManager;
 import Main.ChapterThree.Entities.DoorRever;
 import Main.ChapterThree.Entities.Fireball;
+import Main.ChapterThree.Entities.GoTo1;
+import Main.ChapterThree.Entities.GoTo4;
 import Main.ChapterThree.Entities.Lever;
 import Main.ChapterThree.Entities.Lift;
 import Main.ChapterThree.Entities.MageBoss;
@@ -35,6 +39,7 @@ import Main.GameSystem.Cutscene.CutsceneTrigger;
 import Main.GameSystem.SavePoint.SavePoint;
 import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
+import Saves.SaveManager;
 import Scenes.Scene;
 
 /**
@@ -97,29 +102,47 @@ public class ChapterThreeScene extends Scene{
         SpawnMarker marker = new SpawnMarker(this);
         marker.setName("Mark1");
         
+        SpawnMarker marker2 = new SpawnMarker(this);
+        marker2.setName("spaw for chap1");
+        
+        SpawnMarker marker3 = new SpawnMarker(this);
+        marker3.setName("From4");
+        
         addEntity(bossCutscene);
         
         MapBuilder.useMapBuilder(this);
-        MapBuilder.addVariable("wizard boss", mage);
+        
+        MapBuilder.addVariable("spaw for chap1", marker2);
         MapBuilder.addVariable("spaw for 2", marker);
         MapBuilder.addVariable("Spike", new Spike(this));
         MapBuilder.addVariable("elevator", lift);
         MapBuilder.addVariable("Save3", save3);
+        MapBuilder.addVariable("destroy", new BreakOnShootBlock(this));
         MapBuilder.addVariable("Save4", save4);
         MapBuilder.addVariable("wing", new Wing(this));
         MapBuilder.addVariable("Save5", save5);
         MapBuilder.addVariable("fire ball UD", fireball);
         MapBuilder.addVariable("Rever", rever);
         MapBuilder.addVariable("Door Rever", doorRever);
-        MapBuilder.addVariable("BossTrigger", trigger);
+        if(!SaveManager.getInstance().getCurrentSave().getDefeatedBosses().contains(0)){
+            MapBuilder.addVariable("BossTrigger", trigger);
+            MapBuilder.addVariable("wizard boss", mage);
+        }
         MapBuilder.addVariable("zombie", new Zombie(this));
         MapBuilder.addVariable("skeleton", new Skeleton(this, 2, 4, 8));
         MapBuilder.addVariable("key boss", new BossKey(this));
         MapBuilder.addVariable("room boss", new RoomBoss(this));
         MapBuilder.addVariable("box", new PushBox(this));
         MapBuilder.addVariable("lava", new Lava(this));
+        MapBuilder.addVariable("From4", marker3);
+        MapBuilder.addVariable("CastleKey", new CastleKey(this));
+        MapBuilder.addVariable("GoTo1", new GoTo1(this, manager));
+        MapBuilder.addVariable("GoTo4", new GoTo4(this, manager));
+        MapBuilder.setVariableClone("destroy", true);
         MapBuilder.setVariableClone("zombie", true);
         MapBuilder.setVariableClone("skeleton", true);
+        MapBuilder.setVariableClone("GoTo1", true);
+        MapBuilder.setVariableClone("GoTo4", true);
         MapBuilder.setVariableClone("box", true);
         MapBuilder.setVariableClone("lava", true);
         MapBuilder.setVariableClone("elevator", true);

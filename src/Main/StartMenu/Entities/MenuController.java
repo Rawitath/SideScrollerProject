@@ -8,8 +8,11 @@ import Main.StartMenu.Entities.Start.MenuButton;
 import Entities.UI.UIEntity;
 import Entities.UI.UIImage;
 import Inputs.KeyControlable;
+import Main.GameSystem.SavePoint.SaveSceneMap;
 import Main.StartMenu.Entities.Option.OptionController;
+import Saves.SaveManager;
 import Scenes.Scene;
+import Scenes.SceneManager;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,15 @@ public class MenuController extends UIEntity implements KeyControlable{
     private OptionController option;
     private int currentPage;
     
+    
+    public void begin(){
+        if(SaveManager.getInstance().getCurrentSave().getCurrentCheckpoint() == null){
+            SceneManager.loadScene(1);
+        }
+        else{
+            SceneManager.loadScene(SaveSceneMap.getInstance().savemap.get(SaveManager.getInstance().getCurrentSave().getCurrentCheckpoint()));
+        }
+    }
     public MenuController(Scene s) {
         super(s);
         allButtons = new ArrayList<>();

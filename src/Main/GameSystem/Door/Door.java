@@ -28,14 +28,15 @@ public class Door extends CollidableEntity{
 
     @Override
     public void start() {
-        if(SaveManager.getInstance().getCurrentSave().getUnlockedDoors().contains(doorID)){
-            setActive(false);
-            getScene().removeEntity(this);
-        }
+        
     }
 
     @Override
     public void update() {
+        if(SaveManager.getInstance().getCurrentSave().getUnlockedDoors().contains(doorID)){
+            setActive(false);
+            getScene().removeEntity(this);
+        }
         if(isOpen){
             if(Time.time() - previous < fadeTime){
                 if(getAlpha() - (1 / fadeTime) * Time.deltaTime() >= 0){
@@ -43,6 +44,7 @@ public class Door extends CollidableEntity{
                 }
             }
             else{
+                SaveManager.getInstance().getCurrentSave().getUnlockedDoors().add(doorID);
                 getScene().removeEntity(this);
             }
         }

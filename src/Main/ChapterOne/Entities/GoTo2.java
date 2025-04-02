@@ -2,37 +2,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.GameSystem.SavePoint;
+package Main.ChapterOne.Entities;
 
 import Entities.CollidableEntity;
+import Entities.Copyable;
 import Entities.Entity;
-import Main.Entities.Main.Interactable;
-import Main.Entities.Main.Lucy;
+import Main.Entities.Main.ChapterManager;
 import Physics.Collider;
 import Saves.SaveManager;
 import Scenes.Scene;
+import Scenes.SceneManager;
 
 /**
  *
  * @author GA_IA
  */
-public class SavePoint extends CollidableEntity implements Interactable{
+public class GoTo2 extends CollidableEntity implements Copyable{
 
-    private int savePointID;
-    
-    public SavePoint(Scene s) {
+    private final ChapterManager manager;
+
+    public GoTo2(Scene s, ChapterManager manager) {
         super(s);
-        setName("Save");
+        this.manager = manager;
     }
 
-    public int getSavePointID() {
-        return savePointID;
-    }
-
-    public void setSavePointID(int savePointID) {
-        this.savePointID = savePointID;
-    }
-    
     @Override
     public void start() {
 
@@ -50,7 +43,9 @@ public class SavePoint extends CollidableEntity implements Interactable{
 
     @Override
     public void onColliderEnter(Collider other) {
-
+        if(other.getEntity().getTag().equals("Player")){
+            manager.goTo(2, "From1");
+        }
     }
 
     @Override
@@ -64,12 +59,8 @@ public class SavePoint extends CollidableEntity implements Interactable{
     }
 
     @Override
-    public void interact(Entity interactor) {
-        SaveManager.getInstance().getCurrentSave().setCurrentCheckpoint(savePointID);
-        SaveManager.getInstance().saveCurrentSave();
-        if(interactor instanceof Lucy lucy){
-            lucy.refreshSave();
-        }
+    public <T extends Entity> T copyOf() {
+        return (T) new GoTo2(getScene(), manager);
     }
     
 }

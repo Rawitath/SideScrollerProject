@@ -54,8 +54,17 @@ public class ChapterFiveManager extends ChapterManager{
         bosswalls = getScene().getEntities("BossWall");
         
         if(save.getCurrentCheckpoint() == null){
-            getLucy().setPosition(getScene().getEntity("Mark1").getPosition());
+            if(SaveManager.getInstance().getCurrentSave().getMarkerName() != null){
+                getLucy().setPosition(getScene().getEntity(SaveManager.getInstance().getCurrentSave().getMarkerName()).getPosition());
+                getLucy().setHealth(SaveManager.getInstance().getCurrentSave().getCurrentHearts());
+                getScene().addEntity(getLucy());
+                SaveManager.getInstance().getCurrentSave().setCurrentHearts(null);
+                SaveManager.getInstance().getCurrentSave().setMarkerName(null);
+            }
+            else{
+                getLucy().setPosition(getScene().getEntity("Mark1").getPosition());
             getScene().addEntity(getLucy());
+            }
         }
         else{
             for(Entity e : getScene().getEntities("Save")){

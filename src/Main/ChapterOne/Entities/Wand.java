@@ -6,7 +6,9 @@ package Main.ChapterOne.Entities;
 
 import Datas.Vector2;
 import Entities.CollidableEntity;
+import Entities.Entity;
 import Main.Entities.Main.Interactable;
+import Main.Entities.Main.Lucy;
 import Physics.Collider;
 import Physics.Time;
 import Saves.SaveManager;
@@ -75,10 +77,13 @@ public class Wand extends CollidableEntity implements Interactable{
     }
 
     @Override
-    public void interact() {
+    public void interact(Entity interactor) {
         achieved = true;
         SaveManager.getInstance().getCurrentSave().setWandAchived(true);
         SaveManager.getInstance().saveCurrentSave();
+        if(interactor instanceof Lucy l){
+            l.refreshSave();
+        }
         previous = Time.time();
     }
     

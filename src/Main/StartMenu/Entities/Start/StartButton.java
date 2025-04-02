@@ -20,5 +20,10 @@ public class StartButton extends MenuButton {
 //        setPosition(new Vector2(getPosition().getX(), -330));
         buttonText.setText("START");
     }
-    
+     @Override
+    public void onButtonPressed() {
+        if (getController().getCurrentPage() == 0){
+            getController().goToPage(2);
+        }
+    }
 }

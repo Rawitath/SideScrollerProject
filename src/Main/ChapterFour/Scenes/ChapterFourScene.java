@@ -15,6 +15,9 @@ import Main.ChapterFour.Entities.FireballUpDown;
 import Main.ChapterFour.Entities.LeverLift;
 import Main.ChapterFour.Entities.LiftLever;
 import Main.ChapterFour.Entities.StaticFire;
+import Main.ChapterOne.Entities.GoTo3;
+import Main.ChapterOne.Entities.Zombie;
+import Main.ChapterThree.Entities.Skeleton;
 import Main.ChapterTwo.Entities.Spike;
 import Main.Entities.Main.Lucy;
 import Main.Entities.Main.SpawnMarker;
@@ -22,6 +25,7 @@ import Main.GameSystem.Cutscene.CutsceneTrigger;
 import Main.GameSystem.SavePoint.SavePoint;
 import Main.UI.Main.LucyUISet;
 import Maps.MapBuilder;
+import Saves.SaveManager;
 import Scenes.Scene;
 
 /**
@@ -81,13 +85,22 @@ public class ChapterFourScene extends Scene {
         SpawnMarker marker = new SpawnMarker(this);
         marker.setName("Mark1");
         
+        SpawnMarker marker2 = new SpawnMarker(this);
+        marker.setName("From3");
+        
         addEntity(bossCutscene);
         
         MapBuilder.useMapBuilder(this);
         MapBuilder.addVariable("Entry1", marker);
         MapBuilder.addVariable("fire ball UD", new FireballUpDown(this));
-        MapBuilder.addVariable("BossTrigger", trigger);
-        MapBuilder.addVariable("chef boss", chef);
+        if(!SaveManager.getInstance().getCurrentSave().getDefeatedBosses().contains(1)){
+             MapBuilder.addVariable("BossTrigger", trigger);
+             MapBuilder.addVariable("chef boss", chef);
+        }
+        MapBuilder.addVariable("From3", marker2);
+        MapBuilder.addVariable("GoTo3", new GoTo3(this, manager));
+        MapBuilder.addVariable("zombie", new Zombie(this));
+        MapBuilder.addVariable("skeleton", new Skeleton(this));
         MapBuilder.addVariable("Lever", lever);
         MapBuilder.addVariable("Save6", save6);
         MapBuilder.addVariable("Save7", save7);
@@ -96,6 +109,9 @@ public class ChapterFourScene extends Scene {
         MapBuilder.addVariable("spike", new Spike(this));
         MapBuilder.addVariable("elvevator", new Elevator(this));
         MapBuilder.addVariable("fire ball LR", new FireballLeftRight(this));
+        MapBuilder.setVariableClone("GoTo3", true);
+        MapBuilder.setVariableClone("zombie", true);
+        MapBuilder.setVariableClone("skeleton", true);
         MapBuilder.setVariableClone("fire ball LR", true);
         MapBuilder.setVariableClone("elvevator", true);
         MapBuilder.setVariableClone("fire", true);

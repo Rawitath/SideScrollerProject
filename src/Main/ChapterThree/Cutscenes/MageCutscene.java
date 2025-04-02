@@ -32,7 +32,7 @@ public class MageCutscene extends DialogueCutscene{
     @Override
     public void start(){
         super.start();
-        setScript(new String[]{"Wish to see your own world?", "Just dream under my magic?"});
+        setScript(new String[]{"เจ้าหนู แกเข้ามาถึงที่นี่ได้ยังไงกัน", "ชั่งเถอะไม่ต้องตอบแล้วเพราะดูทรงแล้วแกคงมาเอาของแกคินสินะ", "เฮ้อ คงต้องทำให้ไปคุยกับรากมะม่วงแล้วสิ"});
     }
 
     @Override

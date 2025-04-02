@@ -167,13 +167,13 @@ public class ChefBoss extends PhysicableEntity implements CutsceneControllable, 
 
     @Override
     public void moveLeft() {
-        setVelocity(new Vector2(-2, getVelocity().getY()));
+        setVelocity(new Vector2(-4, getVelocity().getY()));
         setFlip(Vector2.one());
     }
 
     @Override
     public void moveRight() {
-        setVelocity(new Vector2(2, getVelocity().getY()));
+        setVelocity(new Vector2(4, getVelocity().getY()));
         setFlip(Vector2.negativeX());
     }
 

@@ -15,15 +15,18 @@ import java.awt.Font;
  */
 public class TextButton extends UIText implements Fadable{
 
+    
+    
     public TextButton(Scene s) {
         super(s);
         setFont("res/font/MOON Night DEMO.otf", Font.TRUETYPE_FONT);
         setColor(new Color(1.0f, 0.93f, 0.55f, 1.0f));
+        
     }
 
     @Override
     public void start() {
-
+        
     }
 
     @Override

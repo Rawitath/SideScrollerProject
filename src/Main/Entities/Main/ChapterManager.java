@@ -10,6 +10,7 @@ import Entities.Entity;
 import Entities.UI.UIImage;
 import Inputs.KeyControlable;
 import Main.GameSystem.Cutscene.Cutscene;
+import Main.GameSystem.SavePoint.SaveSceneMap;
 import Main.UI.Main.LucyUISet;
 import Physics.Time;
 import Saves.GameSave;
@@ -192,6 +193,7 @@ public class ChapterManager extends Entity{
             }
         }
         else{
+            
             if(cutscene.isCutscenePlaying()){
                 ui.setActive(false);
                 lucy.setBreakControl(true);
@@ -223,6 +225,13 @@ public class ChapterManager extends Entity{
             }
         }
     }
+    
+    public void goTo(int chapterNumber, String destination){
+        screenFade.setAlpha(1f);
+        SaveManager.getInstance().getCurrentSave().setMarkerName(destination);
+        SaveManager.getInstance().getCurrentSave().setCurrentHearts(lucy.getHealth());
+        SceneManager.loadScene(chapterNumber);
+    }
 
     @Override
     public void fixedUpdate() {
@@ -230,7 +239,12 @@ public class ChapterManager extends Entity{
     }
     
     protected void respawn(){
-        save.setDeath(save.getDeath() + 1);    
-        SceneManager.loadScene(getScene().getId());
+        save.setDeath(save.getDeath() + 1);
+        if(SaveManager.getInstance().getCurrentSave().getCurrentCheckpoint() == null){
+            SceneManager.loadScene(1);
+        }
+        else{
+            SceneManager.loadScene(SaveSceneMap.getInstance().savemap.get(SaveManager.getInstance().getCurrentSave().getCurrentCheckpoint()));
+        }    
     }
 }

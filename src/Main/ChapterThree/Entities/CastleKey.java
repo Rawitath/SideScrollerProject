@@ -5,6 +5,7 @@
 package Main.ChapterThree.Entities;
 
 import Animations.Animator;
+import Main.ChapterTwo.Animation.BlueKeyAnimation;
 import Main.ChapterTwo.Animation.RedKeyAnimation;
 import Main.GameSystem.Door.Key;
 import Main.GameSystem.Inventory.ItemEntity;
@@ -16,17 +17,17 @@ import Scenes.Scene;
  *
  * @author GA_IA
  */
-public class BossKey extends ItemEntity{
-    private Key key;
+public class CastleKey extends ItemEntity{
+     private Key key;
     private Animator animator;
     
-    public BossKey(Scene s) {
+    public CastleKey(Scene s) {
         super(s);
-        key = new Key("Key", 3, 0);
+        key = new Key("Key", 4, 1);
         setItem(key);
         
         animator = new Animator();
-        animator.setAnimation(new RedKeyAnimation());
+        animator.setAnimation(new BlueKeyAnimation());
         setSpriteSize(getSpriteSize().multiply(0.25f));
     }
 

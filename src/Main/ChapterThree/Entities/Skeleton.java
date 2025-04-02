@@ -28,6 +28,10 @@ public class Skeleton extends CommonEnemy{
         this.attackLimit = attackLimit;
         this.limit = limit;
     }
+    
+    public Skeleton(Scene s){
+        this(s, 2, 5, 10);
+    }
 
     @Override
     public void start() {

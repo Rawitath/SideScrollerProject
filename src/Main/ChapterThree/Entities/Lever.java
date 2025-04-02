@@ -6,6 +6,7 @@ package Main.ChapterThree.Entities;
 
 import Datas.Vector2;
 import Entities.CollidableEntity;
+import Entities.Entity;
 import Main.Entities.Main.Interactable;
 import Physics.Collider;
 import Scenes.Scene;
@@ -88,7 +89,7 @@ public class Lever extends CollidableEntity implements Interactable{
     }
 
     @Override
-    public void interact() {
+    public void interact(Entity interactor) {
         if(!isOn){
             setLever(true);
         }

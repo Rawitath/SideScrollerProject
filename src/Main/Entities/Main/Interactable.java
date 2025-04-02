@@ -4,10 +4,12 @@
  */
 package Main.Entities.Main;
 
+import Entities.Entity;
+
 /**
  *
  * @author GA_IA
  */
 public interface Interactable {
-    public abstract void interact();
+    public abstract void interact(Entity interactor);
 }

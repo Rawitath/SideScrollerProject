@@ -14,16 +14,18 @@ import Utilities.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import Saves.GameSave;
+import Saves.SaveManager;
 
 /**
  *
  * @author nirawith2548gmail.com
  */
 public class LoadGroup extends UIImage implements Fadable{
+    
     private BackButton backButton;
     private TitlePage title;
     private SaveGroup first , second , third;
-    private GameSave save1 , save2 , save3;
+//    private GameSave save1 , save2 , save3;
     
     public LoadGroup(Scene s , MenuController controller) {
         super(s);
@@ -41,7 +43,8 @@ public class LoadGroup extends UIImage implements Fadable{
         title.setScale(new Vector2(title.getImage().getWidth()-100 , title.getImage().getHeight()-20));
         title.setLocalPosition(new Vector2(0,400));
         
-        first = new SaveGroup(s);
+        first = new SaveGroup(s, controller);
+        first.setSaveID(0);
 //        save1 = new GameSave();
         this.addChild(first);
         first.setScale(new Vector2(870 , 180));
@@ -51,12 +54,13 @@ public class LoadGroup extends UIImage implements Fadable{
 //        first.setChapter("Chapter 1");
 //        first.setPlayTime("Time Played");
         
-        first.setSave(null);
+//        first.setSave(SaveManager.getInstance().getSave(0));
 //        first.setSaveNumber("Save " + save1.saveNumber);
 //        first.setChapter("Chapter " + save1.currentChapter);
 //        first.setPlayTime("Time Played:" + save1.playTime);
         
-        second = new SaveGroup(s);
+        second = new SaveGroup(s, controller);
+        second.setSaveID(1);
 //        save2 = new GameSave();
         this.addChild(second);
         second.setScale(new Vector2(870 , 180));
@@ -65,12 +69,13 @@ public class LoadGroup extends UIImage implements Fadable{
 //        second.setChapter("Chapter 2");
 //        second.setPlayTime("Time Played");
         
-        second.setSave(null);
+//        second.setSave(SaveManager.getInstance().getSave(1));
 //        second.setSaveNumber("Save " + save2.saveNumber);
 //        second.setChapter("Chapter " + save2.currentChapter);
 //        second.setPlayTime("Time Played:" + save2.playTime);
         
-        third = new SaveGroup(s);
+        third = new SaveGroup(s, controller);
+        third.setSaveID(2);
 //        save3 = new GameSave();
         this.addChild(third);
         third.setScale(new Vector2(870 , 180));
@@ -79,7 +84,7 @@ public class LoadGroup extends UIImage implements Fadable{
 //        third.setChapter("Chapter 3");
 //        third.setPlayTime("Time Played");
         
-        third.setSave(null);
+//        third.setSave(SaveManager.getInstance().getSave(third.getsave));
 //        third.setSaveNumber("Save " + save3.saveNumber);
 //        third.setChapter("Chapter " + save3.currentChapter);
 //        third.setPlayTime("Time Played:" + save3.playTime);
@@ -97,7 +102,7 @@ public class LoadGroup extends UIImage implements Fadable{
             posY -= space;
         }
     }
-
+    
     @Override
     public void start() {
     }

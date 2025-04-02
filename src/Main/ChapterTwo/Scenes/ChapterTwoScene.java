@@ -44,7 +44,7 @@ public class ChapterTwoScene extends Scene{
         
         addEntity(manager);
         SpawnMarker sp = new SpawnMarker(this);
-        sp.setName("Mark1");
+        sp.setName("From1");
         
         save2 = new SavePoint(this);
         save2.setSavePointID(2);
@@ -52,12 +52,16 @@ public class ChapterTwoScene extends Scene{
         MapBuilder.useMapBuilder(this);
         MapBuilder.addVariable("From1", sp);
         MapBuilder.addVariable("Save2", save2);
+        MapBuilder.addVariable("GoTo1", new  GoTo1(this, manager));
+        MapBuilder.addVariable("Warp", new Warp(this));
         MapBuilder.addVariable("Spike", new Spike(this));
         MapBuilder.addVariable("RedKey1", new RedKey1(this));
+        MapBuilder.addVariable("Door3", new CastleDoor(this));
         MapBuilder.addVariable("RedKey2", new RedKey2(this));
         MapBuilder.addVariable("Door1", new RedDoor1(this));
         MapBuilder.addVariable("Door2", new RedDoor2(this));
         MapBuilder.setVariableClone("Spike", true);
+        MapBuilder.setVariableClone("", true);
         MapBuilder.loadMap("map/Chapter2");
     }
     

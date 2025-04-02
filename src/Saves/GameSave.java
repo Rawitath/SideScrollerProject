@@ -4,6 +4,7 @@
  */
 package Saves;
 
+import Main.GameSystem.Door.Key;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -48,7 +49,38 @@ public class GameSave implements Serializable{
     private Boolean three_WallDestroy = false;
     
     private Map<Integer, Integer> defeatedEnemy = new HashMap<>();
+    
+    private transient Integer currentHearts = null;
+    private transient String markerName = null;
+    private transient List<Key> obtainedKey = new ArrayList<>();
 
+    public List<Key> getObtainedKey() {
+        return obtainedKey;
+    }
+
+    public void setObtainedKey(List<Key> obtainedKey) {
+        this.obtainedKey = obtainedKey;
+    }
+
+    
+    public Integer getCurrentHearts() {
+        return currentHearts;
+    }
+
+    public void setCurrentHearts(Integer currentHearts) {
+        this.currentHearts = currentHearts;
+    }
+
+    public String getMarkerName() {
+        return markerName;
+    }
+
+    public void setMarkerName(String markerName) {
+        this.markerName = markerName;
+    }
+
+    
+    
     public String getSaveID() {
         return saveID;
     }

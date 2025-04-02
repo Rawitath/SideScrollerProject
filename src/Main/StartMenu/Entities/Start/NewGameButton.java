@@ -20,5 +20,10 @@ public class NewGameButton extends MenuButton {
 //        setPosition(new Vector2(getPosition().getX(), -480));
         buttonText.setText("NEW GAME");
     }
-    
+     @Override
+    public void onButtonPressed() {
+        if (getController().getCurrentPage() == 0){
+            getController().goToPage(2);
+        }
+    }
 }

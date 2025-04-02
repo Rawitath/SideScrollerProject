@@ -21,6 +21,10 @@ public class Key extends InventoryItem{
         super(name, 1, new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
         BufferedImage keyImage = FileReader.readImage("res/game/animation/chapter/redkey.png");
         switch(keyType){
+            case 1:
+                keyImage = FileReader.readImage("res/game/animation/chapter/bluekey.png");
+                keyImage = keyImage.getSubimage(0, 0, 190, 189);
+                break;
             default:
                 keyImage = keyImage.getSubimage(0, 0, 374, 374);
                 break;

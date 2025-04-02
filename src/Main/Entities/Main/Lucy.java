@@ -14,6 +14,7 @@ import Main.GameSystem.Cutscene.CutsceneControllable;
 import Main.GameSystem.Door.Door;
 import Main.GameSystem.Door.Key;
 import Main.GameSystem.Inventory.Inventory;
+import Main.GameSystem.Inventory.InventoryItem;
 import Main.GameSystem.Inventory.Obtainable;
 import Physics.Collider;
 import Physics.Time;
@@ -124,6 +125,10 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
         bubble.setLocalScale(bubble.getLocalScale().multiply(0.2f));
         
         addIgnore("Enemy");
+        
+        for(Key key : SaveManager.getInstance().getCurrentSave().getObtainedKey()){
+            inventory.addItem(key);
+        }
     }
 
     @Override
@@ -241,7 +246,7 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
             }
             if(keyCode == KeyEvent.VK_J){
                 if(currentInteractable != null){
-                    currentInteractable.interact();
+                    currentInteractable.interact(this);
                     if(currentInteractable instanceof Entity ce){
                         if(ce.getTag().equals("Key Item")){
                             refreshSave();
@@ -301,7 +306,11 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
                 return;
             }
             Obtainable ob = (Obtainable) other.getEntity();
-            inventory.addItem(ob.obtain());
+            InventoryItem item = ob.obtain();
+            if(item instanceof Key){
+                SaveManager.getInstance().getCurrentSave().getObtainedKey().add(((Key) item));
+            }
+            inventory.addItem(item);
         }
     }
 
@@ -313,6 +322,8 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
             if(!door.isIsOpen()){
                 if(inventory.getSelectedItem() instanceof Key){
                     if(door.open((Key) (inventory.getSelectedItem()))){
+                        Key key = (Key) inventory.getSelectedItem();
+                        SaveManager.getInstance().getCurrentSave().getObtainedKey().remove(key);
                         inventory.removeItem(inventory.getSelectedSlot());
                     }
                 }

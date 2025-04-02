@@ -21,22 +21,25 @@ public class SaveManager {
         gs.setSaveNumber(0);
         gs.setSaveCreated(LocalDateTime.now());
         gs.setPlayTime(0L);
-//        gs.setWandAchived(true);
-//        gs.setOne_GroundDrop(true);
-//        gs.setWingAchived(true);
-//        gs.setMaxJump(2);
-//        gs.setCurrentCheckpoint(5);
-//        gs.getUnlockedDoors().add(2);
-//        gs.getUnlockedDoors().add(3);
+        gs.setWandAchived(true);
+        gs.setOne_GroundDrop(true);
+        gs.setWingAchived(true);
+        gs.setMaxJump(2);
+        gs.setCurrentCheckpoint(2);
+        gs.getUnlockedDoors().add(0);
+        gs.getUnlockedDoors().add(1);
+        gs.getUnlockedDoors().add(2);
+        gs.getUnlockedDoors().add(3);
+        gs.getDefeatedBosses().add(0);
         
         return gs;
     }
     
     private SaveManager(){
         currentSave = null;
-        if(useDebugSave){
-            currentSave = debugSave();
-        }
+//        if(useDebugSave){
+//            currentSave = debugSave();
+//        }
     }
     
     public static SaveManager getInstance(){
@@ -46,21 +49,24 @@ public class SaveManager {
         return instance;
     }
     
-    public void createNewSave(int saveNumber){
+    public GameSave createNewSave(int saveNumber){
         if(SaveSerializer.load(saveNumber) != null){
-            
+            System.err.println(saveNumber + " already been used!");
+            return null;
         }
         GameSave gs = new GameSave();
         gs.setSaveNumber(saveNumber);
         gs.setSaveCreated(LocalDateTime.now());
         gs.setPlayTime(0L);
-        currentSave = gs;
-        saveCurrentSave();
+        SaveSerializer.save(gs);
+        
+        return gs;
     }
     
     public void loadSave(int saveNumber){
         if(useDebugSave){
             System.out.println("Debug Loaded!");
+            currentSave = debugSave();
             return;
         }
         currentSave = SaveSerializer.load(saveNumber);
@@ -68,6 +74,10 @@ public class SaveManager {
 
     public GameSave getCurrentSave() {
         return currentSave;
+    }
+    
+    public GameSave getSave(int saveNumber){
+        return SaveSerializer.load(saveNumber);
     }
     
     public void saveCurrentSave(){
