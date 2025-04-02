@@ -39,7 +39,7 @@ public class MageBoss extends PhysicableEntity implements CutsceneControllable, 
     
     private ChapterManager manager;
     
-    private int health = 30;
+    private int health = 20;
     
     private float attacDuration = 3.5f;
     

@@ -127,9 +127,6 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
         
         addIgnore("Enemy");
         
-        if(SaveManager.getInstance().getCurrentSave().getObtainedKey() == null){
-            SaveManager.getInstance().getCurrentSave().setObtainedKey(new ArrayList<>());
-        }
         for(Key key : SaveManager.getInstance().getCurrentSave().getObtainedKey()){
             inventory.addItem(key);
         }

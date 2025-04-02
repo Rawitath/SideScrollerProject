@@ -55,6 +55,9 @@ public class GameSave implements Serializable{
     private transient List<Key> obtainedKey = new ArrayList<>();
 
     public List<Key> getObtainedKey() {
+        if(obtainedKey == null){
+            obtainedKey = new ArrayList<>();
+        }
         return obtainedKey;
     }
 

@@ -36,7 +36,7 @@ public class ChefBoss extends PhysicableEntity implements CutsceneControllable, 
     
     private ChapterManager manager;
     
-    private int health = 1;
+    private int health = 15;
     
     private float attack1Time = 0.67f;
     private float attack2Time = 1.08f;

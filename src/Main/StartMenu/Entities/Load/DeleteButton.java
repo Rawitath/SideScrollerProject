@@ -9,6 +9,7 @@ import Main.StartMenu.Entities.Fadable;
 import Main.StartMenu.Entities.MenuController;
 import Physics.Time;
 import Saves.GameSave;
+import Saves.SaveManager;
 import Scenes.Scene;
 import Utilities.FileReader;
 
@@ -42,13 +43,15 @@ public class DeleteButton extends UIButton implements Fadable{
 
     @Override
     public void onButtonPressed() {
-        previous = Time.time();
-        isDelete = true;
+        GameSave gs = sv.getSave();
+                sv.setSave(null);
+                SaveManager.getInstance().deleteSave(sv.getSaveID());
+                isDelete = false;
     }
 
     @Override
     public void onButtonReleased() {
-        isDelete = false;
+        
     }
 
     @Override
@@ -57,13 +60,7 @@ public class DeleteButton extends UIButton implements Fadable{
 
     @Override
     public void update() {
-        if(isDelete){
-            if(Time.time() - previous > deleteCount){
-                GameSave gs = sv.getSave();
-                sv.setSave(null);
-                
-            }
-        }
+       
     }
 
     @Override

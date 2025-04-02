@@ -35,6 +35,17 @@ public class SaveSerializer {
             Logger.getLogger(SaveSerializer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public static void deleteSaves(int saveNumber){
+        GameSave gs = load(saveNumber);
+        File[] saveList = new File(savePath).listFiles((d, name) -> name.endsWith(".lucy"));
+        for(int i = 0; i < saveList.length; i++){
+            if(saveList[i].getName().equals(gs.getSaveID()+".lucy")){
+                saveList[i].delete();
+                return;
+            }
+        }
+        
+    }
     public static GameSave[] getSaves(){
         File[] saveList = new File(savePath).listFiles((d, name) -> name.endsWith(".lucy"));
         GameSave[] saves = new GameSave[saveList.length];

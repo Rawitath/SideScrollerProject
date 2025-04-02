@@ -40,7 +40,7 @@ public class SheepBoss extends PhysicableEntity implements CutsceneControllable,
     
     private ChapterFiveManager manager;
     
-    private int health = 1;
+    private int health = 20;
     
     private float attacDuration = 2f;
     

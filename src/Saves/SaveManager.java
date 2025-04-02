@@ -35,6 +35,7 @@ public class SaveManager {
         
         return gs;
     }
+
     
     private SaveManager(){
         currentSave = null;
@@ -42,7 +43,9 @@ public class SaveManager {
 //            currentSave = debugSave();
 //        }
     }
-    
+    public void deleteSave(int saveNumber){
+        SaveSerializer.deleteSaves(saveNumber);
+    }
     public static SaveManager getInstance(){
         if(instance == null){
             instance = new SaveManager();

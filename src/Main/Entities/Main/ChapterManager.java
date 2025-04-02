@@ -116,6 +116,8 @@ public class ChapterManager extends Entity{
     }
     public void setIsBoss(boolean isBoss){
         this.isBoss = isBoss;
+        isAudioPlayed = false;
+        bgSound.stop();
     }
     
     @Override
