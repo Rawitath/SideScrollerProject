@@ -239,13 +239,13 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
                     facing = -1;
                 }
             }
-            if(keyCode == KeyEvent.VK_SPACE){
+            if(keyCode == KeyEvent.VK_SPACE || keyCode == KeyEvent.VK_W){
                 if(currentJump < maxJump){
                     setVelocity(new Vector2(getVelocity().getX(), jumpForce));
                     currentJump++;
                 }
             }
-            if(keyCode == KeyEvent.VK_J){
+            if(keyCode == KeyEvent.VK_F){
                 if(currentInteractable != null){
                     currentInteractable.interact(this);
                     if(currentInteractable instanceof Entity ce){
@@ -255,7 +255,7 @@ public class Lucy extends PhysicableEntity implements KeyControlable, CutsceneCo
                     }
                 }
             }
-            if(keyCode == KeyEvent.VK_ENTER){
+            if(keyCode == KeyEvent.VK_J){
                 attack();
             }
             if(keyCode == KeyEvent.VK_E){
